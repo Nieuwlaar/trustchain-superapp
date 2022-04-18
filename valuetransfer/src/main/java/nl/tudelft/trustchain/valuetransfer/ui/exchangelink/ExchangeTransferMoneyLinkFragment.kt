@@ -7,8 +7,6 @@ import android.os.Handler
 import android.util.Log
 import android.view.*
 import androidx.core.view.isVisible
-import androidx.lifecycle.*
-import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
@@ -18,20 +16,18 @@ import nl.tudelft.trustchain.common.util.viewBinding
 import nl.tudelft.trustchain.valuetransfer.R
 import nl.tudelft.trustchain.valuetransfer.ValueTransferMainActivity
 import nl.tudelft.trustchain.valuetransfer.databinding.FragmentExchangeTransferMoneyLinkBinding
-import nl.tudelft.trustchain.valuetransfer.dialogs.*
 import nl.tudelft.trustchain.valuetransfer.ui.VTFragment
 import org.json.JSONObject
 
 class ExchangeTransferMoneyLinkFragment : VTFragment(R.layout.fragment_exchange_transfer_money_link) {
     private val binding by viewBinding(FragmentExchangeTransferMoneyLinkBinding::bind)
-
-    private var ReceiverName=""
-    private var ReceiverPublic=""
-    private var Amount=""
+    private var ReceiverName = ""
+    private var ReceiverPublic = ""
+    private var Amount = ""
     private var Message: String? = null
     private var IBAN: String? = null
-    private var Host=""
-    private var PaymentId=""
+    private var Host = ""
+    private var PaymentId = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,9 +54,15 @@ class ExchangeTransferMoneyLinkFragment : VTFragment(R.layout.fragment_exchange_
         }
     }
 
-    fun setData(name: String?, amount: String, message: String?, public: String,
-                iban: String?, host: String, paymentId: String)
-    {
+    fun setData(
+        name: String?,
+        amount: String,
+        message: String?,
+        public: String,
+        iban: String?,
+        host: String,
+        paymentId: String
+    ) {
         if (name != null) {
             this.ReceiverName = name
         }
@@ -83,7 +85,7 @@ class ExchangeTransferMoneyLinkFragment : VTFragment(R.layout.fragment_exchange_
         binding.tvPaymentAmount.text = this.Amount
         if (this.Message != null) {
             binding.llPaymentMessage.visibility = View.VISIBLE
-            binding.tvPaymentMessage.text = this.Message?:""
+            binding.tvPaymentMessage.text = this.Message ?: ""
         }
 
         if (this.IBAN == null) {
@@ -233,34 +235,37 @@ class ExchangeTransferMoneyLinkFragment : VTFragment(R.layout.fragment_exchange_
         (previousFragment[0] as VTFragment).initView()
     }
 
-    fun openTikkieLink(host: String, paymetId: String)
-    {
+    fun openTikkieLink(host: String, paymetId: String) {
         val url = "$host/api/exchange/e2t/start_payment"
         val queue = Volley.newRequestQueue(this.parentActivity)
         // Post parameters
-        val params = HashMap<String,String>()
+        val params = HashMap<String, String>()
         params["payment_id"] = paymetId
         val jsonObject = JSONObject(params as Map<*, *>)
         // Volley post request with parameters
         val request = JsonObjectRequest(
-            Request.Method.POST,url,jsonObject,
+            Request.Method.POST, url, jsonObject,
             { response ->
                 Log.d("server_res_pay", response.toString())
                 val gatewaydata = response.getJSONObject("payment_connection_data")
                 Log.d("server_res_tikkie", gatewaydata.getString("url"))
-                val browserIntent = Intent(Intent.ACTION_VIEW,
-                    Uri.parse(gatewaydata.getString("url")))
+                val browserIntent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(gatewaydata.getString("url"))
+                )
                 binding.pbPayingEuro.isVisible = false
                 startActivity(browserIntent)
-            }, { error ->
-                Log.d("server_err_pay", error.message?: error.toString())
+            },
+            { error ->
+                Log.d("server_err_pay", error.message ?: error.toString())
                 binding.pbPayingEuro.isVisible = false
                 parentActivity.displayToast(
                     requireContext(),
                     resources.getString(R.string.snackbar_unexpected_error_occurred)
                 )
-            })
+            }
+        )
         // Add the volley post request to the request queue
-        queue.add(request);
+        queue.add(request)
     }
 }

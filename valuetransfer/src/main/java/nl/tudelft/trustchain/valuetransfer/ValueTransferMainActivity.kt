@@ -35,9 +35,7 @@ import com.androidadvance.topsnackbar.TSnackbar
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.jaredrummler.blockingdialog.BlockingDialogManager
-import kotlinx.android.synthetic.main.dialog_image.*
 import kotlinx.android.synthetic.main.main_activity_vt.*
-import kotlinx.coroutines.*
 import nl.tudelft.ipv8.Community
 import nl.tudelft.ipv8.Peer
 import nl.tudelft.ipv8.android.IPv8Android
@@ -76,7 +74,6 @@ import nl.tudelft.trustchain.valuetransfer.ui.identity.IdentityFragment
 import nl.tudelft.trustchain.valuetransfer.ui.settings.AppPreferences
 import nl.tudelft.trustchain.valuetransfer.ui.settings.NotificationHandler
 import nl.tudelft.trustchain.valuetransfer.ui.settings.SettingsFragment
-import nl.tudelft.trustchain.valuetransfer.ui.walletoverview.WalletOverviewFragment
 import nl.tudelft.trustchain.valuetransfer.util.dpToPixels
 import nl.tudelft.trustchain.valuetransfer.util.getColorIDFromThemeAttribute
 import org.json.JSONObject
@@ -84,11 +81,9 @@ import java.util.*
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.net.Uri
-import android.os.*
 import android.widget.Toast
 import nl.tudelft.trustchain.valuetransfer.ui.exchangelink.ExchangeTransferMoneyLinkFragment
 import nl.tudelft.trustchain.valuetransfer.util.SecurityUtil
-import java.net.URLDecoder
 
 class ValueTransferMainActivity : BaseActivity() {
     override val navigationGraph = R.navigation.nav_graph_valuetransfer
@@ -148,8 +143,6 @@ class ValueTransferMainActivity : BaseActivity() {
 
         super.onCreate(savedInstanceState)
 
-
-
         // Set status bar to black on Lollipop when in day mode
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             window.statusBarColor = if (currentTheme == AppPreferences.APP_THEME_NIGHT) {
@@ -164,22 +157,15 @@ class ValueTransferMainActivity : BaseActivity() {
                 Color.BLACK
             }
         }
-
         setContentView(R.layout.main_activity_vt)
-
         val action: String? = intent?.action
         val data: Uri? = intent?.data
-        var requestMoney=false
-        if(action!=null && data!=null)
-        {
-            requestMoney=handleLinkRequest(data)
-
+        var requestMoney = false
+        if (action != null && data != null) {
+            requestMoney = handleLinkRequest(data)
         }
 
-
-        /**
-         * Create identity database tables if not exist
-         */
+        // Create identity database tables if not exist
         val identityCommunity = getCommunity<IdentityCommunity>()!!
         identityCommunity.createIdentitiesTable()
         identityCommunity.createAttributesTable()
@@ -210,7 +196,7 @@ class ValueTransferMainActivity : BaseActivity() {
         /**
          * On initialisation of activity pre-load all fragments to allow instant switching to increase performance
          */
-        if(!requestMoney)
+        if (!requestMoney)
             fragmentManager.beginTransaction()
                 .add(R.id.container, identityFragment, identityFragmentTag).hide(identityFragment)
                 .add(R.id.container, exchangeFragment, exchangeFragmentTag).hide(exchangeFragment)
@@ -1197,30 +1183,35 @@ class ValueTransferMainActivity : BaseActivity() {
         }
     }
 
-    fun handleLinkRequest(data: Uri):Boolean
-    {
-        try{
-            val receiver_name=data.getQueryParameter("name")
-            val receiver_public=data.getQueryParameter("public")
-            val amount=data.getQueryParameter("amount")
-            val message=data.getQueryParameter("message")
-            val pkstring=data.getQueryParameter("key")
-            val signature=data.getQueryParameter("signature")
-            val host=data.getQueryParameter("host")
-            val paymentId=data.getQueryParameter("paymentId")
-            val iban =data.getQueryParameter("IBAN")
-            val pk= SecurityUtil.deserializePK(pkstring)
-            var url=SecurityUtil.urldecode(data.toString())
-            url=url.removeRange(0,url.indexOf("?")+1)
-            url=url.removeRange(url.indexOf("&signature"),url.length)
-            if(amount!=null && receiver_public!=null && host!=null && paymentId!=null && pk!=null && SecurityUtil.validate(url,signature,pk)) {
-                exchangeTransferMoneyLinkFragment.setData(receiver_name, amount, message,
-                    receiver_public, iban, host, paymentId)
+    fun handleLinkRequest(data: Uri): Boolean {
+        try {
+            val receiver_name = data.getQueryParameter("name")
+            val receiver_public = data.getQueryParameter("public")
+            val amount = data.getQueryParameter("amount")
+            val message = data.getQueryParameter("message")
+            val pkstring = data.getQueryParameter("key")
+            val signature = data.getQueryParameter("signature")
+            val host = data.getQueryParameter("host")
+            val paymentId = data.getQueryParameter("paymentId")
+            val iban = data.getQueryParameter("IBAN")
+            val pk = SecurityUtil.deserializePK(pkstring)
+            var url = SecurityUtil.urldecode(data.toString())
+            url = url.removeRange(0, url.indexOf("?") + 1)
+            url = url.removeRange(url.indexOf("&signature"), url.length)
+            if (amount != null && receiver_public != null && host != null && paymentId != null && pk != null && SecurityUtil.validate(url, signature, pk)) {
+                exchangeTransferMoneyLinkFragment.setData(
+                    receiver_name,
+                    amount,
+                    message,
+                    receiver_public,
+                    iban,
+                    host,
+                    paymentId
+                )
                 return true
             }
             return false
-        }catch (ex: java.lang.Exception)
-        {
+        } catch (ex: java.lang.Exception) {
             return false
         }
     }
@@ -1234,20 +1225,16 @@ class ValueTransferMainActivity : BaseActivity() {
         const val contactChatFragmentTag = "contact_chat_fragment"
         const val settingsFragmentTag = "settings_fragment"
         const val exchangeTransferMoneyLinkFragmentTag = "exchange_transfer_money_link_fragment"
-
         const val SNACKBAR_TYPE_SUCCESS = "success"
         const val SNACKBAR_TYPE_WARNING = "warning"
         const val SNACKBAR_TYPE_ERROR = "error"
         const val SNACKBAR_TYPE_INFO = "info"
-
         const val ARG_PUBLIC_KEY = "public_key"
         const val ARG_NAME = "name"
         const val ARG_PARENT = "parent_tag"
         const val ARG_FRAGMENT = "fragment"
-
         const val NOTIFICATION_INTENT_CHAT = 1
         const val NOTIFICATION_INTENT_TRANSACTION = 2
-
         const val PERMISSION_CAMERA = 2
     }
 }

@@ -25,18 +25,14 @@ import nl.tudelft.trustchain.common.eurotoken.TransactionRepository
 import nl.tudelft.trustchain.valuetransfer.R
 import nl.tudelft.trustchain.valuetransfer.ui.VTDialogFragment
 import nl.tudelft.trustchain.valuetransfer.util.*
-import java.net.URI
-import java.net.URLEncoder
 import java.security.interfaces.RSAPublicKey
 import org.json.JSONObject
-
 
 class ExchangeTransferMoneyLinkDialog(
     private val amount: String?,
     private val isTransfer: Boolean,
     private val message: String? = ""
 ) : VTDialogFragment() {
-
     private var transactionAmount = 0L
     private var transactionAmountText = ""
     private var transactionMessage = message ?: " "
@@ -50,7 +46,6 @@ class ExchangeTransferMoneyLinkDialog(
     protected val transactionRepositoryLink by lazy {
         TransactionRepository(IPv8Android.getInstance().getOverlay()!!, gatewayStoreLink)
     }
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateDialog(savedInstanceState: Bundle?): BottomSheetDialog {
@@ -88,13 +83,18 @@ class ExchangeTransferMoneyLinkDialog(
                 android.R.layout.simple_spinner_item
             )
 
-            typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+            typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
             typeSpinner.adapter = typeAdapter
             typeSpinner.onItemSelectedListener =
                 object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>,
+                        view: View?,
+                        pos: Int,
+                        id: Long
+                    ) {
                         ibanView.visibility = if (pos == 0) View.GONE else View.VISIBLE
-                        isEuroTransfer=pos!=0
+                        isEuroTransfer = pos != 0
                     }
 
                     override fun onNothingSelected(p0: AdapterView<*>?) {}
@@ -113,21 +113,21 @@ class ExchangeTransferMoneyLinkDialog(
 
             transactionAmountView.doAfterTextChanged {
                 transactionAmount = formatAmount(transactionAmountView.text.toString())
-                transactionAmountText=transactionAmountView.text.toString()
+                transactionAmountText = transactionAmountView.text.toString()
                 //                  Large number warning
-                if (isValidTransactionAmount(transactionAmountText) == "Valid but large"){
+                if (isValidTransactionAmount(transactionAmountText) == "Valid but large") {
                     transactionAmountView.background.setTint(Color.parseColor("#FFF9BA"))
                 }
 //                  Invalid:
-                else if (isValidTransactionAmount(transactionAmountText) == "Invalid"){
+                else if (isValidTransactionAmount(transactionAmountText) == "Invalid") {
                     transactionAmountView.background.setTint(Color.parseColor("#FFBABA"))
                     parentActivity.displayToast(
                         requireContext(),
                         resources.getString(R.string.transer_money_link_valid_transaction_value)
                     )
                 }
-//                  Is valid:
-                else{
+//              Is valid:
+                else {
                     transactionAmountView.background.setTint(Color.parseColor("#C8FFC4"))
                 }
             }
@@ -143,7 +143,7 @@ class ExchangeTransferMoneyLinkDialog(
                     }
                     else -> {
                         ibanView.background.setTint(Color.parseColor("#C8FFC4"))
-                        IBAN=ibanView.text.toString()
+                        IBAN = ibanView.text.toString()
                     }
                 }
             }
@@ -163,8 +163,7 @@ class ExchangeTransferMoneyLinkDialog(
                         requireContext(),
                         resources.getString(R.string.transer_money_link_valid_amount)
                     )
-                }
-                else {
+                } else {
                     createPaymentId(
                         (transactionAmountText.replace(",", ".").toDouble() * 100).toInt()
                     )
@@ -176,44 +175,47 @@ class ExchangeTransferMoneyLinkDialog(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    internal fun createPaymentId(amount: Int)
-    {
+    internal fun createPaymentId(amount: Int) {
         val host = BuildConfig.DEFAULT_GATEWAY_HOST
         val url = "$host/api/exchange/e2t/initiate"
         val queue = Volley.newRequestQueue(requireContext())
         // Post parameters
-        val params = HashMap<String,Int>()
+        val params = HashMap<String, Int>()
         params["collatoral_cent"] = amount
         val jsonObject = JSONObject(params as Map<*, *>)
         // Volley post request with parameters
         val request = JsonObjectRequest(
-            Request.Method.POST,url,jsonObject,
+            Request.Method.POST, url, jsonObject,
             { response ->
                 val paymentId = response.getString("payment_id")
                 val gatewaydata = response.getJSONObject("gateway_connection_data")
-                getEuroTokenCommunity().connectToGateway(gatewaydata.getString("public_key"),
+                getEuroTokenCommunity().connectToGateway(
+                    gatewaydata.getString("public_key"),
                     gatewaydata.getString("ip"),
                     gatewaydata.getString("port").toInt(),
-                    paymentId)
+                    paymentId
+                )
                 showLink(host, paymentId)
-            }, { error ->
-                Log.d("server_err", error.message?: error.toString())
+            },
+            { error ->
+                Log.d("server_err", error.message ?: error.toString())
                 parentActivity.displayToast(
                     requireContext(),
                     resources.getString(R.string.snackbar_unexpected_error_occurred)
                 )
-            })
+            }
+        )
         // Add the volley post request to the request queue
-        queue.add(request);
+        queue.add(request)
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun showLink(host: String, paymentId: String)
-    {
-        val link=getLink(host, paymentId)
+    private fun showLink(host: String, paymentId: String) {
+        val link = getLink(host, paymentId)
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT,
+            putExtra(
+                Intent.EXTRA_TEXT,
                 "Would you please pay me €$transactionAmountText  via\n$link"
             )
             type = "text/plain"
@@ -222,18 +224,16 @@ class ExchangeTransferMoneyLinkDialog(
         startActivity(shareIntent)
     }
 
-
     @RequiresApi(Build.VERSION_CODES.M)
-    fun getLink(host: String, paymentId: String):String
-    {
+    fun getLink(host: String, paymentId: String): String {
         val ownKey = transactionRepositoryLink.trustChainCommunity.myPeer.publicKey
         val name =
             ContactStore.getInstance(requireContext()).getContactFromPublicKey(ownKey)?.name
-        val url=StringBuilder("http://trustchain.tudelft.nl/requestMoney?")
-        //TODO: "simpleParams" is just a temporary fix to get the signature based on unencoded params (the same the recipient gets).
+        val url = StringBuilder("http://trustchain.tudelft.nl/requestMoney?")
+        // TODO: "simpleParams" is just a temporary fix to get the signature based on unencoded params (the same the recipient gets).
         // This could probably be cleaner with utilizing the URI class instead of a StringBuilder.
-        var simpleParams=java.lang.StringBuilder()
-        var parameters=java.lang.StringBuilder()
+        var simpleParams = java.lang.StringBuilder()
+        var parameters = java.lang.StringBuilder()
         simpleParams.append("amount=").append(transactionAmountText)
         simpleParams.append("&message=").append(transactionMessage)
         simpleParams.append("&host=").append(host)
@@ -242,27 +242,26 @@ class ExchangeTransferMoneyLinkDialog(
         parameters.append("&message=").append(SecurityUtil.urlencode(transactionMessage))
         parameters.append("&host=").append(host)
         parameters.append("&paymentId=").append(paymentId)
-        if(name!=null) {
+        if (name != null) {
             simpleParams.append("&name=").append(name)
             parameters.append("&name=").append(SecurityUtil.urlencode(name))
         }
-        if(isEuroTransfer) {
+        if (isEuroTransfer) {
             simpleParams.append("&IBAN=").append(IBAN)
             parameters.append("&IBAN=").append(SecurityUtil.urlencode(IBAN))
         }
         simpleParams.append("&public=").append(ownKey.keyToBin().toHex())
         parameters.append("&public=").append(SecurityUtil.urlencode(ownKey.keyToBin().toHex()))
-        val keyPair=SecurityUtil.generateKey()
-        val publicKey=keyPair.public
-        val privateKey=keyPair.private
-        val pkstring=SecurityUtil.serializePK(publicKey as RSAPublicKey)
-        val signature=SecurityUtil.sign(simpleParams.toString(), privateKey)
+        val keyPair = SecurityUtil.generateKey()
+        val publicKey = keyPair.public
+        val privateKey = keyPair.private
+        val pkstring = SecurityUtil.serializePK(publicKey as RSAPublicKey)
+        val signature = SecurityUtil.sign(simpleParams.toString(), privateKey)
         parameters.append(("&signature=")).append(SecurityUtil.urlencode(signature))
         parameters.append("&key=").append(SecurityUtil.urlencode(pkstring))
         url.append(parameters)
         return url.toString()
     }
-
 
     internal fun isValidIban(iban: String): Boolean {
         if (!"^[0-9A-Z]*\$".toRegex().matches(iban)) {
@@ -285,18 +284,18 @@ class ExchangeTransferMoneyLinkDialog(
     }
 
     internal fun isValidTransactionAmount(transactionAmountText: String): String {
-        val transactionAmountDouble = transactionAmountText.replace(",",".").toDoubleOrNull();
+        val transactionAmountDouble = transactionAmountText.replace(",", ".").toDoubleOrNull()
         if (transactionAmountDouble != null) {
 //          Large number warning
-            return if (transactionAmountDouble >= HIGHTRANSACTIONWARNINGVALUE && transactionAmountDouble < TOOHIGHTRANSACTIONVALUE){
+            return if (transactionAmountDouble >= HIGHTRANSACTIONWARNINGVALUE && transactionAmountDouble < TOOHIGHTRANSACTIONVALUE) {
                 "Valid but large"
             }
 //          Too large:
-            else if (transactionAmountDouble >= TOOHIGHTRANSACTIONVALUE){
+            else if (transactionAmountDouble >= TOOHIGHTRANSACTIONVALUE) {
                 "Invalid"
             }
 //          Is valid:
-            else{
+            else {
                 "Valid"
             }
 //      Not valid:
