@@ -1,6 +1,7 @@
 package nl.tudelft.trustchain.valuetransfer.dialogs
 
 import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Test
 
 
@@ -44,8 +45,8 @@ class ExchangeTransferMoneyLinkDialogTest{
     }
 
 //    @Test
-//    fun `Normal_payment_ID_creation`(){
-//        val expected = exchange.getLink(10)
+//    fun `Share_link`(){
+//        val expected = exchange.onCreateDialog("101")
 //        assertEquals(expected, "Valid but large")
 //    }
 }

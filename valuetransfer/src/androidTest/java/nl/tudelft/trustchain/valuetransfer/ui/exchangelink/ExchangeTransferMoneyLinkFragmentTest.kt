@@ -4,6 +4,6 @@ import nl.tudelft.trustchain.valuetransfer.dialogs.ExchangeTransferMoneyLinkDial
 import org.junit.Assert.*
 import org.junit.Test
 
-class ExchangeTransferMoneyLinkFragmentTest {
-}
+//class ExchangeTransferMoneyLinkFragmentTest {
+//}
 
