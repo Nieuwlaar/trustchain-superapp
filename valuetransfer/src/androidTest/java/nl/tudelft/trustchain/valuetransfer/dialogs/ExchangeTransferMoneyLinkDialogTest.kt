@@ -1,8 +1,8 @@
 package nl.tudelft.trustchain.valuetransfer.dialogs
 import org.junit.Assert.*
 import org.junit.Test
-class ExchangeTransferMoneyLinkDialogTest{
-    val exchange = ExchangeTransferMoneyLinkDialog("10", true,"Hi")
+class ExchangeTransferMoneyLinkDialogTest {
+    val exchange = ExchangeTransferMoneyLinkDialog("10", true, "Hi")
     @Test
     @Suppress("IllegalIdentifier")
     fun `empty_IBAN_returns_false`() {
