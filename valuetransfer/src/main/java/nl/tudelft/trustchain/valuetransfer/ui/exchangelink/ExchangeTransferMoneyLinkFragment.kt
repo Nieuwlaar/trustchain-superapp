@@ -29,8 +29,9 @@ class ExchangeTransferMoneyLinkFragment : VTFragment(R.layout.fragment_exchange_
     private var ReceiverPublic=""
     private var Amount=""
     private var Message: String? = null
-    private var IBAN: String? = null
+    private var E2T=false
     private var Host=""
+    private var Port=""
     private var PaymentId=""
 
     override fun onCreateView(
@@ -59,7 +60,7 @@ class ExchangeTransferMoneyLinkFragment : VTFragment(R.layout.fragment_exchange_
     }
 
     fun setData(name: String?, amount: String, message: String?, public: String,
-                iban: String?, host: String, paymentId: String)
+                e2t: String?, host: String, port: String?, paymentId: String)
     {
         if (name != null) {
             this.ReceiverName = name
@@ -67,9 +68,12 @@ class ExchangeTransferMoneyLinkFragment : VTFragment(R.layout.fragment_exchange_
         this.ReceiverPublic = public
         this.Amount = amount
         this.Message = message
-        this.IBAN = iban
         this.Host = host
         this.PaymentId = paymentId
+        if (e2t != null && port != null) {
+            this.E2T = e2t.toBoolean()
+            this.Port = port
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -86,7 +90,7 @@ class ExchangeTransferMoneyLinkFragment : VTFragment(R.layout.fragment_exchange_
             binding.tvPaymentMessage.text = this.Message?:""
         }
 
-        if (this.IBAN == null) {
+        if (!this.E2T) {
             binding.clPayEuro.visibility = View.VISIBLE
         }
 
@@ -97,7 +101,7 @@ class ExchangeTransferMoneyLinkFragment : VTFragment(R.layout.fragment_exchange_
         }
 
         binding.clPayEurotoken.setOnClickListener {
-            if (this.IBAN == null) {
+            if (!this.E2T) {
                 @Suppress("DEPRECATION")
                 Handler().postDelayed(
                     {
@@ -156,7 +160,7 @@ class ExchangeTransferMoneyLinkFragment : VTFragment(R.layout.fragment_exchange_
             } else {
                 try {
                     val publicKey = defaultCryptoProvider.keyFromPublicBin(this.ReceiverPublic.hexToBytes())
-                    val block = getTransactionRepository().sendDestroyProposalWithIBAN(this.IBAN!!, this.Amount.replace(",", "").toLong())
+                    val block = getTransactionRepository().sendDestroyProposalWithPaymentID(publicKey.keyToBin(), this.Host, this.Port.toInt(), this.PaymentId, this.Amount.replace(",", "").toLong())
 
                     if (block == null) {
                         parentActivity.displayToast(

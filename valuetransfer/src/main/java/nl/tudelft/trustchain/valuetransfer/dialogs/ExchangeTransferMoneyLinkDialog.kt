@@ -152,21 +152,19 @@ class ExchangeTransferMoneyLinkDialog(
             bottomSheetDialog.show()
 
             bottomSheetDialog.clShareLink.setOnClickListener {
-                if (!isValidIban(ibanView.text.toString()) && ibanView.visibility == View.VISIBLE) {
+                if (!isValidIban(ibanView.text.toString()) && isEuroTransfer) {
                     parentActivity.displayToast(
                         requireContext(),
                         resources.getString(R.string.transer_money_link_valid_iban)
                     )
-                }
-                if (transactionAmount <= 0) {
+                } else if (transactionAmount <= 0) {
                     parentActivity.displayToast(
                         requireContext(),
                         resources.getString(R.string.transer_money_link_valid_amount)
                     )
-                }
-                else {
+                } else {
                     createPaymentId(
-                        (transactionAmountText.replace(",", ".").toDouble() * 100).toInt()
+                        (transactionAmountText.replace(",", ".").toDouble() * 100).toInt(), if (isEuroTransfer) ibanView.text.toString() else null
                     )
                 }
             }
@@ -176,28 +174,39 @@ class ExchangeTransferMoneyLinkDialog(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    internal fun createPaymentId(amount: Int)
+    internal fun createPaymentId(amount: Int, iban: String? = null)
     {
         val host = BuildConfig.DEFAULT_GATEWAY_HOST
-        val url = "$host/api/exchange/e2t/initiate"
+        val url = "$host/api/exchange/${if (iban == null) "e2t" else "t2e"}/initiate"
+        Log.e("test", url)
         val queue = Volley.newRequestQueue(requireContext())
         // Post parameters
-        val params = HashMap<String,Int>()
-        params["collatoral_cent"] = amount
-        val jsonObject = JSONObject(params as Map<*, *>)
+        val jsonObject = JSONObject()
+
+
+        if (iban == null) {
+            jsonObject.put("collatoral_cent", amount)
+        } else {
+            jsonObject.put("token_amount_cent", amount)
+            jsonObject.put("destination_iban", iban)
+        }
         // Volley post request with parameters
         val request = JsonObjectRequest(
             Request.Method.POST,url,jsonObject,
             { response ->
                 val paymentId = response.getString("payment_id")
-                val gatewaydata = response.getJSONObject("gateway_connection_data")
-                getEuroTokenCommunity().connectToGateway(gatewaydata.getString("public_key"),
-                    gatewaydata.getString("ip"),
-                    gatewaydata.getString("port").toInt(),
-                    paymentId)
+                if (iban == null) {
+                    val gatewaydata = response.getJSONObject("gateway_connection_data")
+                    getEuroTokenCommunity().connectToGateway(
+                        gatewaydata.getString("public_key"),
+                        gatewaydata.getString("ip"),
+                        gatewaydata.getString("port").toInt(),
+                        paymentId
+                    )
+                }
                 showLink(host, paymentId)
             }, { error ->
-                Log.d("server_err", error.message?: error.toString())
+                Log.e("server_err", error.message?: error.toString())
                 parentActivity.displayToast(
                     requireContext(),
                     resources.getString(R.string.snackbar_unexpected_error_occurred)
@@ -247,8 +256,10 @@ class ExchangeTransferMoneyLinkDialog(
             parameters.append("&name=").append(SecurityUtil.urlencode(name))
         }
         if(isEuroTransfer) {
-            simpleParams.append("&IBAN=").append(IBAN)
-            parameters.append("&IBAN=").append(SecurityUtil.urlencode(IBAN))
+            simpleParams.append("&t2e=").append(true)
+            parameters.append("&t2e=").append(true)
+            simpleParams.append("&port=").append(BuildConfig.DEFAULT_GATEWAY_PORT)
+            parameters.append("&port=").append(BuildConfig.DEFAULT_GATEWAY_PORT)
         }
         simpleParams.append("&public=").append(ownKey.keyToBin().toHex())
         parameters.append("&public=").append(SecurityUtil.urlencode(ownKey.keyToBin().toHex()))
