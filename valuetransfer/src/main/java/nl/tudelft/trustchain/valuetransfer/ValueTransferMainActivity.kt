@@ -162,7 +162,7 @@ class ValueTransferMainActivity : BaseActivity() {
         val data: Uri? = intent?.data
         var requestMoney = false
         if (action != null && data != null) {
-            requestMoney = handleLinkRequest(data)
+            requestMoney = exchangeTransferMoneyLinkFragment.handleLinkRequest(data)
         }
 
         // Create identity database tables if not exist
@@ -1183,38 +1183,7 @@ class ValueTransferMainActivity : BaseActivity() {
         }
     }
 
-    fun handleLinkRequest(data: Uri): Boolean {
-        try {
-            val receiver_name = data.getQueryParameter("name")
-            val receiver_public = data.getQueryParameter("public")
-            val amount = data.getQueryParameter("amount")
-            val message = data.getQueryParameter("message")
-            val pkstring = data.getQueryParameter("key")
-            val signature = data.getQueryParameter("signature")
-            val host = data.getQueryParameter("host")
-            val paymentId = data.getQueryParameter("paymentId")
-            val iban = data.getQueryParameter("IBAN")
-            val pk = SecurityUtil.deserializePK(pkstring)
-            var url = SecurityUtil.urldecode(data.toString())
-            url = url.removeRange(0, url.indexOf("?") + 1)
-            url = url.removeRange(url.indexOf("&signature"), url.length)
-            if (amount != null && receiver_public != null && host != null && paymentId != null && pk != null && SecurityUtil.validate(url, signature, pk)) {
-                exchangeTransferMoneyLinkFragment.setData(
-                    receiver_name,
-                    amount,
-                    message,
-                    receiver_public,
-                    iban,
-                    host,
-                    paymentId
-                )
-                return true
-            }
-            return false
-        } catch (ex: java.lang.Exception) {
-            return false
-        }
-    }
+
 
     companion object {
         const val walletOverviewFragmentTag = "wallet_overview_fragment"

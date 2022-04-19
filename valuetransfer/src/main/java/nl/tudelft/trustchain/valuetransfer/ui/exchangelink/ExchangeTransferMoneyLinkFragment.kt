@@ -17,6 +17,7 @@ import nl.tudelft.trustchain.valuetransfer.R
 import nl.tudelft.trustchain.valuetransfer.ValueTransferMainActivity
 import nl.tudelft.trustchain.valuetransfer.databinding.FragmentExchangeTransferMoneyLinkBinding
 import nl.tudelft.trustchain.valuetransfer.ui.VTFragment
+import nl.tudelft.trustchain.valuetransfer.util.SecurityUtil
 import org.json.JSONObject
 
 class ExchangeTransferMoneyLinkFragment : VTFragment(R.layout.fragment_exchange_transfer_money_link) {
@@ -51,6 +52,39 @@ class ExchangeTransferMoneyLinkFragment : VTFragment(R.layout.fragment_exchange_
             )
             toggleActionBar(true)
             toggleBottomNavigation(false)
+        }
+    }
+
+    fun handleLinkRequest(data: Uri):Boolean{
+        try {
+            val receiver_name = data.getQueryParameter("name")
+            val receiver_public = data.getQueryParameter("public")
+            val amount = data.getQueryParameter("amount")
+            val message = data.getQueryParameter("message")
+            val pkstring = data.getQueryParameter("key")
+            val signature = data.getQueryParameter("signature")
+            val host = data.getQueryParameter("host")
+            val paymentId = data.getQueryParameter("paymentId")
+            val iban = data.getQueryParameter("IBAN")
+            val pk = SecurityUtil.deserializePK(pkstring)
+            var url = SecurityUtil.urldecode(data.toString())
+            url = url.removeRange(0, url.indexOf("?") + 1)
+            url = url.removeRange(url.indexOf("&signature"), url.length)
+            if (amount != null && receiver_public != null && host != null && paymentId != null && pk != null && SecurityUtil.validate(url, signature, pk)) {
+                setData(
+                    receiver_name,
+                    amount,
+                    message,
+                    receiver_public,
+                    iban,
+                    host,
+                    paymentId
+                )
+                return true
+            }
+            return false
+        } catch (ex: java.lang.Exception) {
+            return false
         }
     }
 
