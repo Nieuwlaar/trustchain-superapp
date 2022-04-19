@@ -9,7 +9,6 @@ import org.junit.runner.RunWith
 import java.security.KeyPair
 
 @RunWith(AndroidJUnit4::class)
-class SecurityUtilTest {
     val input:String = "test"
     val keys: KeyPair=SecurityUtil.generateKey()
     var signature:String=""
@@ -31,4 +30,3 @@ class SecurityUtilTest {
         val tamperedInput=input+"extra"
         assertEquals(SecurityUtil.validate(tamperedInput,signature,keys.public),false)
     }
-}
