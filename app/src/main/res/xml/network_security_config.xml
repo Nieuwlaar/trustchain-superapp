@@ -5,7 +5,5 @@
         <domain includeSubdomains="true">134.122.59.107</domain>
         <!--        This is for RegTest faucet, to claim some starter money -->
         <domain includeSubdomains="true">131.180.27.224</domain>
-        <!--   This is for valuetransfer app to allow communicating with localhost server -->
-        <domain includeSubdomains="true">127.0.0.1</domain>
     </domain-config>
 </network-security-config>
