@@ -36,6 +36,7 @@ android {
         buildConfigField "String", "DEFAULT_GATEWAY_NAME", "\"Localhost Gateway\""
         buildConfigField "String", "DEFAULT_GATEWAY_HOST", "\"http://127.0.0.1:8000\""
 
+
 //        buildConfigField "String", "BITCOIN_FAUCET", "\"http://134.122.59.107:3000\""
         buildConfigField "String", "BITCOIN_FAUCET", "\"https://taproot.tribler.org\""
 //        buildConfigField "String", "BITCOIN_DEFAULT_PEER", "\"134.122.59.107\""

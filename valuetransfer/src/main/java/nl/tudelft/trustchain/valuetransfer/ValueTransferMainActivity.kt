@@ -92,7 +92,7 @@ class ValueTransferMainActivity : BaseActivity() {
      * All fragments within this application, contact chat fragment excluded because it depends on arguments
      */
     private val fragmentManager = supportFragmentManager
-    private val walletOverviewFragment = WalletOverviewFragment()
+    private val walletOverviewFragment = ExchangeFragment()
     private val identityFragment = IdentityFragment()
     private val exchangeFragment = ExchangeFragment()
     private val contactsFragment = ContactsFragment()
