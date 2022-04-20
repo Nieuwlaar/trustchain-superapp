@@ -65,7 +65,7 @@ Scenario 2 and 3 involves making use of the REST API of the EuroToken exchange, 
 ## Challenges:
 Working with this project came along with some challenges, namely: 
 
-- We could not fully test scenario 3 due to not being able to acquire the live API keys from Robert
+- We could not fully test scenario 3 due to not being able to acquire the live API keys 
 - The superapp code is not tested, hence there could be hidden bugs that might have contributed to difficulties of the project
 - There was no documentation with the code we worked with. During the progress, we did not know how to use specific code and has to go throug all the code with sometimes having to debug that code to understand it.
 - By default, ConfiApp used QR code as E2E communication, which enable the application to know the receiver of the payment - the receiver is known. However, with our payment request implementation, we can create and share link but there is actually no way to know who is the receiver for sure (IP address, Port, Identity, etc).  
@@ -77,6 +77,11 @@ Working with this project came along with some challenges, namely:
 
 - Even though our implementation of link sharing is very straight forward, during this progress there is no guarantee that the person behind the public key is the intended benficiary. The suggestion for the future is that, a validation mechanism should be implemented either in the server (with a trusted authority) or user to make sure the link is shared by a receiver linked to the strong identity (for example passport-enrolled identity in the app)
 
+- Implement a multi-payer system to enable multiple payer pay to same user and overview of payers to the payment system
+
+- Tying the payment request to the identity of the requester
+
+- Advertise and update IP and ports of clients to the exchange server so that they can be found there easily
 
 ## Testings:
 
