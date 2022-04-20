@@ -99,6 +99,29 @@ Integration Tests:
 We had difficulties with setting E2E intergration tests since you will need to setup an instance of IPv8. We have also tried to do mock testing, however we came across a variety of problems. 
 
 
+## Before running:
+
+- Setup the exchange server (https://github.com/KoningR/stablecoin-exchange) and modify two files ```common/build.grade``` and ```eurotoken/…/EuroTokenCommunity.kt``` as mentioned in the readme
+
+- Android by default doesn't allow for clear traffic (HTTP). So to test the app with a 
+exchange server running on localhost you should add your IP address to ```app/src/main/res/xml/network_security_config.xml```:
+
+```
+        <domain includeSubdomains="true">127.0.0.1</domain>
+```
+
+- In ```common/build.gradle``` change ```DEFAULT_GATEWAY_HOST``` to the IP and Port of the exchange.
+Note that the port is the same as REST API port and not the port running IPV8 server.
+
+***TIP***: if you want to bypass the wallet creation step in the app, you can do it in the ```valuetransfer/src/main/java/nl/tudelft/trustchain/valuetransfer/ValueTransferMainActivity.kt``` by changing the following line 
+```
+    private val walletOverviewFragment = WalletOverviewFragment()
+```
+to this line
+```
+    private val walletOverviewFragment = ExchangeFragment()
+```
+
 
 ## Support:
 If you come across issues with this feature or simply have implementation questions, you can send them to:
