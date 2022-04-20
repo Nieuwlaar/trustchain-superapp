@@ -83,6 +83,7 @@ import android.graphics.PorterDuffColorFilter
 import android.net.Uri
 import android.widget.Toast
 import nl.tudelft.trustchain.valuetransfer.ui.exchangelink.ExchangeTransferMoneyLinkFragment
+import nl.tudelft.trustchain.valuetransfer.ui.walletoverview.WalletOverviewFragment
 
 class ValueTransferMainActivity : BaseActivity() {
     override val navigationGraph = R.navigation.nav_graph_valuetransfer
@@ -91,7 +92,7 @@ class ValueTransferMainActivity : BaseActivity() {
      * All fragments within this application, contact chat fragment excluded because it depends on arguments
      */
     private val fragmentManager = supportFragmentManager
-    private val walletOverviewFragment = ExchangeFragment()
+    private val walletOverviewFragment = WalletOverviewFragment()
     private val identityFragment = IdentityFragment()
     private val exchangeFragment = ExchangeFragment()
     private val contactsFragment = ContactsFragment()
