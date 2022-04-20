@@ -45,7 +45,7 @@ Implementing this enable the payer to pay without having the required funding in
 In order to enable currency exchange during the payment, we modified both the tokenization and detokenization flow (originally described in the EuroToken graduation thesis)  in order to "swap" the currencies for the multi-currency payment to work.
 
 After the payment request link is received by the intended recipient (payer), there are 3 scenarios - depending on the type of payment both the payer and receiver decided to use:
-file:///home/nosleep/Downloads/scenarios2(1).png![image](https://user-images.githubusercontent.com/16018391/163803312-12c46953-4271-4004-8470-c476f19db82c.png) (Credit: Erwin Nieuwlaar - @Nieuwlaar)
+![image](https://user-images.githubusercontent.com/16018391/163803312-12c46953-4271-4004-8470-c476f19db82c.png) (Credit: Erwin Nieuwlaar - @Nieuwlaar)
 
 Scenario 2 and 3 involves making use of the REST API of the EuroToken exchange, this is due to the reason that the payer and receiver makes use of different currencies and there is a need to exchange it at point of transaction. In order to make sure that resources are not being wasted on unecessary exchange of currency, the exchange process is only initiated after the payer has decided to pay (i.e. clicking on pay button the app). 
 
