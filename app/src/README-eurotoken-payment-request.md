@@ -31,7 +31,6 @@ In order to enhance security of link sharing through insecure channels (is is so
 
 ### Two-way currency transaction flow
 
-
 Our implementation supports the following payment flow of currency with the payment requests:
 (1) Paying in EuroToken and receiving EuroToken
 (2) Paying in Euro and receiving EuroToken
@@ -58,7 +57,6 @@ There is one problem with this approach. If a link is shared through insecure ch
 
 In order to enhance security of link sharing through insecure channels (is is sometimes still used nowadays), we implemented link signature. The receiver sign the link with his or her private key before sharing it to the payer through insecure channels, whose will validate the signature upon receiving the link. This will ONLY work if the payer already somehow has the public key of the receiver in list of contact contained in his device. A practical approach for this would be the one-time sharing of public key in person/ through secure channels and make use of link signature for payment requests subsequently. Another application for this in the future would be sending payment to organizations or goverment entities by beforehand verify signatures with their public key on their trusted sources such as websites.
 
-
 ## Installation
 ## Before running:
 To make the process of link sharing and receiving the transactions easier, we have made some changes to the exchange, namely, we added a method called `check_payments_done` in the `backend/stablecoin/stablecoin.py`. This method checks every 5 seconds for pending transactions to see if they are paid. If so, it will process the payment to finalize the transactions. This is especially relevant when the user uses the second scenario, namely Euro to EuroToken in which a Tikkie link will be used to pay in Euro.
@@ -73,7 +71,9 @@ However, this change is not necessary when the server is deployed. When the serv
 - Run backend exchange with `python3 run_coin.py`
 
 Furthermore:
-- Android by default doesn't allow for clear traffic (HTTP). So to test the app with a
+
+- Android by default doesn't allow for clear traffic (HTTP). So to test the app with a 
+
 exchange server running on localhost you should add your IP address to ```app/src/main/res/xml/network_security_config.xml```:
 
 ```
@@ -83,7 +83,9 @@ exchange server running on localhost you should add your IP address to ```app/sr
 - In ```common/build.gradle``` change ```DEFAULT_GATEWAY_HOST``` to the IP and Port of the exchange.
 Note that the port is the same as REST API port and not the port running IPV8 server.
 
+
 ***TIP***: if you want to bypass the wallet creation step in the app, you can do it in the ```valuetransfer/src/main/java/nl/tudelft/trustchain/valuetransfer/ValueTransferMainActivity.kt``` by changing the following line
+
 ```
     private val walletOverviewFragment = WalletOverviewFragment()
 ```
@@ -118,6 +120,13 @@ Working with this project came along with some challenges, namely:
 
 - Implement signature primitives provided by IPv8
 
+- Implement a multi-payer system to enable multiple payer pay to same user and overview of payers to the payment system
+
+- Tying the payment request to the identity of the requester
+
+- Advertise and update IP and ports of clients to the exchange server so that they can be found there easily
+
+
 ## Testings:
 
 Tests were not written for Valuetransfer app previously, however we tested our code. There are two types of test you can find in the repository:
@@ -133,6 +142,13 @@ Integration Tests:
 
 We had difficulties with setting E2E intergration tests since you will need to setup an instance of IPv8. We have also tried to do mock testing, however we came across a variety of problems.
 
+
+
+## Notes
+
+To make the process of link sharing and receiving the transactions easier, we have made some changes to the exchange, namely, we added a method called ```check_payments_done``` in the ```backend/stablecoin/stablecoin.py```. This method checks every 5 seconds for pending transactions to see if they are paid. If so, it will process the payment to finalize the transactions. This is especially relevant when the user uses the second scenario, namely Euro to EuroToken in which a Tikkie link will be used to pay in Euro.
+
+However, this change is not necessary when the server is deployed. When the server is deployed a webhook should be implemented. The webhook will be called by the bank (e.g., in case of Tikkie link, the bank is ABN AMRO) when the user has finished the payment and paid, and then the exchange server can process the transaction.
 
 
 ## Notes
