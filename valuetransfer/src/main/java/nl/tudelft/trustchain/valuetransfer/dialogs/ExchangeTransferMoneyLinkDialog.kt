@@ -223,9 +223,9 @@ class ExchangeTransferMoneyLinkDialog(
             action = Intent.ACTION_SEND
             putExtra(
                 Intent.EXTRA_TEXT,
-                resources.getString(R.string.text_request_euro_1)+
-                    transactionAmountText+
-                    resources.getString(R.string.text_request_euro_2)+
+                resources.getString(R.string.text_request_euro_1) +
+                    transactionAmountText +
+                    resources.getString(R.string.text_request_euro_2) +
                     link
             )
             type = "text/plain"
