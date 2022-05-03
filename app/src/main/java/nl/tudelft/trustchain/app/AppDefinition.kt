@@ -19,6 +19,7 @@ import nl.tudelft.trustchain.peerchat.PeerChatActivity
 import nl.tudelft.trustchain.trader.ui.TrustChainTraderActivity
 import nl.tudelft.trustchain.valuetransfer.ValueTransferMainActivity
 import nl.tudelft.trustchain.voting.VotingActivity
+import nl.tudelft.trustchain.idelft.IDelft_main
 
 enum class AppDefinition(
     @DrawableRes val icon: Int,
@@ -118,5 +119,11 @@ enum class AppDefinition(
         "Atomic Swap",
         R.color.blue,
         AtomicSwapActivity::class.java
+    ),
+    IDELFT(
+    R.drawable.ic_atomic_swap_24dp,
+    "IDelft",
+    R.color.red,
+    IDelft_main::class.java
     )
 }
