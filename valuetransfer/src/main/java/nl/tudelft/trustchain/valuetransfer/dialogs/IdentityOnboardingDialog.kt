@@ -238,7 +238,7 @@ class IdentityOnboardingDialog : VTDialogFragment(), View.OnClickListener {
     /**
      * Start the scan of the document, based on selected document
      */
-    private fun startPassportScan(type: String) {
+    fun startPassportScan(type: String) {
         passportHandler.setDocumentType(type)
 
         when (type) {
@@ -284,7 +284,7 @@ class IdentityOnboardingDialog : VTDialogFragment(), View.OnClickListener {
     /**
      * Create and confirm identity
      */
-    private fun confirmIdentity() {
+    fun confirmIdentity() {
         if (eDocument == null || eDocument!!.personDetails == null) return
 
         val identity = try {

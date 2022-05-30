@@ -121,9 +121,9 @@ enum class AppDefinition(
         AtomicSwapActivity::class.java
     ),
     IDELFT(
-        R.drawable.ic_atomic_swap_24dp,
+        R.drawable.ic_idelft_24dp,
         "IDelft",
-        R.color.red,
+        R.color.delft_blue,
         IDelft_main::class.java
     )
 }

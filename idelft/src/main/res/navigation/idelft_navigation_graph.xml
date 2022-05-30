@@ -9,5 +9,5 @@
         android:id="@+id/navigation_main_idelft"
         android:name="nl.tudelft.trustchain.idelft.MainFragment"
         android:label="Main IDelft"
-        tools:layout="@layout/fragment_i_delft_main" />
+        tools:layout="@layout/fragment_main" />
 </navigation>

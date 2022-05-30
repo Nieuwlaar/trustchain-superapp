@@ -93,24 +93,24 @@ class ValueTransferMainActivity : BaseActivity() {
     /**
      * All fragments within this application, contact chat fragment excluded because it depends on arguments
      */
-    private val fragmentManager = supportFragmentManager
-    private val walletOverviewFragment = WalletOverviewFragment()
-    private val identityFragment = IdentityFragment()
-    private val exchangeFragment = ExchangeFragment()
-    private val contactsFragment = ContactsFragment()
-    private val settingsFragment = SettingsFragment()
-    private val exchangeTransferMoneyLinkFragment = ExchangeTransferMoneyLinkFragment()
-    private val qrScanController = QRScanController()
+    val fragmentManager = supportFragmentManager
+    val walletOverviewFragment = WalletOverviewFragment()
+    val identityFragment = IdentityFragment()
+    val exchangeFragment = ExchangeFragment()
+    val contactsFragment = ContactsFragment()
+    val settingsFragment = SettingsFragment()
+    val exchangeTransferMoneyLinkFragment = ExchangeTransferMoneyLinkFragment()
+    val qrScanController = QRScanController()
 
     private lateinit var customActionBar: View
-    private lateinit var notificationHandler: NotificationHandler
-    private lateinit var appPreferences: AppPreferences
-    private lateinit var passportHandler: PassportHandler
+    lateinit var notificationHandler: NotificationHandler
+    lateinit var appPreferences: AppPreferences
+    lateinit var passportHandler: PassportHandler
 
-    private var balance = MutableLiveData("0.00")
-    private var verifiedBalance = MutableLiveData("0.00")
+    var balance = MutableLiveData("0.00")
+    var verifiedBalance = MutableLiveData("0.00")
 
-    private var isAppInForeground = true
+    var isAppInForeground = true
 
     /**
      * Initialize all communities and (database) stores and repo's for performance purposes and
@@ -351,7 +351,7 @@ class ValueTransferMainActivity : BaseActivity() {
     /**
      * Process an incoming NFC tag intent
      */
-    private fun nfcIntentController(intent: Intent) {
+    fun nfcIntentController(intent: Intent) {
         intent.extras?.getParcelable<Tag>(NfcAdapter.EXTRA_TAG)?.let { tag ->
             if (tag.techList.contains("android.nfc.tech.IsoDep")) {
                 passportHandler.setIsoDep(tag)
@@ -362,7 +362,7 @@ class ValueTransferMainActivity : BaseActivity() {
     /**
      * Controls the behaviour of the notification click intents to the correct fragment
      */
-    private fun notificationIntentController(intent: Intent) {
+    fun notificationIntentController(intent: Intent) {
         val fragmentTag = intent.extras?.getString(ARG_FRAGMENT)
 
         if (fragmentTag != null) {
@@ -440,7 +440,7 @@ class ValueTransferMainActivity : BaseActivity() {
     /**
      * Get the chat or contacts fragment from a notification intent
      */
-    private fun notificationChatIntent(intent: Intent): Fragment {
+    fun notificationChatIntent(intent: Intent): Fragment {
         val publicKeyString = intent.extras?.getString(ARG_PUBLIC_KEY)
         val activeFragment = getActiveFragment()
 
@@ -523,7 +523,7 @@ class ValueTransferMainActivity : BaseActivity() {
     /**
      * Define bottom navigation view listeners
      */
-    private fun bottomNavigationViewListeners() {
+    fun bottomNavigationViewListeners() {
         bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
             val activeTag = getActiveFragment()?.tag
 
@@ -544,7 +544,7 @@ class ValueTransferMainActivity : BaseActivity() {
     /**
      * Controller from fragment to fragment
      */
-    private fun switchFragment(fragment: Fragment) {
+    fun switchFragment(fragment: Fragment) {
         val activeFragment = getActiveFragment()
 
         fragmentManager.beginTransaction().apply {
@@ -600,7 +600,7 @@ class ValueTransferMainActivity : BaseActivity() {
     /**
      * Function that returns the fragment using a given tag
      */
-    private fun getFragmentByTag(tag: String): Fragment? {
+    fun getFragmentByTag(tag: String): Fragment? {
         return when (tag) {
             walletOverviewFragmentTag -> walletOverviewFragment
             identityFragmentTag -> identityFragment
@@ -632,7 +632,7 @@ class ValueTransferMainActivity : BaseActivity() {
     /**
      * Function that determines the height of the status bar for placement of the snackbar
      */
-    private fun getStatusBarHeight(): Int {
+    fun getStatusBarHeight(): Int {
         var result = 0
         val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
         if (resourceId < 0) {
@@ -845,7 +845,7 @@ class ValueTransferMainActivity : BaseActivity() {
     /**
      * Create a callback on receipt of a message within the peerchat community for notifications and contact status handling (archived, muted, blocked)
      */
-    private fun onMessageCallback(
+    fun onMessageCallback(
         community: PeerChatCommunity,
         peer: Peer,
         chatMessage: ChatMessage
@@ -1028,7 +1028,7 @@ class ValueTransferMainActivity : BaseActivity() {
     /**
      * Callback on receipt of a request to send contact image
      */
-    private fun onContactImageRequestCallback(community: PeerChatCommunity, peer: Peer) {
+    fun onContactImageRequestCallback(community: PeerChatCommunity, peer: Peer) {
         val identityFaceImage = appPreferences.getIdentityFace()
         val identityFaceHash = appPreferences.getIdentityFaceHash()
         val decodedImage = identityFaceImage?.let { decodeBytes(it) }
@@ -1051,7 +1051,7 @@ class ValueTransferMainActivity : BaseActivity() {
     /**
      * Callback on receipt of a requested contact image
      */
-    private fun onContactImageCallback(contactImage: ContactImage) {
+    fun onContactImageCallback(contactImage: ContactImage) {
         Log.d("VTLOG", "Contact image received from ${contactImage.publicKey}")
 
         val peerChatStore: PeerChatStore = getStore()!!
@@ -1074,7 +1074,7 @@ class ValueTransferMainActivity : BaseActivity() {
     /**
      * On receipt of a chunk of the requested attestation execute the following
      */
-    private fun attestationChunkCallback(peer: Peer, i: Int) {
+    fun attestationChunkCallback(peer: Peer, i: Int) {
         Log.i("VTLOG", "Received attestation chunk $i from ${peer.mid}.")
         Handler(Looper.getMainLooper()).post {
             displayToast(applicationContext, "Received $i attestation chunks from ${peer.mid}.")
@@ -1084,7 +1084,7 @@ class ValueTransferMainActivity : BaseActivity() {
     /**
      * After the attestation request has been successfully completed execute the following
      */
-    private fun attestationRequestCompleteCallbackWrapper(
+    fun attestationRequestCompleteCallbackWrapper(
         forPeer: Peer,
         attributeName: String,
         attestation: WalletAttestation,
@@ -1125,7 +1125,7 @@ class ValueTransferMainActivity : BaseActivity() {
     /**
      * On receipt of an attestation request (initiated by the other party) execute the following
      */
-    private fun attestationRequestCallback(peer: Peer, attributeName: String, metadata: String): ByteArray {
+    fun attestationRequestCallback(peer: Peer, attributeName: String, metadata: String): ByteArray {
 
         val parsedMetadata = JSONObject(metadata)
         val idFormat = parsedMetadata.optString("id_format", ID_METADATA)
@@ -1152,7 +1152,7 @@ class ValueTransferMainActivity : BaseActivity() {
      * Check camera permissions
      */
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun checkCameraPermissions() {
+    fun checkCameraPermissions() {
         if ((ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)) {
             requestPermissions(
                 arrayOf(Manifest.permission.CAMERA),

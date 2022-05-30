@@ -9,7 +9,7 @@
 
     <color name="colorPrimaryValueTransfer">#009688</color>
     <color name="colorPrimaryDarkValueTransfer">#015951</color>
-
+    <color name="delft_blue">#00A6D6</color>
     <color name="text_primary">#000000</color>
     <color name="text_secondary">#666666</color>
     <color name="text_tertiary">#AAAAAA</color>
