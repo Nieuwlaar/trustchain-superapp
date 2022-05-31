@@ -125,7 +125,7 @@ dependencies {
     implementation project(':liquidity-pool')
     implementation project(':valuetransfer')
     implementation project(':atomic-swap')
-    implementation project(':idelft')
+    implementation project(':memocon')
     api(project(':common')){
         exclude group: 'net.java.dev.jna'
     }

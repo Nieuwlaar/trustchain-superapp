@@ -19,7 +19,7 @@ import nl.tudelft.trustchain.peerchat.PeerChatActivity
 import nl.tudelft.trustchain.trader.ui.TrustChainTraderActivity
 import nl.tudelft.trustchain.valuetransfer.ValueTransferMainActivity
 import nl.tudelft.trustchain.voting.VotingActivity
-import nl.tudelft.trustchain.idelft.IDelft_main
+import nl.tudelft.trustchain.memocon.MemoconMainActivity
 
 enum class AppDefinition(
     @DrawableRes val icon: Int,
@@ -120,10 +120,10 @@ enum class AppDefinition(
         R.color.blue,
         AtomicSwapActivity::class.java
     ),
-    IDELFT(
+    MEMOCON(
         R.drawable.ic_idelft_24dp,
-        "IDelft",
-        R.color.delft_blue,
-        IDelft_main::class.java
+        "Memocon",
+        R.color.red,
+        MemoconMainActivity::class.java
     )
 }

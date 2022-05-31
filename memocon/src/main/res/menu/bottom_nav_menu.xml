@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_contacts"
+        android:icon="@drawable/ic_baseline_person_24"
+        android:title="@string/title_contacts" />
+
+    <item
+        android:id="@+id/navigation_groups"
+        android:icon="@drawable/ic_baseline_group_24"
+        android:title="@string/title_groups" />
+
+    <item
+        android:id="@+id/navigation_connect"
+        android:icon="@drawable/ic_baseline_connect_without_contact_24"
+        android:title="@string/title_connect" />
+
+</menu>

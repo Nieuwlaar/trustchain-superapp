@@ -114,7 +114,7 @@
             android:parentActivityName=".ui.dashboard.DashboardActivity" />
 
         <activity
-            android:name="nl.tudelft.trustchain.idelft.IDelft_main"
+            android:name="nl.tudelft.trustchain.memocon.MemoconMainActivity"
             android:parentActivityName=".ui.dashboard.DashboardActivity" />
 
         <activity
