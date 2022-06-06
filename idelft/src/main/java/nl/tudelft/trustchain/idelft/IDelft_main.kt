@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.fragment.app.FragmentManager
 import nl.tudelft.trustchain.common.BaseActivity
-import nl.tudelft.trustchain.valuetransfer.ValueTransferMainActivity
-import nl.tudelft.trustchain.valuetransfer.dialogs.IdentityOnboardingDialog
-import nl.tudelft.trustchain.valuetransfer.ui.VTFragment
+import nl.tudelft.trustchain.eidas.eidasMainActivity
+import nl.tudelft.trustchain.eidas.dialogs.IdentityOnboardingDialog
+import nl.tudelft.trustchain.eidas.ui.VTFragment
 
 
 class IDelft_main : BaseActivity() {
@@ -19,7 +19,7 @@ class IDelft_main : BaseActivity() {
         setContentView(R.layout.fragment_main)
         val addIdentityBtn = findViewById<Button>(R.id.add_identity_btn)
 
-//        val x = ValueTransferMainActivity()
+//        val x = eidasMainActivity()
         addIdentityBtn.setOnClickListener{
 //            IdentityOnboardingDialog().startPassportScan("P")
 //            IdentityOnboardingDialog().show(x.fragmentManager, "test")

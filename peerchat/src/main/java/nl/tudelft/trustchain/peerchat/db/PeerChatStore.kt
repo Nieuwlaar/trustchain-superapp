@@ -14,7 +14,7 @@ import nl.tudelft.ipv8.util.hexToBytes
 import nl.tudelft.peerchat.sqldelight.Database
 import nl.tudelft.trustchain.common.contacts.Contact
 import nl.tudelft.trustchain.common.contacts.ContactStore
-import nl.tudelft.trustchain.common.valuetransfer.entity.IdentityInfo
+import nl.tudelft.trustchain.common.eidas.entity.IdentityInfo
 import nl.tudelft.trustchain.peerchat.entity.ChatMessage
 import nl.tudelft.trustchain.peerchat.entity.ContactImage
 import nl.tudelft.trustchain.peerchat.entity.ContactState

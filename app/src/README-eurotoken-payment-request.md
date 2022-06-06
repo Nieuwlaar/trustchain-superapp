@@ -72,7 +72,7 @@ However, this change is not necessary when the server is deployed. When the serv
 
 Furthermore:
 
-- Android by default doesn't allow for clear traffic (HTTP). So to test the app with a 
+- Android by default doesn't allow for clear traffic (HTTP). So to test the app with a
 
 exchange server running on localhost you should add your IP address to ```app/src/main/res/xml/network_security_config.xml```:
 
@@ -84,7 +84,7 @@ exchange server running on localhost you should add your IP address to ```app/sr
 Note that the port is the same as REST API port and not the port running IPV8 server.
 
 
-***TIP***: if you want to bypass the wallet creation step in the app, you can do it in the ```valuetransfer/src/main/java/nl/tudelft/trustchain/valuetransfer/ValueTransferMainActivity.kt``` by changing the following line
+***TIP***: if you want to bypass the wallet creation step in the app, you can do it in the ```eidas/src/main/java/nl/tudelft/trustchain/eidas/eidasMainActivity.kt``` by changing the following line
 
 ```
     private val walletOverviewFragment = WalletOverviewFragment()
@@ -129,7 +129,7 @@ Working with this project came along with some challenges, namely:
 
 ## Testings:
 
-Tests were not written for Valuetransfer app previously, however we tested our code. There are two types of test you can find in the repository:
+Tests were not written for eidas app previously, however we tested our code. There are two types of test you can find in the repository:
 Unit Tests:
 
 - Handling Incoming links

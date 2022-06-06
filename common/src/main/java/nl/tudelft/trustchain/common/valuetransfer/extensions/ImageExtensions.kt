@@ -1,4 +1,4 @@
-package nl.tudelft.trustchain.common.valuetransfer.extensions
+package nl.tudelft.trustchain.common.eidas.extensions
 
 import android.graphics.*
 import android.util.Base64

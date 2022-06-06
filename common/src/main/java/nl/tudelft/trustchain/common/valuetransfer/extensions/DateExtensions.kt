@@ -1,4 +1,4 @@
-package nl.tudelft.trustchain.common.valuetransfer.extensions
+package nl.tudelft.trustchain.common.eidas.extensions
 
 import java.text.DateFormat
 import java.text.SimpleDateFormat

@@ -9,8 +9,8 @@ import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_main.*
 import nl.tudelft.trustchain.common.util.viewBinding
-import nl.tudelft.trustchain.valuetransfer.databinding.FragmentWalletVtBinding
-import nl.tudelft.trustchain.valuetransfer.dialogs.IdentityOnboardingDialog
+import nl.tudelft.trustchain.eidas.databinding.FragmentWalletVtBinding
+import nl.tudelft.trustchain.eidas.dialogs.IdentityOnboardingDialog
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

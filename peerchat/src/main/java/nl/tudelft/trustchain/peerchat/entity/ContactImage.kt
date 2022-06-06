@@ -6,8 +6,8 @@ import nl.tudelft.ipv8.keyvault.defaultCryptoProvider
 import nl.tudelft.ipv8.messaging.Deserializable
 import nl.tudelft.ipv8.util.hexToBytes
 import nl.tudelft.ipv8.util.toHex
-import nl.tudelft.trustchain.common.valuetransfer.extensions.decodeImage
-import nl.tudelft.trustchain.common.valuetransfer.extensions.imageBytes
+import nl.tudelft.trustchain.common.eidas.extensions.decodeImage
+import nl.tudelft.trustchain.common.eidas.extensions.imageBytes
 import org.json.JSONObject
 import java.io.Serializable
 
