@@ -139,9 +139,9 @@ class IdentityItemRenderer(
                 onCopyPublicKeyButtonClick(item.identity)
             }
 
-            cvIdentityImage.setOnClickListener {
-                onIdentityImageClick(item.identity)
-            }
+//            cvIdentityImage.setOnClickListener {
+//                onIdentityImageClick(item.identity)
+//            }
         }
     }
 

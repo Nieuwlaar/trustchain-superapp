@@ -166,7 +166,7 @@ class WalletOverviewFragment : VTFragment(R.layout.fragment_wallet_vt) {
         binding.clNoIdentity.isVisible = !getIdentityStore().hasIdentity()
         binding.svHasIdentity.isVisible = getIdentityStore().hasIdentity()
 
-        observeContactsItems(viewLifecycleOwner, adapterContacts, itemsContacts)
+//        observeContactsItems(viewLifecycleOwner, adapterContacts, itemsContacts)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -193,94 +193,94 @@ class WalletOverviewFragment : VTFragment(R.layout.fragment_wallet_vt) {
             }
         )
 
-        // EXCHANGE
-        parentActivity.getBalance(true).observe(
-            viewLifecycleOwner,
-            Observer {
-                if (it != binding.tvBalanceAmount.text.toString()) {
-                    binding.tvBalanceAmount.text = it
-                    binding.pbBalanceUpdating.isVisible = false
-                }
-            }
-        )
-
-        binding.clExchangeBalanceHidden.setOnClickListener {
-            binding.clExchangeBalanceHidden.isVisible = !binding.clExchangeBalanceHidden.isVisible
-            binding.clExchangeBalance.isVisible = !binding.clExchangeBalance.isVisible
-        }
-
-        binding.clExchangeBalance.setOnClickListener {
-            binding.clExchangeBalanceHidden.isVisible = !binding.clExchangeBalanceHidden.isVisible
-            binding.clExchangeBalance.isVisible = !binding.clExchangeBalance.isVisible
-        }
-
-        binding.clExchangeOptions.setOnClickListener {
-            OptionsDialog(
-                R.menu.exchange_options,
-                resources.getString(R.string.dialog_exchange_options),
-                bigOptionsEnabled = true,
-                bigOptionsNumber = 2,
-            ) { _, item ->
-                when (item.itemId) {
-                    R.id.actionDeposit -> {
-                        scanIntent = DEPOSIT_INTENT
-                        QRCodeUtils(requireContext()).startQRScanner(
-                            this,
-                            promptText = resources.getString(R.string.text_scan_qr_exchange_buy),
-                            vertical = true
-                        )
-                    }
-                    R.id.actionWithdraw -> {
-                        scanIntent = WITHDRAW_INTENT
-                        QRCodeUtils(requireContext()).startQRScanner(
-                            this,
-                            promptText = resources.getString(R.string.text_scan_qr_exchange_sell),
-                            vertical = true
-                        )
-                    }
-                    R.id.actionTransferByQR -> {
-                        scanIntent = TRANSFER_INTENT
-                        QRCodeUtils(requireContext()).startQRScanner(
-                            this,
-                            promptText = resources.getString(R.string.text_scan_qr_exchange_transfer),
-                            vertical = true
-                        )
-                    }
-                    R.id.actionTransferToContact -> ExchangeTransferMoneyDialog(
-                        null,
-                        null,
-                        true
-                    ).show(parentFragmentManager, tag)
-                    R.id.actionRequestTransferContact -> ExchangeTransferMoneyDialog(
-                        null,
-                        null,
-                        false
-                    ).show(parentFragmentManager, tag)
-                }
-            }.show(parentFragmentManager, tag)
-        }
-
-        binding.tvExchangeTitle.setOnClickListener {
-            parentActivity.selectBottomNavigationItem(ValueTransferMainActivity.exchangeFragmentTag)
-        }
+//        // EXCHANGE
+//        parentActivity.getBalance(true).observe(
+//            viewLifecycleOwner,
+//            Observer {
+//                if (it != binding.tvBalanceAmount.text.toString()) {
+//                    binding.tvBalanceAmount.text = it
+//                    binding.pbBalanceUpdating.isVisible = false
+//                }
+//            }
+//        )
+//
+//        binding.clExchangeBalanceHidden.setOnClickListener {
+//            binding.clExchangeBalanceHidden.isVisible = !binding.clExchangeBalanceHidden.isVisible
+//            binding.clExchangeBalance.isVisible = !binding.clExchangeBalance.isVisible
+//        }
+//
+//        binding.clExchangeBalance.setOnClickListener {
+//            binding.clExchangeBalanceHidden.isVisible = !binding.clExchangeBalanceHidden.isVisible
+//            binding.clExchangeBalance.isVisible = !binding.clExchangeBalance.isVisible
+//        }
+//
+//        binding.clExchangeOptions.setOnClickListener {
+//            OptionsDialog(
+//                R.menu.exchange_options,
+//                resources.getString(R.string.dialog_exchange_options),
+//                bigOptionsEnabled = true,
+//                bigOptionsNumber = 2,
+//            ) { _, item ->
+//                when (item.itemId) {
+//                    R.id.actionDeposit -> {
+//                        scanIntent = DEPOSIT_INTENT
+//                        QRCodeUtils(requireContext()).startQRScanner(
+//                            this,
+//                            promptText = resources.getString(R.string.text_scan_qr_exchange_buy),
+//                            vertical = true
+//                        )
+//                    }
+//                    R.id.actionWithdraw -> {
+//                        scanIntent = WITHDRAW_INTENT
+//                        QRCodeUtils(requireContext()).startQRScanner(
+//                            this,
+//                            promptText = resources.getString(R.string.text_scan_qr_exchange_sell),
+//                            vertical = true
+//                        )
+//                    }
+//                    R.id.actionTransferByQR -> {
+//                        scanIntent = TRANSFER_INTENT
+//                        QRCodeUtils(requireContext()).startQRScanner(
+//                            this,
+//                            promptText = resources.getString(R.string.text_scan_qr_exchange_transfer),
+//                            vertical = true
+//                        )
+//                    }
+//                    R.id.actionTransferToContact -> ExchangeTransferMoneyDialog(
+//                        null,
+//                        null,
+//                        true
+//                    ).show(parentFragmentManager, tag)
+//                    R.id.actionRequestTransferContact -> ExchangeTransferMoneyDialog(
+//                        null,
+//                        null,
+//                        false
+//                    ).show(parentFragmentManager, tag)
+//                }
+//            }.show(parentFragmentManager, tag)
+//        }
+//
+//        binding.tvExchangeTitle.setOnClickListener {
+//            parentActivity.selectBottomNavigationItem(ValueTransferMainActivity.exchangeFragmentTag)
+//        }
 
         // CONTACTS
-        val drawable = ResourcesCompat.getDrawable(resources, R.drawable.divider_chat, requireContext().theme)
-        binding.rvContactChats.apply {
-            adapter = adapterContacts
-            layoutManager = LinearLayoutManager(context)
-            addItemDecoration(DividerItemDecorator(drawable!!) as ItemDecoration)
-        }
-
-        observeContactsItems(viewLifecycleOwner, adapterContacts, itemsContacts)
-
-        binding.tvContactsTitle.setOnClickListener {
-            parentActivity.selectBottomNavigationItem(ValueTransferMainActivity.contactsFragmentTag)
-        }
-
-        binding.clContactsOptions.setOnClickListener {
-            parentActivity.selectBottomNavigationItem(ValueTransferMainActivity.contactsFragmentTag)
-        }
+//        val drawable = ResourcesCompat.getDrawable(resources, R.drawable.divider_chat, requireContext().theme)
+//        binding.rvContactChats.apply {
+//            adapter = adapterContacts
+//            layoutManager = LinearLayoutManager(context)
+//            addItemDecoration(DividerItemDecorator(drawable!!) as ItemDecoration)
+//        }
+//
+//        observeContactsItems(viewLifecycleOwner, adapterContacts, itemsContacts)
+//
+//        binding.tvContactsTitle.setOnClickListener {
+//            parentActivity.selectBottomNavigationItem(ValueTransferMainActivity.contactsFragmentTag)
+//        }
+//
+//        binding.clContactsOptions.setOnClickListener {
+//            parentActivity.selectBottomNavigationItem(ValueTransferMainActivity.contactsFragmentTag)
+//        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -343,20 +343,20 @@ class WalletOverviewFragment : VTFragment(R.layout.fragment_wallet_vt) {
         }
     }
 
-    private fun observeContactsItems(
-        owner: LifecycleOwner,
-        adapter: ItemAdapter,
-        items: LiveData<List<Item>>
-    ) {
-        items.observe(
-            owner,
-            Observer { list ->
-                binding.tvNoChats.isVisible = list.isEmpty()
-                adapter.updateItems(list)
-                binding.rvContactChats.setItemViewCacheSize(list.size)
-            }
-        )
-    }
+//    private fun observeContactsItems(
+//        owner: LifecycleOwner,
+//        adapter: ItemAdapter,
+//        items: LiveData<List<Item>>
+//    ) {
+//        items.observe(
+//            owner,
+//            Observer { list ->
+//                binding.tvNoChats.isVisible = list.isEmpty()
+//                adapter.updateItems(list)
+//                binding.rvContactChats.setItemViewCacheSize(list.size)
+//            }
+//        )
+//    }
 
     private fun createIdentityItems(
         identities: List<Identity>,

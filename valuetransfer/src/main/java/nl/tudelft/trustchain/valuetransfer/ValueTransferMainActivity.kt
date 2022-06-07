@@ -208,14 +208,14 @@ class ValueTransferMainActivity : BaseActivity() {
          */
         bottomNavigationViewListeners()
 
-        val bottomView: BottomNavigationMenuView =
-            bottomNavigationView.getChildAt(0) as BottomNavigationMenuView
-        (bottomView.getChildAt(2) as BottomNavigationItemView).setIconSize(
-            TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 40f,
-                resources.displayMetrics
-            ).toInt()
-        )
+//        val bottomView: BottomNavigationMenuView =
+//            bottomNavigationView.getChildAt(0) as BottomNavigationMenuView
+//        (bottomView.getChildAt(2) as BottomNavigationItemView).setIconSize(
+//            TypedValue.applyDimension(
+//                TypedValue.COMPLEX_UNIT_DIP, 40f,
+//                resources.displayMetrics
+//            ).toInt()
+//        )
 
         /**
          * PeerChat community callbacks and creating additional contact database tables
@@ -505,10 +505,10 @@ class ValueTransferMainActivity : BaseActivity() {
                 R.id.identityFragment -> if (activeTag != identityFragmentTag) switchFragment(identityFragment)
                 R.id.exchangeFragment -> if (activeTag != exchangeFragmentTag) switchFragment(exchangeFragment)
                 R.id.contactsFragment -> if (activeTag != contactsFragmentTag) switchFragment(contactsFragment)
-                R.id.qrScanControllerFragment -> {
-                    qrScanController.initiateScan()
-                    return@setOnNavigationItemSelectedListener false
-                }
+//                R.id.qrScanControllerFragment -> {
+//                    qrScanController.initiateScan()
+//                    return@setOnNavigationItemSelectedListener false
+//                }
             }
             true
         }
