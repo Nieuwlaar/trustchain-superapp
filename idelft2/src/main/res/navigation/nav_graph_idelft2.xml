@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_idelft2"
+    app:startDestination="@id/walletOverviewFragment">
+
+    <fragment
+        android:id="@+id/walletOverviewFragment"
+        android:name="nl.tudelft.trustchain.idelft2.ui.walletoverview.WalletOverviewFragment"
+        android:label="@string/menu_navigation_wallet_overview"
+        tools:layout="@layout/fragment_wallet_vt" />
+
+    <fragment
+        android:id="@+id/identityFragment"
+        android:name="nl.tudelft.trustchain.idelft2.ui.identity.IdentityFragment"
+        android:label="@string/menu_navigation_identity"
+        tools:layout="@layout/fragment_identity" />
+
+    <fragment
+        android:id="@+id/exchangeFragment"
+        android:name="nl.tudelft.trustchain.idelft2.ui.exchange.ExchangeFragment"
+        android:label="@string/menu_navigation_exchange"
+        tools:layout="@layout/fragment_exchange" />
+
+    <fragment
+        android:id="@+id/contactsFragment"
+        android:name="nl.tudelft.trustchain.idelft2.ui.contacts.ContactsFragment"
+        android:label="@string/menu_navigation_identity"
+        tools:layout="@layout/fragment_contacts" />
+</navigation>

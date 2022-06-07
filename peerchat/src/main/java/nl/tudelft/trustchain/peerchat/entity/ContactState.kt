@@ -1,7 +1,7 @@
 package nl.tudelft.trustchain.peerchat.entity
 
 import nl.tudelft.ipv8.keyvault.PublicKey
-import nl.tudelft.trustchain.common.valuetransfer.entity.IdentityInfo
+import nl.tudelft.trustchain.common.idelft2.entity.IdentityInfo
 
 data class ContactState(
     /**

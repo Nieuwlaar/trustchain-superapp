@@ -16,7 +16,7 @@ import nl.tudelft.trustchain.liquidity.LiquidityPoolMainActivity
 import nl.tudelft.trustchain.payloadgenerator.ui.TrustChainPayloadGeneratorActivity
 import nl.tudelft.trustchain.peerchat.PeerChatActivity
 import nl.tudelft.trustchain.trader.ui.TrustChainTraderActivity
-import nl.tudelft.trustchain.valuetransfer.ValueTransferMainActivity
+import nl.tudelft.trustchain.idelft2.idelft2MainActivity
 import nl.tudelft.trustchain.voting.VotingActivity
 
 enum class AppDefinition(
@@ -105,11 +105,11 @@ enum class AppDefinition(
         R.color.blue,
         LiquidityPoolMainActivity::class.java
     ),
-    VALUETRANSFER(
+    idelft2(
         R.drawable.ic_confidapp_logo,
         "ConfIDapp",
-        R.color.colorPrimaryValueTransfer,
-        ValueTransferMainActivity::class.java,
+        R.color.colorPrimaryidelft2,
+        idelft2MainActivity::class.java,
         true,
     )
 }

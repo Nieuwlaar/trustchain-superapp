@@ -2,7 +2,7 @@ package nl.tudelft.trustchain.peerchat.community
 
 import mu.KotlinLogging
 import nl.tudelft.ipv8.messaging.*
-import nl.tudelft.trustchain.common.valuetransfer.entity.IdentityInfo
+import nl.tudelft.trustchain.common.idelft2.entity.IdentityInfo
 
 private val logger = KotlinLogging.logger {}
 

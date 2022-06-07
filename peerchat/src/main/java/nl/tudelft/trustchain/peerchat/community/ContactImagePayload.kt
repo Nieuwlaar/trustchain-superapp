@@ -4,8 +4,8 @@ import android.graphics.Bitmap
 import nl.tudelft.ipv8.keyvault.PublicKey
 import nl.tudelft.ipv8.keyvault.defaultCryptoProvider
 import nl.tudelft.ipv8.messaging.*
-import nl.tudelft.trustchain.common.valuetransfer.extensions.bytesToImage
-import nl.tudelft.trustchain.common.valuetransfer.extensions.imageBytes
+import nl.tudelft.trustchain.common.idelft2.extensions.bytesToImage
+import nl.tudelft.trustchain.common.idelft2.extensions.imageBytes
 
 class ContactImagePayload constructor(
     val publicKey: PublicKey,

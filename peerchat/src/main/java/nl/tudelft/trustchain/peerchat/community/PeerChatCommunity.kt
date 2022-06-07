@@ -18,9 +18,9 @@ import nl.tudelft.ipv8.messaging.eva.*
 import nl.tudelft.ipv8.util.hexToBytes
 import nl.tudelft.ipv8.util.toHex
 import nl.tudelft.trustchain.common.contacts.Contact
-import nl.tudelft.trustchain.common.valuetransfer.entity.IdentityAttribute
-import nl.tudelft.trustchain.common.valuetransfer.entity.IdentityInfo
-import nl.tudelft.trustchain.common.valuetransfer.entity.TransferRequest
+import nl.tudelft.trustchain.common.idelft2.entity.IdentityAttribute
+import nl.tudelft.trustchain.common.idelft2.entity.IdentityInfo
+import nl.tudelft.trustchain.common.idelft2.entity.TransferRequest
 import nl.tudelft.trustchain.peerchat.db.PeerChatStore
 import nl.tudelft.trustchain.peerchat.entity.ChatMessage
 import nl.tudelft.trustchain.peerchat.entity.ContactImage

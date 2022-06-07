@@ -122,7 +122,7 @@ dependencies {
     implementation project(':eurotoken')
     implementation project(':ig-ssi')
     implementation project(':liquidity-pool')
-    implementation project(':valuetransfer')
+    implementation project(':idelft2')
     api(project(':common')){
         exclude group: 'net.java.dev.jna'
     }

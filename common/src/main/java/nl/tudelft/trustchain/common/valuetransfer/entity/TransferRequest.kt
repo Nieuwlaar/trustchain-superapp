@@ -1,4 +1,4 @@
-package nl.tudelft.trustchain.common.valuetransfer.entity
+package nl.tudelft.trustchain.common.idelft2.entity
 
 import nl.tudelft.ipv8.keyvault.PublicKey
 import nl.tudelft.ipv8.keyvault.defaultCryptoProvider
