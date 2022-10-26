@@ -27,7 +27,7 @@ class QRCodeUtils(private val context: Context) {
             val integrator = FragmentIntentIntegrator(fragment)
                 .setPrompt(promptText ?: "Scan QR Code")
                 .setOrientationLocked(false)
-                .setBeepEnabled(true)
+                .setBeepEnabled(false)
                 .setCameraId(0)
             if (vertical) {
                 integrator.captureActivity = QRCodeActivityPortrait::class.java

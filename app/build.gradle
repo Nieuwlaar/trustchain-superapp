@@ -82,6 +82,7 @@ android {
         exclude 'META-INF/kotlinx-coroutines-core.kotlin_module'
         exclude 'META-INF/DEPENDENCIES'
     }
+    ndkVersion '21.0.6113669'
 }
 
 repositories {

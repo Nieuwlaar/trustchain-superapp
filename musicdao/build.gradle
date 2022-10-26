@@ -59,6 +59,7 @@ android {
         exclude 'META-INF/ASL2.0'
         exclude("META-INF/*.kotlin_module")
     }
+    ndkVersion '21.0.6113669'
 }
 
 dependencies {
