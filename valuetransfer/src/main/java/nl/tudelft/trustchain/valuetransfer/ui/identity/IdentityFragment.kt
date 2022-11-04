@@ -9,18 +9,17 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.*
-import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.*
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mattskala.itemadapter.Item
 import com.mattskala.itemadapter.ItemAdapter
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.isActive
 import nl.tudelft.ipv8.android.IPv8Android
 import nl.tudelft.ipv8.attestation.schema.SchemaManager
@@ -29,23 +28,22 @@ import nl.tudelft.ipv8.keyvault.defaultCryptoProvider
 import nl.tudelft.ipv8.util.hexToBytes
 import nl.tudelft.ipv8.util.toHex
 import nl.tudelft.trustchain.common.util.QRCodeUtils
-import nl.tudelft.trustchain.valuetransfer.util.copyToClipboard
-import nl.tudelft.trustchain.valuetransfer.util.mapToJSON
 import nl.tudelft.trustchain.common.util.viewBinding
-import nl.tudelft.trustchain.valuetransfer.R
-import nl.tudelft.trustchain.valuetransfer.ui.VTFragment
-import nl.tudelft.trustchain.valuetransfer.databinding.FragmentIdentityBinding
-import nl.tudelft.trustchain.valuetransfer.dialogs.*
 import nl.tudelft.trustchain.common.valuetransfer.entity.IdentityAttribute
 import nl.tudelft.trustchain.common.valuetransfer.extensions.decodeImage
 import nl.tudelft.trustchain.common.valuetransfer.extensions.encodeImage
+import nl.tudelft.trustchain.common.valuetransfer.extensions.exitEnterView
+import nl.tudelft.trustchain.valuetransfer.R
+import nl.tudelft.trustchain.valuetransfer.databinding.FragmentIdentityBinding
+import nl.tudelft.trustchain.valuetransfer.dialogs.*
 import nl.tudelft.trustchain.valuetransfer.entity.Identity
 import nl.tudelft.trustchain.valuetransfer.ui.QRScanController
-import nl.tudelft.trustchain.common.valuetransfer.extensions.exitEnterView
+import nl.tudelft.trustchain.valuetransfer.ui.VTFragment
 import nl.tudelft.trustchain.valuetransfer.util.DividerItemDecorator
+import nl.tudelft.trustchain.valuetransfer.util.copyToClipboard
 import nl.tudelft.trustchain.valuetransfer.util.getInitials
+import nl.tudelft.trustchain.valuetransfer.util.mapToJSON
 import org.json.JSONObject
-import java.util.*
 
 class IdentityFragment : VTFragment(R.layout.fragment_identity) {
     private val binding by viewBinding(FragmentIdentityBinding::bind)
@@ -254,7 +252,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
             addItemDecoration(DividerItemDecorator(drawable!!) as RecyclerView.ItemDecoration)
         }
 
-        binding.rvYourAttestations.apply {
+        binding.rvYourMandates.apply {
             adapter = adapterAttestations
             layoutManager = LinearLayoutManager(context)
             val drawable = ResourcesCompat.getDrawable(resources, R.drawable.divider_attestation, requireContext().theme)
@@ -324,32 +322,32 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
             if (binding.clIdentityAttributes.isVisible) return@setOnClickListener
         }
 
-        binding.tvShowIssuedAttestations.setOnClickListener {
-            if (binding.clIssuedAttestations.isVisible) return@setOnClickListener
+        binding.tvShowIssuedMandates.setOnClickListener {
+            if (binding.clIssuedMandates.isVisible) return@setOnClickListener
 
-            binding.tvShowYourAttestations.apply {
+            binding.tvShowYourMandates.apply {
                 setTypeface(null, Typeface.NORMAL)
                 background = ContextCompat.getDrawable(requireContext(), R.drawable.pill_rounded)
             }
-            binding.tvShowIssuedAttestations.apply {
+            binding.tvShowIssuedMandates.apply {
                 setTypeface(null, Typeface.BOLD)
                 background = ContextCompat.getDrawable(requireContext(), R.drawable.pill_rounded_selected)
             }
-            binding.clYourAttestations.exitEnterView(requireContext(), binding.clIssuedAttestations, true)
+            binding.clYourMandates.exitEnterView(requireContext(), binding.clIssuedMandates, true)
         }
 
-        binding.tvShowYourAttestations.setOnClickListener {
-            if (binding.clYourAttestations.isVisible) return@setOnClickListener
+        binding.tvShowYourMandates.setOnClickListener {
+            if (binding.clYourMandates.isVisible) return@setOnClickListener
 
-            binding.tvShowYourAttestations.apply {
+            binding.tvShowYourMandates.apply {
                 setTypeface(null, Typeface.BOLD)
                 background = ContextCompat.getDrawable(requireContext(), R.drawable.pill_rounded_selected)
             }
-            binding.tvShowIssuedAttestations.apply {
+            binding.tvShowIssuedMandates.apply {
                 setTypeface(null, Typeface.NORMAL)
                 background = ContextCompat.getDrawable(requireContext(), R.drawable.pill_rounded)
             }
-            binding.clIssuedAttestations.exitEnterView(requireContext(), binding.clYourAttestations, false)
+            binding.clIssuedMandates.exitEnterView(requireContext(), binding.clYourMandates, false)
         }
     }
 
@@ -378,8 +376,8 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
     }
 
     private fun toggleVisibility() {
-        binding.tvNoYourAttestations.isVisible = adapterAttestations.itemCount == 0
-        binding.tvNoIssuedAttestations.isVisible = adapterAttestations.itemCount == 0
+        binding.tvNoYourMandates.isVisible = adapterAttestations.itemCount == 0
+        binding.tvNoIssuedMandates.isVisible = adapterAttestations.itemCount == 0
         binding.tvNoAttributes.isVisible = adapterAttributes.itemCount == 0
     }
 
@@ -405,7 +403,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
                 createAttestationItems(itemsAttestations)
             )
 
-            binding.rvYourAttestations.setItemViewCacheSize(itemsAttestations.size)
+            binding.rvYourMandates.setItemViewCacheSize(itemsAttestations.size)
         }
 
         toggleVisibility()

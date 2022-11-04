@@ -252,7 +252,8 @@
     <string name="text_tooltip_identity_attributes">Identity attributes extend your official identity with shareable additional information about you</string>
     <string name="text_tooltip_attestations">Attestations declare that a claim about a piece of information is validated by an authority</string>
     <string name="text_no_attestations">There are no attestations</string>
-    <string name="text_no_your_attestations">You do not have any attestations</string>
+    <string name="text_no_your_mandates">You do not have any mandates</string>
+    <string name="text_no_issued_mandates">You have not issued any mandates</string>
     <string name="text_no_issued_attestations">You have not issued any attestations</string>
     <string name="text_public_key">Public Key</string>
     <string name="text_title_attestations">Attestations</string>
