@@ -8,6 +8,7 @@ import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.*
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -316,6 +317,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
                     }
                 }
             ).show(parentFragmentManager, tag)
+            Log.e("EBSI", "Add mandate button clicked")
         }
 
         binding.tvShowIdentityAttributes.setOnClickListener {
