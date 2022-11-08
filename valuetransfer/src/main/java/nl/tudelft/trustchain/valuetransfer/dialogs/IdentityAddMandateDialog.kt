@@ -9,7 +9,7 @@ import nl.tudelft.trustchain.valuetransfer.R
 import nl.tudelft.trustchain.valuetransfer.ui.VTDialogFragment
 import nl.tudelft.trustchain.valuetransfer.util.setNavigationBarColor
 
-class IdentityAddEBSIAttestationDialog : VTDialogFragment() {
+class IdentityAddMandateDialog : VTDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): BottomSheetDialog {
         return activity?.let {
             val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BaseBottomSheetDialog)

@@ -24,6 +24,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import nl.tudelft.ipv8.android.IPv8Android
 import nl.tudelft.ipv8.attestation.schema.SchemaManager
 import nl.tudelft.ipv8.attestation.wallet.AttestationBlob
@@ -57,6 +58,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
     private val adapterAttestations = ItemAdapter()
 
     private val identityImage = MutableLiveData<String?>()
+    private val TAG = "MandateCommunity"
 
     private val itemsIdentity: LiveData<List<Item>> by lazy {
         combine(getIdentityStore().getAllIdentities(), identityImage.asFlow()) { identities, identityImage ->
@@ -316,34 +318,30 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
                 },
                 optionSelected = { _, item ->
                     when (item.itemId) {
-                        R.id.actionAddEBSIAttestation -> addEBSIAttestation()
+                        R.id.actionAddEBSIAttestation -> addMandate()
                     }
                 }
             ).show(parentFragmentManager, tag)
-            Log.i("IDelft", "Add mandate button clicked")
+            Log.i(TAG, "Add mandate button clicked")
             val wifiManager: WifiManager = context?.getSystemService(WIFI_SERVICE) as WifiManager
             val ip = ipToString(wifiManager.connectionInfo.ipAddress)
-            Log.i("IDelft", ip)
+            Log.i(TAG, ip)
 //            6ec97d075cb62c9a12ffdd5d5c4afe029b70570e
             val community = IPv8Android.getInstance().getOverlay<MandateCommunity>()!!
-            Log.i("IDelft", community.toString())
-//            community.walkTo(IPv4Address("109.38.154.75:8986", 8986))  // fold
-//            community.walkTo(IPv4Address("176.117.57.243", 13457)) // emulator 1
-//            community.walkTo(IPv4Address("172.58.30.1193", 21050)) // s9
-//            delay(1000)
+            Log.i(TAG, community.toString())
             val peers = community.getPeers()
             if (peers.isNullOrEmpty()) {
-                Log.i("IDelft","Peers is null or empty")
+                Log.i(TAG,"Peers is null or empty")
             }
             for (peer in peers) {
-                Log.i("IDelft", peer.mid)
+                Log.i(TAG, peer.mid)
             }
-
-
-//            val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-//            val privateKey = prefs.getString("private_key", null)
-//            AndroidCryptoProvider.keyFromPrivateBin(privateKey.hexToBytes())
-//            AndroidCryptoProvider.keyFromPrivateBin(privateKey.hexToBytes())
+            lifecycleScope.launch {
+                while (isActive) {
+                    community.broadcastGreeting()
+                    delay(5000)
+                }
+            }
         }
 
         binding.tvShowIdentityAttributes.setOnClickListener {
@@ -426,8 +424,8 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
         )
     }
 
-    private fun addEBSIAttestation() {
-        IdentityAddEBSIAttestationDialog().show(parentFragmentManager, tag)
+    private fun addMandate() {
+        IdentityAddMandateDialog().show(parentFragmentManager, tag)
     }
 
     private fun updateAttestations() {
@@ -546,6 +544,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
                 }
             }
     }
+
 
     private fun createIdentityItems(identities: List<Identity>, imageString: String?): List<Item> {
         return identities.map { identity ->
