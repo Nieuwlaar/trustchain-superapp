@@ -8,7 +8,10 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.sqlite.SQLiteConstraintException
 import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.os.Build
@@ -17,10 +20,14 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.util.TypedValue
-import android.view.*
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
 import androidx.core.app.ActivityCompat
@@ -30,14 +37,15 @@ import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.*
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ProcessLifecycleOwner
 import com.androidadvance.topsnackbar.TSnackbar
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.jaredrummler.blockingdialog.BlockingDialogManager
-import kotlinx.android.synthetic.main.dialog_image.*
 import kotlinx.android.synthetic.main.main_activity_vt.*
-import kotlinx.coroutines.*
 import nl.tudelft.ipv8.Community
 import nl.tudelft.ipv8.Peer
 import nl.tudelft.ipv8.android.IPv8Android
@@ -64,6 +72,7 @@ import nl.tudelft.trustchain.peerchat.entity.ChatMessage
 import nl.tudelft.trustchain.peerchat.entity.ContactImage
 import nl.tudelft.trustchain.peerchat.ui.conversation.MessageAttachment
 import nl.tudelft.trustchain.valuetransfer.community.IdentityCommunity
+import nl.tudelft.trustchain.valuetransfer.community.MandateCommunity
 import nl.tudelft.trustchain.valuetransfer.db.IdentityStore
 import nl.tudelft.trustchain.valuetransfer.dialogs.IdentityAttestationConfirmDialog
 import nl.tudelft.trustchain.valuetransfer.passport.PassportHandler
@@ -72,6 +81,7 @@ import nl.tudelft.trustchain.valuetransfer.ui.VTFragment
 import nl.tudelft.trustchain.valuetransfer.ui.contacts.ContactChatFragment
 import nl.tudelft.trustchain.valuetransfer.ui.contacts.ContactsFragment
 import nl.tudelft.trustchain.valuetransfer.ui.exchange.ExchangeFragment
+import nl.tudelft.trustchain.valuetransfer.ui.exchangelink.ExchangeTransferMoneyLinkFragment
 import nl.tudelft.trustchain.valuetransfer.ui.identity.IdentityFragment
 import nl.tudelft.trustchain.valuetransfer.ui.settings.AppPreferences
 import nl.tudelft.trustchain.valuetransfer.ui.settings.NotificationHandler
@@ -81,11 +91,6 @@ import nl.tudelft.trustchain.valuetransfer.util.dpToPixels
 import nl.tudelft.trustchain.valuetransfer.util.getColorIDFromThemeAttribute
 import org.json.JSONObject
 import java.util.*
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
-import android.net.Uri
-import android.widget.Toast
-import nl.tudelft.trustchain.valuetransfer.ui.exchangelink.ExchangeTransferMoneyLinkFragment
 
 class ValueTransferMainActivity : BaseActivity() {
     override val navigationGraph = R.navigation.nav_graph_valuetransfer
@@ -121,7 +126,8 @@ class ValueTransferMainActivity : BaseActivity() {
         IdentityCommunity::class.java to IPv8Android.getInstance().getOverlay<IdentityCommunity>()!!,
         PeerChatCommunity::class.java to IPv8Android.getInstance().getOverlay<PeerChatCommunity>()!!,
         EuroTokenCommunity::class.java to IPv8Android.getInstance().getOverlay<EuroTokenCommunity>()!!,
-        AttestationCommunity::class.java to IPv8Android.getInstance().getOverlay<AttestationCommunity>()!!
+        AttestationCommunity::class.java to IPv8Android.getInstance().getOverlay<AttestationCommunity>()!!,
+        MandateCommunity::class.java to IPv8Android.getInstance().getOverlay<MandateCommunity>()!!
     )
     val stores: Map<Any, Any> = mapOf(
         IdentityStore::class.java to IdentityStore.getInstance(this),

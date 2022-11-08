@@ -2,9 +2,11 @@ package nl.tudelft.trustchain.valuetransfer.ui.identity
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context.WIFI_SERVICE
 import android.content.Intent
 import android.graphics.ImageDecoder
 import android.graphics.Typeface
+import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -35,6 +37,7 @@ import nl.tudelft.trustchain.common.valuetransfer.extensions.decodeImage
 import nl.tudelft.trustchain.common.valuetransfer.extensions.encodeImage
 import nl.tudelft.trustchain.common.valuetransfer.extensions.exitEnterView
 import nl.tudelft.trustchain.valuetransfer.R
+import nl.tudelft.trustchain.valuetransfer.community.MandateCommunity
 import nl.tudelft.trustchain.valuetransfer.databinding.FragmentIdentityBinding
 import nl.tudelft.trustchain.valuetransfer.dialogs.*
 import nl.tudelft.trustchain.valuetransfer.entity.Identity
@@ -317,7 +320,30 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
                     }
                 }
             ).show(parentFragmentManager, tag)
-            Log.e("EBSI", "Add mandate button clicked")
+            Log.i("IDelft", "Add mandate button clicked")
+            val wifiManager: WifiManager = context?.getSystemService(WIFI_SERVICE) as WifiManager
+            val ip = ipToString(wifiManager.connectionInfo.ipAddress)
+            Log.i("IDelft", ip)
+//            6ec97d075cb62c9a12ffdd5d5c4afe029b70570e
+            val community = IPv8Android.getInstance().getOverlay<MandateCommunity>()!!
+            Log.i("IDelft", community.toString())
+//            community.walkTo(IPv4Address("109.38.154.75:8986", 8986))  // fold
+//            community.walkTo(IPv4Address("176.117.57.243", 13457)) // emulator 1
+//            community.walkTo(IPv4Address("172.58.30.1193", 21050)) // s9
+//            delay(1000)
+            val peers = community.getPeers()
+            if (peers.isNullOrEmpty()) {
+                Log.i("IDelft","Peers is null or empty")
+            }
+            for (peer in peers) {
+                Log.i("IDelft", peer.mid)
+            }
+
+
+//            val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+//            val privateKey = prefs.getString("private_key", null)
+//            AndroidCryptoProvider.keyFromPrivateBin(privateKey.hexToBytes())
+//            AndroidCryptoProvider.keyFromPrivateBin(privateKey.hexToBytes())
         }
 
         binding.tvShowIdentityAttributes.setOnClickListener {
@@ -351,6 +377,14 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
             }
             binding.clIssuedMandates.exitEnterView(requireContext(), binding.clYourMandates, false)
         }
+    }
+
+    private fun ipToString(i: Int): String {
+        return (i and 0xFF).toString() + "." +
+            (i shr 8 and 0xFF) + "." +
+            (i shr 16 and 0xFF) + "." +
+            (i shr 24 and 0xFF)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
