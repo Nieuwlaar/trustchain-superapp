@@ -24,7 +24,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
 import nl.tudelft.ipv8.android.IPv8Android
 import nl.tudelft.ipv8.attestation.schema.SchemaManager
 import nl.tudelft.ipv8.attestation.wallet.AttestationBlob
@@ -336,12 +335,15 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
             for (peer in peers) {
                 Log.i(TAG, peer.mid)
             }
-            lifecycleScope.launch {
-                while (isActive) {
-                    community.broadcastGreeting()
-                    delay(5000)
-                }
-            }
+//            lifecycleScope.launch {
+//                while (isActive) {
+//                    community.broadcastGreeting()
+//                    delay(5000)
+//                }
+//            }
+            val ipv8 = getIpv8()
+            Log.i("Mandate","My Public key: "+ipv8.myPeer.publicKey.keyToBin().toHex())
+            community.sendPoa()
         }
 
         binding.tvShowIdentityAttributes.setOnClickListener {
