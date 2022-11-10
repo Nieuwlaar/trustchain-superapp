@@ -211,12 +211,12 @@ class QRScanController : VTFragment() {
                             OptionsDialog(
                                 R.menu.scan_options,
                                 "Choose Option",
-                                bigOptionsEnabled = true,
                             ) { _, item ->
                                 when (item.itemId) {
                                     R.id.actionAddContactOption -> addContact(obj)
                                     R.id.actionAddAuthorityOption -> addAuthority(publicKeyString)
                                     R.id.actionAddAttestationOption -> addAttestation(publicKeyString)
+                                    R.id.actionIssuePoa -> issuePoa(publicKeyString)
                                 }
                             }.show(parentFragmentManager, tag)
                         } catch (e: Exception) {

@@ -50,7 +50,8 @@
     <string name="menu_contacts_add">Add Contact</string>
     <string name="menu_identity_attribute_add">Add Identity Attribute</string>
     <string name="menu_identity_attestations_add">Add Attestation</string>
-    <string name="menu_identity_EBSI_attestations_add">Add EBSI Attestation</string>
+    <string name="menu_identity_receive_poa_ebsi">Receive Proof of Attorney from EBSI</string>
+    <string name="menu_identity_receive_poa_kvk">Receive Proof of Attorney from KVK</string>
     <string name="menu_identity_issue_poa">Issue Proof of Attorney</string>
     <string name="menu_identity_attestations_authority_add">Add Attestation Authority</string>
     <string name="menu_identity_edit">Edit Identity</string>

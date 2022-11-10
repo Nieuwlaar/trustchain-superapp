@@ -12,5 +12,8 @@
         android:id="@+id/actionAddAttestationOption"
         android:icon="@drawable/ic_attestation"
         android:title="@string/menu_identity_attestations_add" />
-
+    <item
+        android:id="@+id/actionIssuePoa"
+        android:icon="@drawable/ic_attestation"
+        android:title="@string/menu_identity_issue_poa" />
 </menu>
