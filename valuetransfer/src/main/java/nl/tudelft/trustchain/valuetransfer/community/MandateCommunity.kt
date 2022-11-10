@@ -5,6 +5,7 @@ import nl.tudelft.ipv8.Community
 import nl.tudelft.ipv8.IPv4Address
 import nl.tudelft.ipv8.messaging.Packet
 import nl.tudelft.ipv8.util.toHex
+import nl.tudelft.trustchain.valuetransfer.ui.QRScanController
 import nl.tudelft.trustchain.valuetransfer.ui.mandate.MyMessage
 
 class MandateCommunity : Community() {
@@ -23,8 +24,12 @@ class MandateCommunity : Community() {
         Log.i("MandateCommunity", peer.mid + ": " + payload.message)
     }
 
+    private val qrScanController = QRScanController()
+
     //TODO: Create QR scanning function to obtain publickey
     private fun getPublicKeyFromQR(): String {
+
+//        qrScanController.initiateScan()
         return "4c69624e61434c504b3a0bc295507498057504d7f96cac24cba48372a583d324aeb896485c2a59efbe1db3056345ae72185bab19755f688deabadb964dbaf487e64d15ff13ca43f1c634"
     }
 
@@ -50,9 +55,9 @@ class MandateCommunity : Community() {
     Function to initialize a Proof of Attorney (PoA)
     Peers in community are scanned and matched to the scanned QR public key to receive the IP and send the PoA message.
     */
-    fun sendPoa(){
-        val packet = serializePacket(MESSAGE_ID, MyMessage("Hello, it works!!"))
-        val publicKey = getPublicKeyFromQR()
+    fun sendPoa(publicKey: String){
+        val packet = serializePacket(MESSAGE_ID, MyMessage("Hello, it works 2!!"))
+//        val publicKey = getPublicKeyFromQR()
         val address = getPeerIp(publicKey)
         send(address, packet)
     }

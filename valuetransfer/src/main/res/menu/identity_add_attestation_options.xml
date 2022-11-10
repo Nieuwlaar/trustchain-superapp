@@ -4,4 +4,8 @@
         android:id="@+id/actionAddEBSIAttestation"
         android:icon="@drawable/ic_attestation"
         android:title="@string/menu_identity_EBSI_attestations_add" />
+    <item
+        android:id="@+id/actionIssuePoa"
+        android:icon="@drawable/ic_attestation"
+        android:title="@string/menu_identity_issue_poa" />
 </menu>

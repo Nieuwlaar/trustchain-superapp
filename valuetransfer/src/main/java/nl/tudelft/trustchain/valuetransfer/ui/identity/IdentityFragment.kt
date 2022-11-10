@@ -313,11 +313,13 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
                 menuMods = { menu ->
                     menu.apply {
                         findItem(R.id.actionAddEBSIAttestation).isVisible = getIdentityCommunity().getUnusedAttributeNames().isNotEmpty()
+                        findItem(R.id.actionIssuePoa).isVisible = getIdentityCommunity().getUnusedAttributeNames().isNotEmpty()
                     }
                 },
                 optionSelected = { _, item ->
                     when (item.itemId) {
                         R.id.actionAddEBSIAttestation -> addMandate()
+                        R.id.actionIssuePoa -> issuePoa()
                     }
                 }
             ).show(parentFragmentManager, tag)
@@ -343,7 +345,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
 //            }
             val ipv8 = getIpv8()
             Log.i("Mandate","My Public key: "+ipv8.myPeer.publicKey.keyToBin().toHex())
-            community.sendPoa()
+//            community.sendPoa()
         }
 
         binding.tvShowIdentityAttributes.setOnClickListener {
@@ -428,6 +430,15 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
 
     private fun addMandate() {
         IdentityAddMandateDialog().show(parentFragmentManager, tag)
+    }
+
+    private fun issuePoa() {
+        scanIntent = ISSUE_POA_INTENT
+        QRCodeUtils(requireContext()).startQRScanner(
+            this,
+            promptText = resources.getString(R.string.text_scan_public_key_to_issue_poa),
+            vertical = true
+        )
     }
 
     private fun updateAttestations() {
@@ -596,6 +607,9 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
                                         ADD_AUTHORITY_INTENT -> getQRScanController().addAuthority(
                                             publicKey
                                         )
+                                        ISSUE_POA_INTENT -> getQRScanController().issuePoa(
+                                            publicKey
+                                        )
                                     }
                                 } catch (e: Exception) {
                                     e.printStackTrace()
@@ -625,7 +639,8 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
     companion object {
         private const val ADD_ATTESTATION_INTENT = 0
         private const val ADD_AUTHORITY_INTENT = 1
-        private const val MENU_ITEM_OPTIONS = 1234
         private const val PICK_IDENTITY_IMAGE = 2
+        private const val ISSUE_POA_INTENT = 3
+        private const val MENU_ITEM_OPTIONS = 1234
     }
 }

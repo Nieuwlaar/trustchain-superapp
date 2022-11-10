@@ -1,12 +1,14 @@
 package nl.tudelft.trustchain.valuetransfer.ui
 
 import android.content.Intent
+import nl.tudelft.ipv8.android.IPv8Android
 import nl.tudelft.ipv8.keyvault.defaultCryptoProvider
 import nl.tudelft.ipv8.util.hexToBytes
 import nl.tudelft.ipv8.util.toHex
 import nl.tudelft.trustchain.common.contacts.Contact
 import nl.tudelft.trustchain.common.util.QRCodeUtils
 import nl.tudelft.trustchain.valuetransfer.R
+import nl.tudelft.trustchain.valuetransfer.community.MandateCommunity
 import nl.tudelft.trustchain.valuetransfer.dialogs.*
 import org.json.JSONObject
 
@@ -37,8 +39,12 @@ class QRScanController : VTFragment() {
     }
 
     fun addAuthority(publicKey: String) {
-
         IdentityAttestationAuthorityDialog(defaultCryptoProvider.keyFromPublicBin(publicKey.hexToBytes())).show(parentFragmentManager, tag)
+    }
+
+    fun issuePoa(publicKey: String){
+        val community = IPv8Android.getInstance().getOverlay<MandateCommunity>()!!
+        community.sendPoa(publicKey)
     }
 
     fun addAttestation(publicKey: String) {

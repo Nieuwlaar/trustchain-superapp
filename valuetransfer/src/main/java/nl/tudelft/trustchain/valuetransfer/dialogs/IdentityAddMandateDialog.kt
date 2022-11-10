@@ -27,4 +27,5 @@ class IdentityAddMandateDialog : VTDialogFragment() {
             bottomSheetDialog
         } ?: throw IllegalStateException(resources.getString(R.string.text_activity_not_null_requirement))
     }
+
 }

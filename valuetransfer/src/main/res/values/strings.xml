@@ -51,6 +51,7 @@
     <string name="menu_identity_attribute_add">Add Identity Attribute</string>
     <string name="menu_identity_attestations_add">Add Attestation</string>
     <string name="menu_identity_EBSI_attestations_add">Add EBSI Attestation</string>
+    <string name="menu_identity_issue_poa">Issue Proof of Attorney</string>
     <string name="menu_identity_attestations_authority_add">Add Attestation Authority</string>
     <string name="menu_identity_edit">Edit Identity</string>
     <string name="menu_identity_remove">Remove Identity</string>
@@ -279,6 +280,7 @@
     <string name="text_identity">identity</string>
     <string name="text_scan_public_key_to_add_attestation">Scan public key of signee to add attestation</string>
     <string name="text_scan_public_key_to_add_authority">Scan public key of signee to add as authority</string>
+    <string name="text_scan_public_key_to_issue_poa">Scan public key to issue Proof of Attorney</string>
     <string name="text_scan_qr_exchange_buy">Scan Buy EuroToken QR Code from Exchange</string>
     <string name="text_scan_qr_exchange_sell">Scan Sell EuroToken QR Code from Exchange</string>
     <string name="text_scan_qr_exchange_transfer">Scan QR Code to transfer EuroToken(s)</string>
