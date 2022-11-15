@@ -7,7 +7,7 @@ import nl.tudelft.valuetransfer.sqldelight.Database
 
 
 class PoaStore(context: Context) {
-    private val driver = AndroidSqliteDriver(Database.Schema, context, "poas-vt.db")
+    private val driver = AndroidSqliteDriver(Database.Schema, context, "identities-vt.db")
     private val database = Database(driver)
 
     fun addPoa(poa: PowerOfAttorney) {
@@ -19,6 +19,10 @@ class PoaStore(context: Context) {
             poa.givenNamesPoaHolder,
             poa.givenNamesPoaIssuer
         )
+    }
+
+    fun createPoasTable() {
+        return database.dbProofofAttorneyQueries.createPoasTable()
     }
 
 

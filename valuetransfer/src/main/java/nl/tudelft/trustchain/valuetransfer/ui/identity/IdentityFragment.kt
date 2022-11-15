@@ -680,6 +680,8 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
             givenNamesPoaHolder = "Jan",
             givenNamesPoaIssuer = "Bert"
         )
+        val community = IPv8Android.getInstance().getOverlay<PowerofAttorneyCommunity>()!!
+        community.addFakePoa(Poa1)
         Log.i(TAG, Poa1.toString())
     }
 

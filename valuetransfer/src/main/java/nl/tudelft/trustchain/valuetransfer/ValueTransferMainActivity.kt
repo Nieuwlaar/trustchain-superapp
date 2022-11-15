@@ -178,6 +178,10 @@ class ValueTransferMainActivity : BaseActivity() {
         identityCommunity.createIdentitiesTable()
         identityCommunity.createAttributesTable()
 
+        // Create Power of Attorney database tables if not exist
+        val powerofAttorneyCommunity = getCommunity<PowerofAttorneyCommunity>()!!
+        powerofAttorneyCommunity.createPoasTable()
+
         /**
          * Initialize notification and passport handler
          */

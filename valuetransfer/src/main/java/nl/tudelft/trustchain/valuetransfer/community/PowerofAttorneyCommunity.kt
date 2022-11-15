@@ -73,7 +73,11 @@ class PowerofAttorneyCommunity(private val store: PoaStore) : Community() {
         }
     }
 
-    fun addPoa(poa: PowerOfAttorney) {
+    fun createPoasTable() {
+        store.createPoasTable()
+    }
+
+    fun addFakePoa(poa: PowerOfAttorney) {
         store.addPoa(poa)
     }
 
