@@ -329,6 +329,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
                 resources.getString(R.string.dialog_choose_option),
                 menuMods = { menu ->
                     menu.apply {
+                        findItem(R.id.actionAddKvkPoa).isVisible = true
                         findItem(R.id.actionAddEBSIAttestation).isVisible = getIdentityCommunity().getUnusedAttributeNames().isNotEmpty()
                         findItem(R.id.actionIssuePoa).isVisible = getIdentityCommunity().getUnusedAttributeNames().isNotEmpty()
                         findItem(R.id.actionIssueFakePoa).isVisible = true
@@ -336,6 +337,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
                 },
                 optionSelected = { _, item ->
                     when (item.itemId) {
+                        R.id.actionAddKvkPoa -> addKvkPoa()
                         R.id.actionAddEBSIAttestation -> addPoa()
                         R.id.actionIssuePoa -> issuePoa()
                         R.id.actionIssueFakePoa -> issueFakePoa()
@@ -442,6 +444,10 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
             promptText = resources.getString(R.string.text_scan_public_key_to_add_attestation),
             vertical = true
         )
+    }
+
+    private fun addKvkPoa() {
+        IdentityAddKvkPoaDialog().show(parentFragmentManager, tag)
     }
 
     private fun addPoa() {

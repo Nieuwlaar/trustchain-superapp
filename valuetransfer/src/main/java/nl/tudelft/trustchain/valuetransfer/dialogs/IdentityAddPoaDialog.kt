@@ -10,15 +10,21 @@ import nl.tudelft.trustchain.valuetransfer.ui.VTDialogFragment
 import nl.tudelft.trustchain.valuetransfer.util.setNavigationBarColor
 
 class IdentityAddPoaDialog : VTDialogFragment() {
+
+
     override fun onCreateDialog(savedInstanceState: Bundle?): BottomSheetDialog {
         return activity?.let {
             val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BaseBottomSheetDialog)
             val view = layoutInflater.inflate(R.layout.dialog_identity_add_ebsi_attestation, null)
+
+
             // Avoid keyboard exposing over content of dialog
             bottomSheetDialog.behavior.apply {
                 skipCollapsed = true
                 state = BottomSheetBehavior.STATE_EXPANDED
             }
+
+
             setNavigationBarColor(requireContext(), parentActivity, bottomSheetDialog)
             bottomSheetDialog.setContentView(view)
             bottomSheetDialog.show()
@@ -27,5 +33,4 @@ class IdentityAddPoaDialog : VTDialogFragment() {
             bottomSheetDialog
         } ?: throw IllegalStateException(resources.getString(R.string.text_activity_not_null_requirement))
     }
-
 }
