@@ -1,0 +1,28 @@
+createPoasTable:
+CREATE TABLE IF NOT EXISTS poas (
+    id TEXT NOT NULL,
+    kvk_number INTEGER NOT NULL,
+    company_name TEXT NOT NULL,
+    poa_type TEXT NOT NULL,
+    given_names_holder TEXT NOT NULL,
+    given_names_issuer TEXT NOT NULL,
+    PRIMARY KEY (id)
+);
+
+getAllAttributes:
+SELECT * FROM poas ORDER BY company_name ASC;
+
+-- getAttributeNames:
+-- SELECT name FROM attributes;
+
+addPoa:
+INSERT INTO poas (id, kvk_number, company_name, poa_type, given_names_holder, given_names_issuer) VALUES(?, ?, ?, ? , ?, ?);
+
+-- updateAttribute:
+-- UPDATE attributes SET value = ?, modified = ? WHERE id = ?;
+
+-- deleteAttribute:
+-- DELETE FROM attributes WHERE id = ?;
+
+-- deleteAllAttributes:
+-- DELETE FROM attributes;

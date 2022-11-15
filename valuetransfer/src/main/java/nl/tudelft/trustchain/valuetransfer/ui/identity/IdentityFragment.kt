@@ -50,7 +50,6 @@ import nl.tudelft.trustchain.valuetransfer.util.copyToClipboard
 import nl.tudelft.trustchain.valuetransfer.util.getInitials
 import nl.tudelft.trustchain.valuetransfer.util.mapToJSON
 import org.json.JSONObject
-import java.time.LocalDate
 
 class IdentityFragment : VTFragment(R.layout.fragment_identity) {
     private val binding by viewBinding(FragmentIdentityBinding::bind)
@@ -674,18 +673,12 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
     private fun issueFakePoa() {
         Log.i(TAG, "FAKE POA ISSUED INITIALIZED")
         val Poa1 = PowerOfAttorney(
+            id = "ID",
+            companyName = "Witbaard",
             kvkNumber = 1,
-            issuedFromRootOfTrust = "KVK",
             poaType = "Fake",
-            allowedToIssuePoa = false,
-            publicKeyPoaHolder = IPv8Android.getInstance().myPeer.publicKey.keyToBin(),
             givenNamesPoaHolder = "Jan",
-            surnamePoaHolder = "Jansen",
-            dateOfBirthPoaHolder = LocalDate.parse("2018-12-12"),
-            publicKeyPoaIssuer = IPv8Android.getInstance().myPeer.publicKey.keyToBin(),
-            givenNamesPoaIssuer = "Bert",
-            surnamePoaIssuer = "Kok",
-            dateOfBirthPoaIssuer = LocalDate.parse("2018-12-12")
+            givenNamesPoaIssuer = "Bert"
         )
         Log.i(TAG, Poa1.toString())
     }

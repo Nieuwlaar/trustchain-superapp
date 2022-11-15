@@ -58,6 +58,7 @@ import nl.tudelft.trustchain.peerchat.db.PeerChatStore
 import nl.tudelft.trustchain.valuetransfer.community.IdentityCommunity
 import nl.tudelft.trustchain.valuetransfer.community.PowerofAttorneyCommunity
 import nl.tudelft.trustchain.valuetransfer.db.IdentityStore
+import nl.tudelft.trustchain.valuetransfer.db.PoaStore
 import nl.tudelft.trustchain.voting.VotingCommunity
 import nl.tudelft.gossipML.sqldelight.Database as MLDatabase
 
@@ -409,10 +410,12 @@ class TrustChainApplication : Application() {
         )
     }
 
+
     private fun createPowerofAttorneyCommunity(): OverlayConfiguration<PowerofAttorneyCommunity> {
         val randomWalk = RandomWalk.Factory()
+        val store = PoaStore.getInstance(this)
         return OverlayConfiguration(
-            Overlay.Factory(PowerofAttorneyCommunity::class.java),
+            PowerofAttorneyCommunity.Factory(store),
             listOf(randomWalk)
         )
     }

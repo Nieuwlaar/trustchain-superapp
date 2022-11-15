@@ -3,13 +3,17 @@ package nl.tudelft.trustchain.valuetransfer.community
 import android.util.Log
 import nl.tudelft.ipv8.Community
 import nl.tudelft.ipv8.IPv4Address
+import nl.tudelft.ipv8.Overlay
 import nl.tudelft.ipv8.messaging.Packet
 import nl.tudelft.ipv8.util.toHex
+import nl.tudelft.trustchain.valuetransfer.db.PoaStore
+import nl.tudelft.trustchain.valuetransfer.entity.PowerOfAttorney
 import nl.tudelft.trustchain.valuetransfer.ui.QRScanController
 import nl.tudelft.trustchain.valuetransfer.ui.powerofattorney.MyMessage
 
-class PowerofAttorneyCommunity : Community() {
+class PowerofAttorneyCommunity(private val store: PoaStore) : Community() {
     override val serviceId = "02313685c1912a141279f8248fc8d65899c5df52"
+
     private val MESSAGE_ID = 1
     private val POA_MESSAGE_ID = 2
     private val CONFIRM_POA_MESSAGE_ID = 3
@@ -66,6 +70,18 @@ class PowerofAttorneyCommunity : Community() {
         for (peer in getPeers()) {
             val packet = serializePacket(MESSAGE_ID, MyMessage("Hello!"+peer.address.toString()))
             send(peer.address, packet)
+        }
+    }
+
+    fun addPoa(poa: PowerOfAttorney) {
+        store.addPoa(poa)
+    }
+
+    class Factory(
+        private val store: PoaStore
+    ) : Overlay.Factory<PowerofAttorneyCommunity>(PowerofAttorneyCommunity::class.java) {
+        override fun create(): PowerofAttorneyCommunity {
+            return PowerofAttorneyCommunity(store)
         }
     }
 }
