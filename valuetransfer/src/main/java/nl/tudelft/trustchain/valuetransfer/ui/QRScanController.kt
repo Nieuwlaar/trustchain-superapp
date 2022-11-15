@@ -8,7 +8,7 @@ import nl.tudelft.ipv8.util.toHex
 import nl.tudelft.trustchain.common.contacts.Contact
 import nl.tudelft.trustchain.common.util.QRCodeUtils
 import nl.tudelft.trustchain.valuetransfer.R
-import nl.tudelft.trustchain.valuetransfer.community.MandateCommunity
+import nl.tudelft.trustchain.valuetransfer.community.PowerofAttorneyCommunity
 import nl.tudelft.trustchain.valuetransfer.dialogs.*
 import org.json.JSONObject
 
@@ -43,7 +43,7 @@ class QRScanController : VTFragment() {
     }
 
     fun issuePoa(publicKey: String){
-        val community = IPv8Android.getInstance().getOverlay<MandateCommunity>()!!
+        val community = IPv8Android.getInstance().getOverlay<PowerofAttorneyCommunity>()!!
         community.sendPoa(publicKey)
     }
 

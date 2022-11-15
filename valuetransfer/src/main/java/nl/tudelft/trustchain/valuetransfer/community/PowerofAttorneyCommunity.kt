@@ -6,9 +6,9 @@ import nl.tudelft.ipv8.IPv4Address
 import nl.tudelft.ipv8.messaging.Packet
 import nl.tudelft.ipv8.util.toHex
 import nl.tudelft.trustchain.valuetransfer.ui.QRScanController
-import nl.tudelft.trustchain.valuetransfer.ui.mandate.MyMessage
+import nl.tudelft.trustchain.valuetransfer.ui.powerofattorney.MyMessage
 
-class MandateCommunity : Community() {
+class PowerofAttorneyCommunity : Community() {
     override val serviceId = "02313685c1912a141279f8248fc8d65899c5df52"
     private val MESSAGE_ID = 1
     private val POA_MESSAGE_ID = 2
@@ -21,7 +21,7 @@ class MandateCommunity : Community() {
 
     private fun onMessage(packet: Packet) {
         val (peer, payload) = packet.getAuthPayload(MyMessage.Deserializer)
-        Log.i("MandateCommunity", peer.mid + ": " + payload.message)
+        Log.i("PoaCommunity", peer.mid + ": " + payload.message)
     }
 
     private val qrScanController = QRScanController()
@@ -39,20 +39,20 @@ class MandateCommunity : Community() {
     private fun getPeerIp(publicKey : String): IPv4Address {
         var address = IPv4Address("0.0.0.0", 0)
         for (peer in getPeers()) {
-            Log.i("MandateCommunity", "Peer public keys: "+peer.publicKey.keyToBin().toHex())
+            Log.i("PoaCommunity", "Peer public keys: "+peer.publicKey.keyToBin().toHex())
             if (publicKey == peer.publicKey.keyToBin().toHex()){
-                Log.i("MandateCommunity", "This is the IP address you need: "+peer.address.toString())
+                Log.i("PoaCommunity", "This is the IP address you need: "+peer.address.toString())
                 address = peer.address
             }
         }
         if (address == IPv4Address("0.0.0.0", 0)){
-            Log.e("MandateCommunity", "Peer Address = "+address.toString()+". Is the peer in the community?")
+            Log.e("PoaCommunity", "Peer Address = "+address.toString()+". Is the peer in the community?")
         }
         return address
     }
 
     /*
-    Function to initialize a Proof of Attorney (PoA)
+    Function to initialize a Power of Attorney (PoA)
     Peers in community are scanned and matched to the scanned QR public key to receive the IP and send the PoA message.
     */
     fun sendPoa(publicKey: String){

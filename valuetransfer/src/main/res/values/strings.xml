@@ -50,9 +50,9 @@
     <string name="menu_contacts_add">Add Contact</string>
     <string name="menu_identity_attribute_add">Add Identity Attribute</string>
     <string name="menu_identity_attestations_add">Add Attestation</string>
-    <string name="menu_identity_receive_poa_ebsi">Receive Proof of Attorney from EBSI</string>
-    <string name="menu_identity_receive_poa_kvk">Receive Proof of Attorney from KVK</string>
-    <string name="menu_identity_issue_poa">Issue Proof of Attorney</string>
+    <string name="menu_identity_receive_poa_ebsi">Receive Power of Attorney from EBSI</string>
+    <string name="menu_identity_receive_poa_kvk">Receive Power of Attorney from KVK</string>
+    <string name="menu_identity_issue_poa">Issue Power of Attorney</string>
     <string name="menu_identity_attestations_authority_add">Add Attestation Authority</string>
     <string name="menu_identity_edit">Edit Identity</string>
     <string name="menu_identity_remove">Remove Identity</string>
@@ -254,8 +254,8 @@
     <string name="text_tooltip_identity_attributes">Identity attributes extend your official identity with shareable additional information about you</string>
     <string name="text_tooltip_attestations">Attestations declare that a claim about a piece of information is validated by an authority</string>
     <string name="text_no_attestations">There are no attestations</string>
-    <string name="text_no_your_mandates">You do not have any mandates</string>
-    <string name="text_no_issued_mandates">You have not issued any mandates</string>
+    <string name="text_no_your_poas">You do not have any Powers of Attorney</string>
+    <string name="text_no_issued_poas">You have not issued any Powers of Attorney</string>
     <string name="text_no_issued_attestations">You have not issued any attestations</string>
     <string name="text_public_key">Public Key</string>
     <string name="text_title_attestations">Attestations</string>
@@ -281,7 +281,7 @@
     <string name="text_identity">identity</string>
     <string name="text_scan_public_key_to_add_attestation">Scan public key of signee to add attestation</string>
     <string name="text_scan_public_key_to_add_authority">Scan public key of signee to add as authority</string>
-    <string name="text_scan_public_key_to_issue_poa">Scan public key to issue Proof of Attorney</string>
+    <string name="text_scan_public_key_to_issue_poa">Scan public key to issue Power of Attorney</string>
     <string name="text_scan_qr_exchange_buy">Scan Buy EuroToken QR Code from Exchange</string>
     <string name="text_scan_qr_exchange_sell">Scan Sell EuroToken QR Code from Exchange</string>
     <string name="text_scan_qr_exchange_transfer">Scan QR Code to transfer EuroToken(s)</string>

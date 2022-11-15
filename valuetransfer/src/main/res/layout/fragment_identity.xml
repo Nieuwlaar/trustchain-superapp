@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="12dp"
-                android:text="Mandates" />
+                android:text="Powers of Attorney" />
 
             <RelativeLayout
                 android:id="@+id/rlScanIdentityQR2"
@@ -81,7 +81,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/rvIdentities">
 
                 <TextView
-                    android:id="@+id/tvShowYourMandates"
+                    android:id="@+id/tvShowYourPoas"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
@@ -91,12 +91,12 @@
                     android:gravity="center"
                     android:paddingHorizontal="8dp"
                     android:paddingVertical="4dp"
-                    android:text="Your Mandates"
+                    android:text="Your PoA"
                     android:textColor="?attr/onWidgetColor"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tv_show_issued_mandates"
+                    android:id="@+id/tvShowIssuedPoas"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
@@ -106,52 +106,14 @@
                     android:gravity="center"
                     android:paddingHorizontal="8dp"
                     android:paddingVertical="4dp"
-                    android:text="Issued Mandates"
+                    android:text="Issued PoA"
                     android:textColor="?attr/onWidgetColor" />
 
             </LinearLayout>
         </LinearLayout>
 
         <androidx.core.widget.NestedScrollView
-            android:id="@+id/clYourMandates"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tvNoYourMandates"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="12dp"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="8dp"
-                    android:text="@string/text_no_your_mandates"
-                    android:textColor="?attr/onBackgroundColor"
-                    android:textStyle="italic"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvAttributesInfo"
-                    tools:visibility="visible" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvYourMandates"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
-                    app:layout_constraintTop_toBottomOf="@+id/tvNoAttributes"
-                    tools:itemCount="1"
-                    tools:listitem="@layout/item_identity_attribute" />
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
-
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/clIssuedMandates"
+            android:id="@+id/clYourPoa"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
@@ -163,31 +125,85 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tvNoIssuedMandates"
+                    android:id="@+id/tvNoYourPoas"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="12dp"
                     android:paddingHorizontal="8dp"
                     android:paddingVertical="8dp"
-                    android:text="@string/text_no_issued_mandates"
+                    android:text="@string/text_no_your_poas"
                     android:textColor="?attr/onBackgroundColor"
                     android:textStyle="italic"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvMandateInfo"
+                    app:layout_constraintTop_toBottomOf="@+id/tvPoaInfo"
                     tools:visibility="visible" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvIssuedMandates"
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_recyclerView_your_poas"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="4dp"
+                        tools:itemCount="1"
+                        tools:listitem="@layout/item_identity_poa"
+                        tools:visibility="visible" />
+                </RelativeLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/cl_issued_poas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvNoIssuedPoas"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
-                    app:layout_constraintTop_toBottomOf="@+id/tvNoMandates"
-                    tools:itemCount="1"
-                    tools:listitem="@layout/item_identity_attribute" />
-<!--                TODO: change lists to mandates-->
+                    android:layout_marginHorizontal="12dp"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="8dp"
+                    android:text="@string/text_no_issued_poas"
+                    android:textColor="?attr/onBackgroundColor"
+                    android:textStyle="italic"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvPoaInfo"
+                    tools:visibility="visible" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="4dp"
+                        tools:itemCount="1"
+                        tools:listitem="@layout/item_identity_poa"
+                        tools:visibility="visible" />
+    <!--                TODO: change lists to poas-->
+                </RelativeLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>
@@ -307,7 +323,7 @@
                     android:layout_marginBottom="4dp"
                     app:layout_constraintTop_toBottomOf="@+id/tvNoAttributes"
                     tools:itemCount="1"
-                    tools:listitem="@layout/item_identity_attribute" />
+                    tools:listitem="@layout/item_identity_attribute"/>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>

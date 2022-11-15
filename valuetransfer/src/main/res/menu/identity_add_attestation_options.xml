@@ -12,4 +12,8 @@
         android:id="@+id/actionIssuePoa"
         android:icon="@drawable/ic_attestation"
         android:title="@string/menu_identity_issue_poa" />
+    <item
+        android:id="@+id/actionIssueFakePoa"
+        android:icon="@drawable/ic_attestation"
+        android:title="Issue Fake Power of Attorney" />
 </menu>

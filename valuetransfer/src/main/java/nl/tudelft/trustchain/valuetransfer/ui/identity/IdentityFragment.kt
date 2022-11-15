@@ -37,27 +37,33 @@ import nl.tudelft.trustchain.common.valuetransfer.extensions.decodeImage
 import nl.tudelft.trustchain.common.valuetransfer.extensions.encodeImage
 import nl.tudelft.trustchain.common.valuetransfer.extensions.exitEnterView
 import nl.tudelft.trustchain.valuetransfer.R
-import nl.tudelft.trustchain.valuetransfer.community.MandateCommunity
+import nl.tudelft.trustchain.valuetransfer.community.PowerofAttorneyCommunity
 import nl.tudelft.trustchain.valuetransfer.databinding.FragmentIdentityBinding
 import nl.tudelft.trustchain.valuetransfer.dialogs.*
 import nl.tudelft.trustchain.valuetransfer.entity.Identity
+import nl.tudelft.trustchain.valuetransfer.entity.PowerOfAttorney
 import nl.tudelft.trustchain.valuetransfer.ui.QRScanController
 import nl.tudelft.trustchain.valuetransfer.ui.VTFragment
+import nl.tudelft.trustchain.valuetransfer.ui.powerofattorney.RecyclerAdapter
 import nl.tudelft.trustchain.valuetransfer.util.DividerItemDecorator
 import nl.tudelft.trustchain.valuetransfer.util.copyToClipboard
 import nl.tudelft.trustchain.valuetransfer.util.getInitials
 import nl.tudelft.trustchain.valuetransfer.util.mapToJSON
 import org.json.JSONObject
+import java.time.LocalDate
 
 class IdentityFragment : VTFragment(R.layout.fragment_identity) {
     private val binding by viewBinding(FragmentIdentityBinding::bind)
+
+    private var titlesList = mutableListOf<String>()
+    private var imagesList = mutableListOf<Int>()
 
     private val adapterIdentity = ItemAdapter()
     private val adapterAttributes = ItemAdapter()
     private val adapterAttestations = ItemAdapter()
 
     private val identityImage = MutableLiveData<String?>()
-    private val TAG = "MandateCommunity"
+    private val TAG = "PoaCommunity"
 
     private val itemsIdentity: LiveData<List<Item>> by lazy {
         combine(getIdentityStore().getAllIdentities(), identityImage.asFlow()) { identities, identityImage ->
@@ -107,6 +113,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 
         adapterIdentity.registerRenderer(
             IdentityItemRenderer(
@@ -257,12 +264,22 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
             addItemDecoration(DividerItemDecorator(drawable!!) as RecyclerView.ItemDecoration)
         }
 
-        binding.rvYourMandates.apply {
-            adapter = adapterAttestations
+        binding.rvRecyclerView.apply {
+            adapter = RecyclerAdapter(titlesList, imagesList)
             layoutManager = LinearLayoutManager(context)
-            val drawable = ResourcesCompat.getDrawable(resources, R.drawable.divider_attestation, requireContext().theme)
-            addItemDecoration(DividerItemDecorator(drawable!!) as RecyclerView.ItemDecoration)
         }
+
+//        binding.rvRecyclerViewYourPoas.apply {
+//            adapter = RecyclerAdapter(titlesList, imagesList)
+//            layoutManager = LinearLayoutManager(context)
+//        }
+
+//        binding.clYourPoa.apply {
+//            adapter = adapterAttestations
+//            layoutManager = LinearLayoutManager(context)
+//            val drawable = ResourcesCompat.getDrawable(resources, R.drawable.divider_attestation, requireContext().theme)
+//            addItemDecoration(DividerItemDecorator(drawable!!) as RecyclerView.ItemDecoration)
+//        }
 
         itemsIdentity.observe(
             viewLifecycleOwner,
@@ -275,6 +292,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
         lifecycleScope.launchWhenStarted {
             while (isActive) {
                 updateAttestations()
+                updatePoas()
                 delay(1000)
             }
         }
@@ -314,21 +332,25 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
                     menu.apply {
                         findItem(R.id.actionAddEBSIAttestation).isVisible = getIdentityCommunity().getUnusedAttributeNames().isNotEmpty()
                         findItem(R.id.actionIssuePoa).isVisible = getIdentityCommunity().getUnusedAttributeNames().isNotEmpty()
+                        findItem(R.id.actionIssueFakePoa).isVisible = true
                     }
                 },
                 optionSelected = { _, item ->
                     when (item.itemId) {
-                        R.id.actionAddEBSIAttestation -> addMandate()
+                        R.id.actionAddEBSIAttestation -> addPoa()
                         R.id.actionIssuePoa -> issuePoa()
+                        R.id.actionIssueFakePoa -> issueFakePoa()
                     }
                 }
             ).show(parentFragmentManager, tag)
-            Log.i(TAG, "Add mandate button clicked")
+            Log.i(TAG, "Add poa button clicked")
+            postToList()
+
             val wifiManager: WifiManager = context?.getSystemService(WIFI_SERVICE) as WifiManager
             val ip = ipToString(wifiManager.connectionInfo.ipAddress)
             Log.i(TAG, ip)
 //            6ec97d075cb62c9a12ffdd5d5c4afe029b70570e
-            val community = IPv8Android.getInstance().getOverlay<MandateCommunity>()!!
+            val community = IPv8Android.getInstance().getOverlay<PowerofAttorneyCommunity>()!!
             Log.i(TAG, community.toString())
             val peers = community.getPeers()
             if (peers.isNullOrEmpty()) {
@@ -337,14 +359,9 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
             for (peer in peers) {
                 Log.i(TAG, peer.mid)
             }
-//            lifecycleScope.launch {
-//                while (isActive) {
-//                    community.broadcastGreeting()
-//                    delay(5000)
-//                }
-//            }
+            toggleVisibility()
             val ipv8 = getIpv8()
-            Log.i("Mandate","My Public key: "+ipv8.myPeer.publicKey.keyToBin().toHex())
+            Log.i(TAG,"My Public key: "+ipv8.myPeer.publicKey.keyToBin().toHex())
 //            community.sendPoa()
         }
 
@@ -352,32 +369,32 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
             if (binding.clIdentityAttributes.isVisible) return@setOnClickListener
         }
 
-        binding.tvShowIssuedMandates.setOnClickListener {
-            if (binding.clIssuedMandates.isVisible) return@setOnClickListener
+        binding.tvShowIssuedPoas.setOnClickListener {
+            if (binding.clIssuedPoas.isVisible) return@setOnClickListener
 
-            binding.tvShowYourMandates.apply {
+            binding.tvShowYourPoas.apply {
                 setTypeface(null, Typeface.NORMAL)
                 background = ContextCompat.getDrawable(requireContext(), R.drawable.pill_rounded)
             }
-            binding.tvShowIssuedMandates.apply {
+            binding.tvShowIssuedPoas.apply {
                 setTypeface(null, Typeface.BOLD)
                 background = ContextCompat.getDrawable(requireContext(), R.drawable.pill_rounded_selected)
             }
-            binding.clYourMandates.exitEnterView(requireContext(), binding.clIssuedMandates, true)
+            binding.clYourPoa.exitEnterView(requireContext(), binding.clIssuedPoas, true)
         }
 
-        binding.tvShowYourMandates.setOnClickListener {
-            if (binding.clYourMandates.isVisible) return@setOnClickListener
+        binding.tvShowYourPoas.setOnClickListener {
+            if (binding.clYourPoa.isVisible) return@setOnClickListener
 
-            binding.tvShowYourMandates.apply {
+            binding.tvShowYourPoas.apply {
                 setTypeface(null, Typeface.BOLD)
                 background = ContextCompat.getDrawable(requireContext(), R.drawable.pill_rounded_selected)
             }
-            binding.tvShowIssuedMandates.apply {
+            binding.tvShowIssuedPoas.apply {
                 setTypeface(null, Typeface.NORMAL)
                 background = ContextCompat.getDrawable(requireContext(), R.drawable.pill_rounded)
             }
-            binding.clIssuedMandates.exitEnterView(requireContext(), binding.clYourMandates, false)
+            binding.clIssuedPoas.exitEnterView(requireContext(), binding.clYourPoa, false)
         }
     }
 
@@ -414,8 +431,8 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
     }
 
     private fun toggleVisibility() {
-        binding.tvNoYourMandates.isVisible = adapterAttestations.itemCount == 0
-        binding.tvNoIssuedMandates.isVisible = adapterAttestations.itemCount == 0
+        binding.tvNoIssuedPoas.isVisible = adapterAttestations.itemCount == 0
+        binding.tvNoYourPoas.isVisible = adapterAttestations.itemCount == 0
         binding.tvNoAttributes.isVisible = adapterAttributes.itemCount == 0
     }
 
@@ -428,8 +445,8 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
         )
     }
 
-    private fun addMandate() {
-        IdentityAddMandateDialog().show(parentFragmentManager, tag)
+    private fun addPoa() {
+        IdentityAddPoaDialog().show(parentFragmentManager, tag)
     }
 
     private fun issuePoa() {
@@ -450,7 +467,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
                 createAttestationItems(itemsAttestations)
             )
 
-            binding.rvYourMandates.setItemViewCacheSize(itemsAttestations.size)
+//            binding.rvRecyclerViewYourPoas.setItemViewCacheSize(itemsAttestations.size)
         }
 
         toggleVisibility()
@@ -634,6 +651,43 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
                     }
             }
         } else super.onActivityResult(requestCode, resultCode, data)
+    }
+
+//    TODO: implement
+    private fun updatePoas(){
+
+    }
+
+    private fun addToList(title: String, image: Int) {
+        titlesList.add(title)
+        imagesList.add(image)
+    }
+
+    private fun postToList(){
+        for (i in 1..3) {
+            addToList("Title $i", R.drawable.ic_bug_report_black_24dp)
+            Log.i(TAG, "Added $i to list")
+        }
+    }
+
+    @SuppressLint("NewApi")
+    private fun issueFakePoa() {
+        Log.i(TAG, "FAKE POA ISSUED INITIALIZED")
+        val Poa1 = PowerOfAttorney(
+            kvkNumber = 1,
+            issuedFromRootOfTrust = "KVK",
+            poaType = "Fake",
+            allowedToIssuePoa = false,
+            publicKeyPoaHolder = IPv8Android.getInstance().myPeer.publicKey.keyToBin(),
+            givenNamesPoaHolder = "Jan",
+            surnamePoaHolder = "Jansen",
+            dateOfBirthPoaHolder = LocalDate.parse("2018-12-12"),
+            publicKeyPoaIssuer = IPv8Android.getInstance().myPeer.publicKey.keyToBin(),
+            givenNamesPoaIssuer = "Bert",
+            surnamePoaIssuer = "Kok",
+            dateOfBirthPoaIssuer = LocalDate.parse("2018-12-12")
+        )
+        Log.i(TAG, Poa1.toString())
     }
 
     companion object {

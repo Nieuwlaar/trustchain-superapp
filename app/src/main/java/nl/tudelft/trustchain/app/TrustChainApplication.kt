@@ -56,7 +56,7 @@ import nl.tudelft.trustchain.literaturedao.ipv8.LiteratureCommunity
 import nl.tudelft.trustchain.peerchat.community.PeerChatCommunity
 import nl.tudelft.trustchain.peerchat.db.PeerChatStore
 import nl.tudelft.trustchain.valuetransfer.community.IdentityCommunity
-import nl.tudelft.trustchain.valuetransfer.community.MandateCommunity
+import nl.tudelft.trustchain.valuetransfer.community.PowerofAttorneyCommunity
 import nl.tudelft.trustchain.valuetransfer.db.IdentityStore
 import nl.tudelft.trustchain.voting.VotingCommunity
 import nl.tudelft.gossipML.sqldelight.Database as MLDatabase
@@ -94,7 +94,7 @@ class TrustChainApplication : Application() {
                 createRecommenderCommunity(),
                 createIdentityCommunity(),
                 createFOCCommunity(),
-                createMandateCommunity()
+                createPowerofAttorneyCommunity()
             ),
             walkerInterval = 5.0
         )
@@ -409,10 +409,10 @@ class TrustChainApplication : Application() {
         )
     }
 
-    private fun createMandateCommunity(): OverlayConfiguration<MandateCommunity> {
+    private fun createPowerofAttorneyCommunity(): OverlayConfiguration<PowerofAttorneyCommunity> {
         val randomWalk = RandomWalk.Factory()
         return OverlayConfiguration(
-            Overlay.Factory(MandateCommunity::class.java),
+            Overlay.Factory(PowerofAttorneyCommunity::class.java),
             listOf(randomWalk)
         )
     }

@@ -1,4 +1,4 @@
-package nl.tudelft.trustchain.valuetransfer.ui.mandate
+package nl.tudelft.trustchain.valuetransfer.ui.powerofattorney
 
 import nl.tudelft.ipv8.messaging.Deserializable
 import nl.tudelft.ipv8.messaging.Serializable

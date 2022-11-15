@@ -72,7 +72,7 @@ import nl.tudelft.trustchain.peerchat.entity.ChatMessage
 import nl.tudelft.trustchain.peerchat.entity.ContactImage
 import nl.tudelft.trustchain.peerchat.ui.conversation.MessageAttachment
 import nl.tudelft.trustchain.valuetransfer.community.IdentityCommunity
-import nl.tudelft.trustchain.valuetransfer.community.MandateCommunity
+import nl.tudelft.trustchain.valuetransfer.community.PowerofAttorneyCommunity
 import nl.tudelft.trustchain.valuetransfer.db.IdentityStore
 import nl.tudelft.trustchain.valuetransfer.dialogs.IdentityAttestationConfirmDialog
 import nl.tudelft.trustchain.valuetransfer.passport.PassportHandler
@@ -127,7 +127,7 @@ class ValueTransferMainActivity : BaseActivity() {
         PeerChatCommunity::class.java to IPv8Android.getInstance().getOverlay<PeerChatCommunity>()!!,
         EuroTokenCommunity::class.java to IPv8Android.getInstance().getOverlay<EuroTokenCommunity>()!!,
         AttestationCommunity::class.java to IPv8Android.getInstance().getOverlay<AttestationCommunity>()!!,
-        MandateCommunity::class.java to IPv8Android.getInstance().getOverlay<MandateCommunity>()!!
+        PowerofAttorneyCommunity::class.java to IPv8Android.getInstance().getOverlay<PowerofAttorneyCommunity>()!!
     )
     val stores: Map<Any, Any> = mapOf(
         IdentityStore::class.java to IdentityStore.getInstance(this),
@@ -279,7 +279,6 @@ class ValueTransferMainActivity : BaseActivity() {
         ) {
             onNewIntent(intent)
         }
-
         checkCameraPermissions()
     }
 
@@ -1149,6 +1148,8 @@ class ValueTransferMainActivity : BaseActivity() {
             else -> input.toByteArray()
         }
     }
+
+
 
     /**
      * Check camera permissions
