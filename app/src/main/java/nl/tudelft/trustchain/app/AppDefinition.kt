@@ -7,16 +7,16 @@ import com.example.musicdao.MusicService
 import nl.tudelft.trustchain.FOC.MainActivityFOC
 import nl.tudelft.trustchain.atomicswap.AtomicSwapActivity
 import nl.tudelft.trustchain.common.R
-import nl.tudelft.trustchain.explorer.ui.TrustChainExplorerActivity
 import nl.tudelft.trustchain.currencyii.CurrencyIIMainActivity
 import nl.tudelft.trustchain.debug.DebugActivity
 import nl.tudelft.trustchain.distributedAI.DistributedActivity
 import nl.tudelft.trustchain.eurotoken.EuroTokenMainActivity
-import nl.tudelft.trustchain.ssi.SSIMainActivity
+import nl.tudelft.trustchain.explorer.ui.TrustChainExplorerActivity
 import nl.tudelft.trustchain.liquidity.LiquidityPoolMainActivity
 import nl.tudelft.trustchain.literaturedao.LiteratureDaoActivity
 import nl.tudelft.trustchain.payloadgenerator.ui.TrustChainPayloadGeneratorActivity
 import nl.tudelft.trustchain.peerchat.PeerChatActivity
+import nl.tudelft.trustchain.ssi.SSIMainActivity
 import nl.tudelft.trustchain.trader.ui.TrustChainTraderActivity
 import nl.tudelft.trustchain.valuetransfer.ValueTransferMainActivity
 import nl.tudelft.trustchain.voting.VotingActivity
@@ -108,9 +108,9 @@ enum class AppDefinition(
         LiquidityPoolMainActivity::class.java
     ),
     VALUETRANSFER(
-        R.drawable.ic_idelft_logo,
-        "IDelft",
-        R.color.colorPrimaryValueTransfer,
+        R.drawable.ic_idknip1,
+        "IDknip",
+        R.color.black,
         ValueTransferMainActivity::class.java,
         true,
     ),
