@@ -20,7 +20,7 @@ import org.json.JSONObject
 class IdentityAddKvkPoaDialog : VTDialogFragment() {
     private var filledKvkNumber = ""
     private val TAG = "PoaCommunity"
-    private val URL_KVK_API = "http://127.0.0.1:3333/api/bevoegheden/"
+    private val URL_KVK_API = "https://04fd-145-94-244-59.eu.ngrok.io/api/bevoegdheid/"
 
     override fun onCreateDialog(savedInstanceState: Bundle?): BottomSheetDialog {
         return activity?.let {
@@ -71,17 +71,18 @@ class IdentityAddKvkPoaDialog : VTDialogFragment() {
                 val request = JsonObjectRequest(
                     Request.Method.POST, apiUrlWithKvkNumber, jsonObject,
                     { response ->
-                        val paymentId = response.getString("payment_id")
+                        val paymentId = response.toString()
                         Log.i(TAG, "API Respone: $paymentId")
                     },
                     { error ->
-                        Log.e(TAG, error.message ?: error.toString())
+                        Log.e(TAG, "RESPONSE IS $error")
                         parentActivity.displayToast(
                             requireContext(),
                             resources.getString(R.string.snackbar_unexpected_error_occurred)
                         )
                     }
                 )
+                Log.i(TAG, request.toString())
                 // Add the volley post request to the request queue
                 queue.add(request)
             }
