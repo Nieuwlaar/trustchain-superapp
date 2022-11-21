@@ -117,6 +117,8 @@ class ValueTransferMainActivity : BaseActivity() {
 
     private var isAppInForeground = true
 
+    var myPublicKey = ""
+
     /**
      * Initialize all communities and (database) stores and repo's for performance purposes and
      * ease of use in other classes/fragments.
@@ -180,6 +182,13 @@ class ValueTransferMainActivity : BaseActivity() {
 
         // Create Power of Attorney database tables if not exist
         val powerofAttorneyCommunity = getCommunity<PowerofAttorneyCommunity>()!!
+
+        myPublicKey = getCommunity<TrustChainCommunity>()!!.myPeer.publicKey.keyToBin().toHex()
+        Log.i("PoaCommunity", "My public key is: "+myPublicKey)
+
+        // Only use this to whipe old poa tables (this will whipe all previous stored poas)
+//        powerofAttorneyCommunity.deletePoasTable()
+
         powerofAttorneyCommunity.createPoasTable()
 
         /**
@@ -1193,6 +1202,7 @@ class ValueTransferMainActivity : BaseActivity() {
             }
         }
     }
+
 
     companion object {
         const val walletOverviewFragmentTag = "wallet_overview_fragment"

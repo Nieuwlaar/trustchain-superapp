@@ -679,13 +679,22 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
     private fun issueFakePoa() {
         Log.i(TAG, "FAKE POA ISSUED INITIALIZED")
         val Poa1 = PowerOfAttorney(
-            id = "ID",
-            companyName = "Witbaard",
+            id = (0..9999999999).random().toString(),
             kvkNumber = 1,
-            poaType = "Fake",
+            companyName = "Witbaard",
+            poaType = "FAKE",
+            isPermitted = "YES",
+            isAllowedToIssuePoa = "YES",
+            publicKeyPoaHolder = "A",
             givenNamesPoaHolder = "Jan",
-            givenNamesPoaIssuer = "Bert"
+            surnamePoaHolder = "Klaasen",
+            dateOfBirthPoaHolder = "20, 01, 1994",
+            publicKeyPoaIssuer = "A",
+            givenNamesPoaIssuer = "Bert",
+            surnamePoaIssuer = "Jansen",
+            dateOfBirthPoaIssuer = "20, 02, 2000"
         )
+
         val community = IPv8Android.getInstance().getOverlay<PowerofAttorneyCommunity>()!!
         community.addFakePoa(Poa1)
         Log.i(TAG, Poa1.toString())

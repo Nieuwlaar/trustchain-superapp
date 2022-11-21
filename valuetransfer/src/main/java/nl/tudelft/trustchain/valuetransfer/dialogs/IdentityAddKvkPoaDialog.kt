@@ -16,11 +16,12 @@ import nl.tudelft.trustchain.valuetransfer.R
 import nl.tudelft.trustchain.valuetransfer.ui.VTDialogFragment
 import nl.tudelft.trustchain.valuetransfer.util.setNavigationBarColor
 import org.json.JSONObject
+import java.util.*
 
 class IdentityAddKvkPoaDialog : VTDialogFragment() {
     private var filledKvkNumber = ""
     private val TAG = "PoaCommunity"
-    private val URL_KVK_API = "https://04fd-145-94-244-59.eu.ngrok.io/api/bevoegdheid/"
+    private val URL_KVK_API = "https://e791-176-117-57-244.eu.ngrok.io/api/bevoegdheid/"
 
     override fun onCreateDialog(savedInstanceState: Bundle?): BottomSheetDialog {
         return activity?.let {
@@ -71,8 +72,44 @@ class IdentityAddKvkPoaDialog : VTDialogFragment() {
                 val request = JsonObjectRequest(
                     Request.Method.POST, apiUrlWithKvkNumber, jsonObject,
                     { response ->
-                        val paymentId = response.toString()
-                        Log.i(TAG, "API Respone: $paymentId")
+//                      TODO: add error messages
+                        Log.i(TAG, "Response type: " + response.javaClass.name)
+
+                        val id = UUID.randomUUID().toString()
+                        Log.i(TAG, "API Respone id: $id")
+
+                        val kvkNumber = response.getJSONObject("inschrijving").getString("kvkNummer")
+                        Log.i(TAG, "API Respone kvkNumber: $kvkNumber")
+
+                        val companyName = response.getJSONObject("inschrijving").getString("naam")
+                        Log.i(TAG, "API Respone companyName: $companyName")
+
+                        val poaType = "Full Proof of Attorney"
+                        Log.i(TAG, "API Respone poaType: $poaType")
+
+                        val isBevoegd =  response.getJSONObject("bevoegdheidUittreksel").getJSONObject("matchedFunctionaris").getJSONObject("interpretatie").getString("isBevoegd")
+                        var isPermitted: String
+                        var isAllowedToIssuePoa: String
+//                      Using the most strict form of "isBevoegd" (see KVK API documentation)
+                        if (isBevoegd == "Ja"){
+                            isPermitted = "YES"
+                            isAllowedToIssuePoa = "YES"
+                        } else {
+                            isPermitted = "NO"
+                            isAllowedToIssuePoa = "NO"
+                        }
+                        Log.i(TAG, "API Respone isPermitted: $isPermitted")
+                        Log.i(TAG, "API Respone isAllowedToIssuePoa: $isAllowedToIssuePoa")
+
+
+//                      TODO: Get public key
+                        val publicKeyPoaHolder = "A"
+                        Log.i(TAG, "API Respone publicKeyPoaHolder: $publicKeyPoaHolder")
+
+                        val geslachtsnaam = response.getJSONObject("bevoegdheidUittreksel").getJSONObject("matchedFunctionaris").getString("geslachtsnaam")
+                        Log.i(TAG, "API Respone geslachtsnaam: $geslachtsnaam")
+                        val responseString = response.toString()
+                        Log.i(TAG, "API Respone: $responseString")
                     },
                     { error ->
                         Log.e(TAG, "RESPONSE IS $error")

@@ -16,13 +16,25 @@ class PoaStore(context: Context) {
             poa.kvkNumber,
             poa.companyName,
             poa.poaType,
+            poa.isPermitted,
+            poa.isAllowedToIssuePoa,
+            poa.publicKeyPoaHolder,
             poa.givenNamesPoaHolder,
-            poa.givenNamesPoaIssuer
+            poa.surnamePoaHolder,
+            poa.dateOfBirthPoaHolder,
+            poa.publicKeyPoaIssuer,
+            poa.givenNamesPoaIssuer,
+            poa.surnamePoaIssuer,
+            poa.dateOfBirthPoaIssuer,
         )
     }
 
     fun createPoasTable() {
         return database.dbProofofAttorneyQueries.createPoasTable()
+    }
+
+    fun deletePoasTable() {
+        return database.dbProofofAttorneyQueries.deletePoasTable()
     }
 
 

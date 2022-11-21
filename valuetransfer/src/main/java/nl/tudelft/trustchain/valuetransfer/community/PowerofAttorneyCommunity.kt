@@ -37,6 +37,7 @@ class PowerofAttorneyCommunity(private val store: PoaStore) : Community() {
         return "4c69624e61434c504b3a0bc295507498057504d7f96cac24cba48372a583d324aeb896485c2a59efbe1db3056345ae72185bab19755f688deabadb964dbaf487e64d15ff13ca43f1c634"
     }
 
+
     /*
     Obtain IP from the peer that is scanned from QR (peer has to be in community)
      */
@@ -75,6 +76,10 @@ class PowerofAttorneyCommunity(private val store: PoaStore) : Community() {
 
     fun createPoasTable() {
         store.createPoasTable()
+    }
+
+    fun deletePoasTable() {
+        store.deletePoasTable()
     }
 
     fun addFakePoa(poa: PowerOfAttorney) {
