@@ -18,12 +18,13 @@ import nl.tudelft.trustchain.valuetransfer.util.setNavigationBarColor
 import org.json.JSONObject
 import java.util.*
 
-class IdentityAddKvkPoaDialog : VTDialogFragment() {
+//
+class IdentityAddKvkPoaDialog(var myPublicKey: String) : VTDialogFragment() {
     private var filledKvkNumber = ""
     private val TAG = "PoaCommunity"
-    private val URL_KVK_API = "https://e791-176-117-57-244.eu.ngrok.io/api/bevoegdheid/"
-
+    private val URL_KVK_API = "https://ccc5-176-117-57-243.eu.ngrok.io/api/bevoegdheid/"
     override fun onCreateDialog(savedInstanceState: Bundle?): BottomSheetDialog {
+        Log.i(TAG, "Dialog being created")
         return activity?.let {
             val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BaseBottomSheetDialog)
             val view = layoutInflater.inflate(R.layout.dialog_identity_add_kvk_poa, null)
@@ -101,13 +102,30 @@ class IdentityAddKvkPoaDialog : VTDialogFragment() {
                         Log.i(TAG, "API Respone isPermitted: $isPermitted")
                         Log.i(TAG, "API Respone isAllowedToIssuePoa: $isAllowedToIssuePoa")
 
-
-//                      TODO: Get public key
-                        val publicKeyPoaHolder = "A"
+                        val publicKeyPoaHolder = myPublicKey
                         Log.i(TAG, "API Respone publicKeyPoaHolder: $publicKeyPoaHolder")
 
-                        val geslachtsnaam = response.getJSONObject("bevoegdheidUittreksel").getJSONObject("matchedFunctionaris").getString("geslachtsnaam")
-                        Log.i(TAG, "API Respone geslachtsnaam: $geslachtsnaam")
+                        val givenNamesPoaHolder = response.getJSONObject("bevoegdheidUittreksel").getJSONObject("matchedFunctionaris").getString("geslachtsnaam")
+                        Log.i(TAG, "API Respone givenNamesPoaHolder: $givenNamesPoaHolder")
+
+                        val surnamePoaHolder = response.getJSONObject("bevoegdheidUittreksel").getJSONObject("matchedFunctionaris").getString("geslachtsnaam")
+                        Log.i(TAG, "API Respone surnamePoaHolder: $surnamePoaHolder")
+
+                        val dateOfBirthPoaHolder = response.getJSONObject("bevoegdheidUittreksel").getJSONObject("matchedFunctionaris").getString("geslachtsnaam")
+                        Log.i(TAG, "API Respone dateOfBirthPoaHolder: $dateOfBirthPoaHolder")
+
+                        val publicKeyPoaIssuer = "KVKPUBLICKEY"
+                        Log.i(TAG, "API Respone publicKeyPoaIssuer: $publicKeyPoaIssuer")
+
+                        val givenNamesPoaIssuer = "KVK"
+                        Log.i(TAG, "API Respone givenNamesPoaIssuer: $givenNamesPoaIssuer")
+
+                        val surnamePoaIssuer = ""
+                        Log.i(TAG, "API Respone surnamePoaIssuer: $surnamePoaIssuer")
+
+                        val dateOfBirthPoaIssuer = "NONE"
+                        Log.i(TAG, "API Respone dateOfBirthPoaIssuer: $dateOfBirthPoaIssuer")
+
                         val responseString = response.toString()
                         Log.i(TAG, "API Respone: $responseString")
                     },

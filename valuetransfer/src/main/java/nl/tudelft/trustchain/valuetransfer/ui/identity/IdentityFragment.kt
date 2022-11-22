@@ -447,7 +447,9 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
     }
 
     private fun addKvkPoa() {
-        IdentityAddKvkPoaDialog().show(parentFragmentManager, tag)
+        val ipv8 = getIpv8()
+        Log.i(TAG, "PUBLIC KEY TO POA DIALOG: "+ipv8.myPeer.publicKey.keyToBin().toHex() )
+        IdentityAddKvkPoaDialog(ipv8.myPeer.publicKey.keyToBin().toHex()).show(parentFragmentManager, tag)
     }
 
     private fun addPoa() {
