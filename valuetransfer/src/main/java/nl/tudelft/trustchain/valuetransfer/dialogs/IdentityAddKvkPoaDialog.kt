@@ -108,7 +108,10 @@ class IdentityAddKvkPoaDialog(var myPublicKey: String) : VTDialogFragment() {
                         val givenNamesPoaHolder = response.getJSONObject("bevoegdheidUittreksel").getJSONObject("matchedFunctionaris").getString("geslachtsnaam")
                         Log.i(TAG, "API Respone givenNamesPoaHolder: $givenNamesPoaHolder")
 
-                        val surnamePoaHolder = response.getJSONObject("bevoegdheidUittreksel").getJSONObject("matchedFunctionaris").getString("geslachtsnaam")
+//                        TODO: Pick where the holder info should come from (KVK or internal identity)
+                        val identity = getIdentityCommunity().getIdentity()!!
+                        Log.i(TAG, "ALL CRAP FROM getIdentity : "+ identity.toString())
+                        val surnamePoaHolder = identity.content.surname
                         Log.i(TAG, "API Respone surnamePoaHolder: $surnamePoaHolder")
 
                         val dateOfBirthPoaHolder = response.getJSONObject("bevoegdheidUittreksel").getJSONObject("matchedFunctionaris").getString("geslachtsnaam")

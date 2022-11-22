@@ -64,6 +64,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
     private val identityImage = MutableLiveData<String?>()
     private val TAG = "PoaCommunity"
 
+
     private val itemsIdentity: LiveData<List<Item>> by lazy {
         combine(getIdentityStore().getAllIdentities(), identityImage.asFlow()) { identities, identityImage ->
             createIdentityItems(identities, identityImage)
@@ -679,27 +680,39 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
 
     @SuppressLint("NewApi")
     private fun issueFakePoa() {
+        val identity = getIdentityCommunity().getIdentity()!!
+        val ipv8 = getIpv8()
+        val myPublicKey = ipv8.myPeer.publicKey.keyToBin().toHex()
         Log.i(TAG, "FAKE POA ISSUED INITIALIZED")
         val Poa1 = PowerOfAttorney(
             id = (0..9999999999).random().toString(),
-            kvkNumber = 1,
+            kvkNumber = 12345678,
             companyName = "Witbaard",
             poaType = "FAKE",
             isPermitted = "YES",
             isAllowedToIssuePoa = "YES",
-            publicKeyPoaHolder = "A",
-            givenNamesPoaHolder = "Jan",
-            surnamePoaHolder = "Klaasen",
-            dateOfBirthPoaHolder = "20, 01, 1994",
+            publicKeyPoaHolder = myPublicKey,
+            givenNamesPoaHolder = identity.content.givenNames,
+            surnamePoaHolder = identity.content.surname,
+            dateOfBirthPoaHolder = getDateOfBirth(identity),
             publicKeyPoaIssuer = "A",
-            givenNamesPoaIssuer = "Bert",
+            givenNamesPoaIssuer = "Jan",
             surnamePoaIssuer = "Jansen",
-            dateOfBirthPoaIssuer = "20, 02, 2000"
+            dateOfBirthPoaIssuer = "20 JANUARY 2000"
         )
+        Log.i(TAG, "dateOfBirthPoaHolder in fake POA: "+identity.content.dateOfBirth.toString())
+        val poaCommunity = IPv8Android.getInstance().getOverlay<PowerofAttorneyCommunity>()!!
 
-        val community = IPv8Android.getInstance().getOverlay<PowerofAttorneyCommunity>()!!
-        community.addFakePoa(Poa1)
+        poaCommunity.addFakePoa(Poa1)
         Log.i(TAG, Poa1.toString())
+    }
+
+//    In day, month, year (Example: 1 JANUARY 2000)
+    @OptIn(ExperimentalStdlibApi::class)
+    private fun getDateOfBirth(identity: Identity): String {
+        val fullDateOfBirth = identity.content.dateOfBirth.toString()
+        val fullDateOfBirthSeperated = fullDateOfBirth.split("\\s".toRegex()).toTypedArray()
+        return fullDateOfBirthSeperated[2] +" "+ fullDateOfBirthSeperated[1].uppercase() +" "+ fullDateOfBirthSeperated[5]
     }
 
     companion object {
