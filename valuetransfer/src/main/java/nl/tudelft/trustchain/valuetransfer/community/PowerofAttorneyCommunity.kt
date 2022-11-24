@@ -74,6 +74,10 @@ class PowerofAttorneyCommunity(private val store: PoaStore) : Community() {
         }
     }
 
+    fun deleteAllPoas() {
+        store.deleteAllPoas()
+    }
+
     fun createPoasTable() {
         store.createPoasTable()
     }
@@ -81,6 +85,8 @@ class PowerofAttorneyCommunity(private val store: PoaStore) : Community() {
     fun deletePoasTable() {
         store.deletePoasTable()
     }
+
+
 
     //TODO: implement
 //    fun isValidPoaValues(identity: Identity, poa: PowerOfAttorney): Boolean{

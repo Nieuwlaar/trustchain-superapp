@@ -26,7 +26,7 @@ import java.util.*
 class IdentityAddKvkPoaDialog(var myPublicKey: String) : VTDialogFragment() {
     private var filledKvkNumber = ""
     private val TAG = "PoaCommunity"
-    private val URL_KVK_API = "https://5775-176-117-57-244.eu.ngrok.io/api/bevoegdheid/"
+    private val URL_KVK_API = "https://205d-176-117-57-244.eu.ngrok.io/api/bevoegdheid/"
     override fun onCreateDialog(savedInstanceState: Bundle?): BottomSheetDialog {
         Log.i(TAG, "Dialog being created")
         return activity?.let {
@@ -71,13 +71,10 @@ class IdentityAddKvkPoaDialog(var myPublicKey: String) : VTDialogFragment() {
 
                 // Get identity values
                 val identity = getIdentityCommunity().getIdentity()!!
-//      Log.i(TAG, "ALL CRAP FROM getIdentity : "+ identity.toString())
                 val surnameFromIdentity = identity.content.surname
-//                val dateOfBirthFromIdentity = identity.content.dateOfBirth
                 val givenNamesFromIdentity = identity.content.givenNames
 
                 val jsonObject = JSONObject()
-                // TODO: fill in identity values
                 jsonObject.put("geboortedatum", IdentityFragment.getDateOfBirth(identity))
                 jsonObject.put("voornamen", convertGivenNames(givenNamesFromIdentity))
                 jsonObject.put("voorvoegselGeslachtsnaam", convertPrefixes(surnameFromIdentity))
@@ -118,15 +115,13 @@ class IdentityAddKvkPoaDialog(var myPublicKey: String) : VTDialogFragment() {
                         val publicKeyPoaHolder = myPublicKey
                         Log.i(TAG, "API Respone publicKeyPoaHolder: $publicKeyPoaHolder")
 
-                        val givenNamesPoaHolder = response.getJSONObject("bevoegdheidUittreksel").getJSONObject("matchedFunctionaris").getString("geslachtsnaam")
+                        val givenNamesPoaHolder = response.getJSONObject("bevoegdheidUittreksel").getJSONObject("matchedFunctionaris").getString("voornamen")
                         Log.i(TAG, "API Respone givenNamesPoaHolder: $givenNamesPoaHolder")
-
-//                        TODO: Pick where the holder info should come from (KVK or internal identity)
 
                         val surnamePoaHolder = response.getJSONObject("bevoegdheidUittreksel").getJSONObject("matchedFunctionaris").getString("geslachtsnaam")
                         Log.i(TAG, "API Respone surnamePoaHolder: $surnamePoaHolder")
 
-                        val dateOfBirthPoaHolder = response.getJSONObject("bevoegdheidUittreksel").getJSONObject("matchedFunctionaris").getString("geslachtsnaam")
+                        val dateOfBirthPoaHolder = response.getJSONObject("bevoegdheidUittreksel").getJSONObject("matchedFunctionaris").getString("geboortedatum")
                         Log.i(TAG, "API Respone dateOfBirthPoaHolder: $dateOfBirthPoaHolder")
 
                         val publicKeyPoaIssuer = ""
@@ -160,14 +155,15 @@ class IdentityAddKvkPoaDialog(var myPublicKey: String) : VTDialogFragment() {
                             surnamePoaIssuer = givenNamesPoaIssuer,
                             dateOfBirthPoaIssuer = dateOfBirthPoaIssuer
                         )
-                        if (isValidKvkPoa(receivedKvkPoa)){
+                        if (isValidKvkPoa(response)){
+                            Log.i(TAG, "isValidKvkPoa is TRUE")
                             val poaCommunity = IPv8Android.getInstance().getOverlay<PowerofAttorneyCommunity>()!!
                             poaCommunity.addPoa(receivedKvkPoa)
                         } else {
-                            Log.e(TAG, "isValidKvkPoa is FALSE: ")
+                            Log.i(TAG, "isValidKvkPoa is FALSE")
                             parentActivity.displayToast(
                                 requireContext(),
-                                resources.getString(R.string.snackbar_unexpected_error_occurred)
+                                "Received KVK Power of Attorney is invalid"
                             )
                         }
                     },
@@ -220,18 +216,13 @@ class IdentityAddKvkPoaDialog(var myPublicKey: String) : VTDialogFragment() {
         return surname
     }
 
-    private fun isValidKvkPoa(receivedKvkPoa: PowerOfAttorney): Boolean {
-        //TODO: check identity with receivedpoa
-//      val identity = getIdentityCommunity().getIdentity()!!
-//      Log.i(TAG, "ALL CRAP FROM getIdentity : "+ identity.toString())
-//      val surnamePoaHolder = identity.content.surname
-        if (receivedKvkPoa.poaType == "Full Power of Attorney"){
-            return true
-        }
+    private fun isValidKvkPoa(response: Any): Boolean {
+        // Validate signed XML from KVK API here, in case IDknip is brough to production
+        Log.i("DUMB", response.toString())
         return true
     }
 
-    internal fun isValidKvkNumber(kvkNumber: String): Boolean {
+    private fun isValidKvkNumber(kvkNumber: String): Boolean {
         if (!"^[0-9]*\$".toRegex().matches(kvkNumber)) {
             return false
         }

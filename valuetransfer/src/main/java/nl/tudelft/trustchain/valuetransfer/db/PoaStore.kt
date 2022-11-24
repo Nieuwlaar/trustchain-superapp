@@ -11,7 +11,7 @@ class PoaStore(context: Context) {
     private val database = Database(driver)
 
     fun addPoa(poa: PowerOfAttorney) {
-        database.dbProofofAttorneyQueries.addPoa(
+        database.dbPowerofAttorneyQueries.addPoa(
             poa.id,
             poa.kvkNumber,
             poa.companyName,
@@ -29,12 +29,16 @@ class PoaStore(context: Context) {
         )
     }
 
+    fun deleteAllPoas() {
+        return database.dbPowerofAttorneyQueries.deleteAllPoas()
+    }
+
     fun createPoasTable() {
-        return database.dbProofofAttorneyQueries.createPoasTable()
+        return database.dbPowerofAttorneyQueries.createPoasTable()
     }
 
     fun deletePoasTable() {
-        return database.dbProofofAttorneyQueries.deletePoasTable()
+        return database.dbPowerofAttorneyQueries.deletePoasTable()
     }
 
 

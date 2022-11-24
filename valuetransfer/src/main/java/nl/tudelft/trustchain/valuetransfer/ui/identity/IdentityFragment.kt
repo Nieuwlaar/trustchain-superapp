@@ -420,6 +420,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
 
     @SuppressLint("RestrictedApi")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val community = IPv8Android.getInstance().getOverlay<PowerofAttorneyCommunity>()!!
         OptionsDialog(
             R.menu.identity_options,
             resources.getString(R.string.dialog_choose_option),
@@ -428,6 +429,10 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
                 R.id.actionViewAuthorities -> IdentityAttestationAuthoritiesDialog(
                     trustchain.getMyPublicKey().toHex()
                 ).show(parentFragmentManager, tag)
+                R.id.actionDeleteAllPoas -> {
+                    Log.i(TAG, "Delete all PoAs button clicked")
+                    community.deleteAllPoas()
+                }
             }
         }.show(parentFragmentManager, tag)
 

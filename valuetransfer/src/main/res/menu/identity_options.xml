@@ -4,5 +4,8 @@
         android:id="@+id/actionViewAuthorities"
         android:icon="@drawable/ic_authority"
         android:title="@string/menu_identity_authorities_view" />
-
+    <item
+        android:id="@+id/actionDeleteAllPoas"
+        android:icon="@drawable/ic_delete"
+        android:title="@string/menu_identity_delete_poas" />
 </menu>

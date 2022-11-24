@@ -35,6 +35,6 @@ INSERT INTO poas(id, kvk_number, company_name, poa_type, is_permitted, is_allowe
 -- deleteAttribute:
 -- DELETE FROM attributes WHERE id = ?;
 
--- deleteAllAttributes:
--- DELETE FROM attributes;
+deleteAllPoas:
+DELETE FROM poas;
 

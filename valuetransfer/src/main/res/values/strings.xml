@@ -57,6 +57,7 @@
     <string name="menu_identity_edit">Edit Identity</string>
     <string name="menu_identity_remove">Remove Identity</string>
     <string name="menu_identity_authorities_view">View Trusted Authorities</string>
+    <string name="menu_identity_delete_poas">Delete All Powers of Attorney</string>
     <string name="menu_wallet_overview_settings">Settings</string>
     <string name="menu_identity_attribute_edit">Edit Identity Attribute</string>
     <string name="menu_identity_attribute_delete">Delete Identity Attribute</string>
