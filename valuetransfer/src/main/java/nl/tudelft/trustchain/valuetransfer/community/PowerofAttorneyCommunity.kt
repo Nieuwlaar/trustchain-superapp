@@ -56,10 +56,10 @@ class PowerofAttorneyCommunity(private val store: PoaStore) : Community() {
         return address
     }
 
-    /*
+    /**
     Function to initialize a Power of Attorney (PoA)
     Peers in community are scanned and matched to the scanned QR public key to receive the IP and send the PoA message.
-    */
+    **/
     fun sendPoa(publicKey: String){
         val packet = serializePacket(MESSAGE_ID, MyMessage("Hello, it works 2!!"))
 //        val publicKey = getPublicKeyFromQR()
@@ -80,6 +80,15 @@ class PowerofAttorneyCommunity(private val store: PoaStore) : Community() {
 
     fun deletePoasTable() {
         store.deletePoasTable()
+    }
+
+    //TODO: implement
+//    fun isValidPoaValues(identity: Identity, poa: PowerOfAttorney): Boolean{
+//        return true
+//    }
+
+    fun addPoa(poa: PowerOfAttorney) {
+        store.addPoa(poa)
     }
 
     fun addFakePoa(poa: PowerOfAttorney) {

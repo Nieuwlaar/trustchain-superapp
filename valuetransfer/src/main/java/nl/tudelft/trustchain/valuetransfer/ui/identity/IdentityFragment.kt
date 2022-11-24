@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.*
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mattskala.itemadapter.Item
@@ -50,6 +51,7 @@ import nl.tudelft.trustchain.valuetransfer.util.copyToClipboard
 import nl.tudelft.trustchain.valuetransfer.util.getInitials
 import nl.tudelft.trustchain.valuetransfer.util.mapToJSON
 import org.json.JSONObject
+import java.util.*
 
 class IdentityFragment : VTFragment(R.layout.fragment_identity) {
     private val binding by viewBinding(FragmentIdentityBinding::bind)
@@ -684,8 +686,8 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
         val ipv8 = getIpv8()
         val myPublicKey = ipv8.myPeer.publicKey.keyToBin().toHex()
         Log.i(TAG, "FAKE POA ISSUED INITIALIZED")
-        val Poa1 = PowerOfAttorney(
-            id = (0..9999999999).random().toString(),
+        val fakePoa = PowerOfAttorney(
+            id = UUID.randomUUID().toString(),
             kvkNumber = 12345678,
             companyName = "Witbaard",
             poaType = "FAKE",
@@ -696,22 +698,23 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
             surnamePoaHolder = identity.content.surname,
             dateOfBirthPoaHolder = getDateOfBirth(identity),
             publicKeyPoaIssuer = "A",
-            givenNamesPoaIssuer = "Jan",
-            surnamePoaIssuer = "Jansen",
+            givenNamesPoaIssuer = "JAN",
+            surnamePoaIssuer = "JANSEN",
             dateOfBirthPoaIssuer = "20 JANUARY 2000"
         )
         Log.i(TAG, "dateOfBirthPoaHolder in fake POA: "+identity.content.dateOfBirth.toString())
         val poaCommunity = IPv8Android.getInstance().getOverlay<PowerofAttorneyCommunity>()!!
 
-        poaCommunity.addFakePoa(Poa1)
-        Log.i(TAG, Poa1.toString())
+        poaCommunity.addFakePoa(fakePoa)
+        Log.i(TAG, fakePoa.toString())
     }
 
-//    In day, month, year (Example: 1 JANUARY 2000)
+        /** Obtain date of birth in day, month, year string format from identity object
+        **  - Example return: "1 JANUARY 2000"
+        **/
     @OptIn(ExperimentalStdlibApi::class)
     private fun getDateOfBirth(identity: Identity): String {
-        val fullDateOfBirth = identity.content.dateOfBirth.toString()
-        val fullDateOfBirthSeperated = fullDateOfBirth.split("\\s".toRegex()).toTypedArray()
+        val fullDateOfBirthSeperated = identity.content.dateOfBirth.toString().split("\\s".toRegex()).toTypedArray()
         return fullDateOfBirthSeperated[2] +" "+ fullDateOfBirthSeperated[1].uppercase() +" "+ fullDateOfBirthSeperated[5]
     }
 
