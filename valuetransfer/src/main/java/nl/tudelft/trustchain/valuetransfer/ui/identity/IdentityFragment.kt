@@ -714,13 +714,6 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
         Log.i(TAG, fakePoa.toString())
     }
 
-        /**
-         * Obtain date of birth in day, month, year string format from identity object
-         * - Example return: "1 JANUARY 2000"
-        **/
-
-
-
 
     companion object {
         @OptIn(ExperimentalStdlibApi::class)
