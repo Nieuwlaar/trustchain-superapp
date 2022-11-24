@@ -700,7 +700,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
             publicKeyPoaIssuer = "A",
             givenNamesPoaIssuer = "JAN",
             surnamePoaIssuer = "JANSEN",
-            dateOfBirthPoaIssuer = "20 JANUARY 2000"
+            dateOfBirthPoaIssuer = "20-01-2000"
         )
         Log.i(TAG, "dateOfBirthPoaHolder in fake POA: "+identity.content.dateOfBirth.toString())
         val poaCommunity = IPv8Android.getInstance().getOverlay<PowerofAttorneyCommunity>()!!
@@ -709,16 +709,41 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
         Log.i(TAG, fakePoa.toString())
     }
 
-        /** Obtain date of birth in day, month, year string format from identity object
-        **  - Example return: "1 JANUARY 2000"
+        /**
+         * Obtain date of birth in day, month, year string format from identity object
+         * - Example return: "1 JANUARY 2000"
         **/
-    @OptIn(ExperimentalStdlibApi::class)
-    private fun getDateOfBirth(identity: Identity): String {
-        val fullDateOfBirthSeperated = identity.content.dateOfBirth.toString().split("\\s".toRegex()).toTypedArray()
-        return fullDateOfBirthSeperated[2] +" "+ fullDateOfBirthSeperated[1].uppercase() +" "+ fullDateOfBirthSeperated[5]
-    }
+
+
+
 
     companion object {
+        @OptIn(ExperimentalStdlibApi::class)
+        fun getDateOfBirth(identity: Identity): String {
+            val fullDateOfBirthSeperated = identity.content.dateOfBirth.toString().split("\\s".toRegex()).toTypedArray()
+            return fullDateOfBirthSeperated[2] + "-" + convertMonthToNumber(fullDateOfBirthSeperated[1].uppercase()) + "-" + fullDateOfBirthSeperated[5]
+        }
+        private fun convertMonthToNumber(month: String): String {
+            when (month) {
+                "JANUARY" -> return "01"
+                "FEBRUARY" -> return "02"
+                "MARCH" -> return "03"
+                "APRIL" -> return "04"
+                "MAY" -> return "05"
+                "JUNE" -> return "06"
+                "JULY" -> return "07"
+                "AUGUST" -> return "08"
+                "SEPTEMBER" -> return "09"
+                "OCTOBER" -> return "10"
+                "NOVEMBER" -> return "11"
+                "DECEMBER" -> return "12"
+                else -> {
+                    Log.e("PoaCommunity", "Month could not be converted to number!")
+                    return "00"
+                }
+            }
+        }
+
         private const val ADD_ATTESTATION_INTENT = 0
         private const val ADD_AUTHORITY_INTENT = 1
         private const val PICK_IDENTITY_IMAGE = 2

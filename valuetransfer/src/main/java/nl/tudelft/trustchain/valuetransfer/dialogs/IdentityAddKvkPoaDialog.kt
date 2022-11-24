@@ -17,6 +17,7 @@ import nl.tudelft.trustchain.valuetransfer.R
 import nl.tudelft.trustchain.valuetransfer.community.PowerofAttorneyCommunity
 import nl.tudelft.trustchain.valuetransfer.entity.PowerOfAttorney
 import nl.tudelft.trustchain.valuetransfer.ui.VTDialogFragment
+import nl.tudelft.trustchain.valuetransfer.ui.identity.IdentityFragment
 import nl.tudelft.trustchain.valuetransfer.util.setNavigationBarColor
 import org.json.JSONObject
 import java.util.*
@@ -25,7 +26,7 @@ import java.util.*
 class IdentityAddKvkPoaDialog(var myPublicKey: String) : VTDialogFragment() {
     private var filledKvkNumber = ""
     private val TAG = "PoaCommunity"
-    private val URL_KVK_API = "https://ccc5-176-117-57-243.eu.ngrok.io/api/bevoegdheid/"
+    private val URL_KVK_API = "https://5775-176-117-57-244.eu.ngrok.io/api/bevoegdheid/"
     override fun onCreateDialog(savedInstanceState: Bundle?): BottomSheetDialog {
         Log.i(TAG, "Dialog being created")
         return activity?.let {
@@ -67,12 +68,20 @@ class IdentityAddKvkPoaDialog(var myPublicKey: String) : VTDialogFragment() {
                 val queue = Volley.newRequestQueue(requireContext())
                 val apiUrlWithKvkNumber = URL_KVK_API+filledKvkNumber
                 Log.i(TAG, "POST URL: $apiUrlWithKvkNumber")
+
+                // Get identity values
+                val identity = getIdentityCommunity().getIdentity()!!
+//      Log.i(TAG, "ALL CRAP FROM getIdentity : "+ identity.toString())
+                val surnameFromIdentity = identity.content.surname
+//                val dateOfBirthFromIdentity = identity.content.dateOfBirth
+                val givenNamesFromIdentity = identity.content.givenNames
+
                 val jsonObject = JSONObject()
                 // TODO: fill in identity values
-                jsonObject.put("geboortedatum", "01-01-2000")
-                jsonObject.put("voornamen", "Jan")
-                jsonObject.put("geslachtsnaam", "Klaasen")
-                jsonObject.put("voorvoegselGeslachtsnaam", "")
+                jsonObject.put("geboortedatum", IdentityFragment.getDateOfBirth(identity))
+                jsonObject.put("voornamen", convertGivenNames(givenNamesFromIdentity))
+                jsonObject.put("voorvoegselGeslachtsnaam", convertPrefixes(surnameFromIdentity))
+                jsonObject.put("geslachtsnaam", convertSurNames(surnameFromIdentity))
                 Log.i(TAG, "JSON object: $jsonObject")
                 val request = JsonObjectRequest(
                     Request.Method.POST, apiUrlWithKvkNumber, jsonObject,
@@ -181,6 +190,34 @@ class IdentityAddKvkPoaDialog(var myPublicKey: String) : VTDialogFragment() {
             bottomSheetDialog.show()
             bottomSheetDialog
         } ?: throw IllegalStateException(resources.getString(R.string.text_activity_not_null_requirement))
+    }
+
+    private fun convertGivenNames(givenNamesFromIdentity: String): String{
+        val givenNameLower = givenNamesFromIdentity.toLowerCase()
+        val givenNames = givenNameLower.capitalize()
+        Log.i(TAG, "GIVEN NAME : $givenNames")
+        return givenNames
+    }
+
+    private fun convertPrefixes(surnameFromIdentity: String): String {
+        if (surnameFromIdentity.lastIndexOf(" ") > 1){
+            val prefixesCap = surnameFromIdentity.substring(0, surnameFromIdentity.lastIndexOf(" ")-1)
+            val prefixes = prefixesCap.toLowerCase()
+            Log.i(TAG, "PREFIXES :$prefixes")
+            return prefixes
+        } else {
+            Log.i(TAG, "NO PREFIXES")
+            return ""
+        }
+    }
+
+
+    private fun convertSurNames(surnameFromIdentity: String): String{
+        val surnameCap = surnameFromIdentity.substring(surnameFromIdentity.lastIndexOf(" ")+1)
+        val surnameLow = surnameCap.toLowerCase()
+        val surname = surnameLow.capitalize()
+        Log.i(TAG, "SURNAME :$surname")
+        return surname
     }
 
     private fun isValidKvkPoa(receivedKvkPoa: PowerOfAttorney): Boolean {
