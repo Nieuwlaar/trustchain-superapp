@@ -251,7 +251,6 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
     @SuppressLint("RestrictedApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initView()
 
         binding.rvIdentities.apply {
@@ -295,6 +294,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
             while (isActive) {
                 updateAttestations()
                 updatePoas()
+                toggleVisibility()
                 delay(1000)
             }
         }
@@ -441,7 +441,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
 
     private fun toggleVisibility() {
         binding.tvNoIssuedPoas.isVisible = adapterAttestations.itemCount == 0
-        binding.tvNoYourPoas.isVisible = adapterAttestations.itemCount == 0
+        binding.tvNoYourPoas.isVisible = true
         binding.tvNoAttributes.isVisible = adapterAttributes.itemCount == 0
     }
 
