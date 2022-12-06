@@ -38,6 +38,7 @@ import nl.tudelft.trustchain.common.valuetransfer.extensions.decodeImage
 import nl.tudelft.trustchain.common.valuetransfer.extensions.encodeImage
 import nl.tudelft.trustchain.common.valuetransfer.extensions.exitEnterView
 import nl.tudelft.trustchain.valuetransfer.R
+import nl.tudelft.trustchain.valuetransfer.ValueTransferMainActivity
 import nl.tudelft.trustchain.valuetransfer.community.PowerofAttorneyCommunity
 import nl.tudelft.trustchain.valuetransfer.databinding.FragmentIdentityBinding
 import nl.tudelft.trustchain.valuetransfer.dialogs.*
@@ -45,7 +46,6 @@ import nl.tudelft.trustchain.valuetransfer.entity.Identity
 import nl.tudelft.trustchain.valuetransfer.entity.PowerOfAttorney
 import nl.tudelft.trustchain.valuetransfer.ui.QRScanController
 import nl.tudelft.trustchain.valuetransfer.ui.VTFragment
-import nl.tudelft.trustchain.valuetransfer.ui.powerofattorney.RecyclerAdapter
 import nl.tudelft.trustchain.valuetransfer.util.DividerItemDecorator
 import nl.tudelft.trustchain.valuetransfer.util.copyToClipboard
 import nl.tudelft.trustchain.valuetransfer.util.getInitials
@@ -62,10 +62,12 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
     private val adapterIdentity = ItemAdapter()
     private val adapterAttributes = ItemAdapter()
     private val adapterAttestations = ItemAdapter()
+    private val adapterYourPoas = ItemAdapter()
+//    private val adapterIssuedPoas = ItemAdapter()
 
     private val identityImage = MutableLiveData<String?>()
     private val TAG = "PoaCommunity"
-
+    private var scanIntent: Int = -1
 
     private val itemsIdentity: LiveData<List<Item>> by lazy {
         combine(getIdentityStore().getAllIdentities(), identityImage.asFlow()) { identities, identityImage ->
@@ -79,15 +81,24 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
         }.asLiveData()
     }
 
-    private var scanIntent: Int = -1
+    private val itemsYourPoas: LiveData<List<Item>> by lazy {
+        getPoaStore().getAllPoas().map { poas ->
+            createPoaItems(poas)
+        }.asLiveData()
+    }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.i(TAG, "TYPE OF ALL POAS: " +itemsYourPoas.value)
         return inflater.inflate(R.layout.fragment_identity, container, false)
     }
+
+
 
     override fun initView() {
         parentActivity.apply {
@@ -115,7 +126,6 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
         adapterIdentity.registerRenderer(
             IdentityItemRenderer(
@@ -198,6 +208,31 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
             }
         )
 
+        adapterYourPoas.registerRenderer(
+            PoaItemRenderer {
+                val args = Bundle().apply {
+                    putString(ValueTransferMainActivity.ARG_PARENT, ValueTransferMainActivity.walletOverviewFragmentTag)
+                }
+
+                parentActivity.detailFragment(ValueTransferMainActivity.contactChatFragmentTag, args)
+            }
+        )
+
+//        adapterYourPoas.registerRenderer(
+//            PoaItemRenderer(
+//                1
+//            ) {
+//                OptionsDialog(
+//                    R.menu.identity_attribute_options,
+//                    "Choose Option",
+//                    bigOptionsEnabled = true,
+//                ) { _, item ->
+//                    when (item.itemId) {
+//                    }
+//                }.show(parentFragmentManager, tag)
+//            }
+//        )
+
         adapterAttestations.registerRenderer(
             AttestationItemRenderer(
                 parentActivity,
@@ -266,21 +301,15 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
         }
 
         binding.rvRecyclerView.apply {
-            adapter = RecyclerAdapter(titlesList, imagesList)
+            adapter = adapterYourPoas
             layoutManager = LinearLayoutManager(context)
         }
 
-//        binding.rvRecyclerViewYourPoas.apply {
+//        binding.rvRecyclerView.apply {
 //            adapter = RecyclerAdapter(titlesList, imagesList)
 //            layoutManager = LinearLayoutManager(context)
 //        }
 
-//        binding.clYourPoa.apply {
-//            adapter = adapterAttestations
-//            layoutManager = LinearLayoutManager(context)
-//            val drawable = ResourcesCompat.getDrawable(resources, R.drawable.divider_attestation, requireContext().theme)
-//            addItemDecoration(DividerItemDecorator(drawable!!) as RecyclerView.ItemDecoration)
-//        }
 
         itemsIdentity.observe(
             viewLifecycleOwner,
@@ -304,6 +333,14 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
             Observer {
                 adapterAttributes.updateItems(it)
                 toggleVisibility()
+            }
+        )
+
+        itemsYourPoas.observe(
+            viewLifecycleOwner,
+            Observer {
+                adapterYourPoas.updateItems(it)
+                Log.i(TAG, "UPDATED POAS: "+itemsYourPoas.value)
             }
         )
 
@@ -573,6 +610,12 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
     private fun createAttributeItems(attributes: List<IdentityAttribute>): List<Item> {
         return attributes.map { attribute ->
             IdentityAttributeItem(attribute)
+        }
+    }
+
+    private fun createPoaItems(poas: List<PowerOfAttorney>): List<Item> {
+        return poas.map { poa ->
+            PoaItem(poa)
         }
     }
 

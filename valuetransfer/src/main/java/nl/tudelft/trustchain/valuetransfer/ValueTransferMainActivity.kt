@@ -74,6 +74,7 @@ import nl.tudelft.trustchain.peerchat.ui.conversation.MessageAttachment
 import nl.tudelft.trustchain.valuetransfer.community.IdentityCommunity
 import nl.tudelft.trustchain.valuetransfer.community.PowerofAttorneyCommunity
 import nl.tudelft.trustchain.valuetransfer.db.IdentityStore
+import nl.tudelft.trustchain.valuetransfer.db.PoaStore
 import nl.tudelft.trustchain.valuetransfer.dialogs.IdentityAttestationConfirmDialog
 import nl.tudelft.trustchain.valuetransfer.passport.PassportHandler
 import nl.tudelft.trustchain.valuetransfer.ui.QRScanController
@@ -136,6 +137,7 @@ class ValueTransferMainActivity : BaseActivity() {
         PeerChatStore::class.java to PeerChatStore.getInstance(this),
         GatewayStore::class.java to GatewayStore.getInstance(this),
         ContactStore::class.java to ContactStore.getInstance(this),
+        PoaStore::class.java to PoaStore.getInstance(this),
         TransactionRepository::class.java to TransactionRepository(getCommunity()!!, GatewayStore.getInstance(this)),
         TrustChainHelper::class.java to TrustChainHelper(getCommunity()!!),
     )

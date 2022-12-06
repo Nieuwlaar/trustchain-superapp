@@ -13,9 +13,10 @@ import nl.tudelft.trustchain.peerchat.db.PeerChatStore
 import nl.tudelft.trustchain.valuetransfer.ValueTransferMainActivity
 import nl.tudelft.trustchain.valuetransfer.community.IdentityCommunity
 import nl.tudelft.trustchain.valuetransfer.db.IdentityStore
+import nl.tudelft.trustchain.valuetransfer.db.PoaStore
+import nl.tudelft.trustchain.valuetransfer.passport.PassportHandler
 import nl.tudelft.trustchain.valuetransfer.ui.settings.AppPreferences
 import nl.tudelft.trustchain.valuetransfer.ui.settings.NotificationHandler
-import nl.tudelft.trustchain.valuetransfer.passport.PassportHandler
 
 abstract class VTFragment(@LayoutRes contentLayoutId: Int = 0) : BaseFragment(contentLayoutId) {
 
@@ -46,6 +47,11 @@ abstract class VTFragment(@LayoutRes contentLayoutId: Int = 0) : BaseFragment(co
     fun getIdentityStore(): IdentityStore {
         return parentActivity.getStore()
             ?: throw java.lang.IllegalStateException("IdentityStore is not configured")
+    }
+
+    fun getPoaStore(): PoaStore {
+        return parentActivity.getStore()
+            ?: throw java.lang.IllegalStateException("PoaStore is not configured")
     }
 
     fun getPeerChatStore(): PeerChatStore {

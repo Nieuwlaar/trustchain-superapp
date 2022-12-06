@@ -2,6 +2,9 @@ package nl.tudelft.trustchain.valuetransfer.db
 
 import android.content.Context
 import com.squareup.sqldelight.android.AndroidSqliteDriver
+import com.squareup.sqldelight.runtime.coroutines.asFlow
+import com.squareup.sqldelight.runtime.coroutines.mapToList
+import kotlinx.coroutines.flow.Flow
 import nl.tudelft.trustchain.valuetransfer.entity.PowerOfAttorney
 import nl.tudelft.valuetransfer.sqldelight.Database
 
@@ -9,6 +12,40 @@ import nl.tudelft.valuetransfer.sqldelight.Database
 class PoaStore(context: Context) {
     private val driver = AndroidSqliteDriver(Database.Schema, context, "identities-vt.db")
     private val database = Database(driver)
+
+    private val poaMapper = {
+            id: String,
+            kvkNumber: Long,
+            companyName: String,
+            poaType: String,
+            isPermitted: String,
+            isAllowedToIssuePoa: String,
+            publicKeyPoaHolder: String,
+            givenNamesPoaHolder: String,
+            surnamePoaHolder: String,
+            dateOfBirthPoaHolder: String,
+            publicKeyPoaIssuer: String,
+            givenNamesPoaIssuer: String,
+            surnamePoaIssuer: String,
+            dateOfBirthPoaIssuer: String
+        ->
+        PowerOfAttorney(
+            id,
+            kvkNumber,
+            companyName,
+            poaType,
+            isPermitted,
+            isAllowedToIssuePoa,
+            publicKeyPoaHolder,
+            givenNamesPoaHolder,
+            surnamePoaHolder,
+            dateOfBirthPoaHolder,
+            publicKeyPoaIssuer,
+            givenNamesPoaIssuer,
+            surnamePoaIssuer,
+            dateOfBirthPoaIssuer
+        )
+    }
 
     fun addPoa(poa: PowerOfAttorney) {
         database.dbPowerofAttorneyQueries.addPoa(
@@ -29,6 +66,11 @@ class PoaStore(context: Context) {
         )
     }
 
+    fun getAllPoas(): Flow<List<PowerOfAttorney>> {
+        return database.dbPowerofAttorneyQueries.getAllPoas(poaMapper)
+            .asFlow().mapToList()
+    }
+
     fun deleteAllPoas() {
         return database.dbPowerofAttorneyQueries.deleteAllPoas()
     }
@@ -45,6 +87,8 @@ class PoaStore(context: Context) {
 //    fun deleteAttribute(identityAttribute: IdentityAttribute) {
 //        database.dbAttributeQueries.deleteAttribute(identityAttribute.id)
 //    }
+
+
 
 
     companion object {

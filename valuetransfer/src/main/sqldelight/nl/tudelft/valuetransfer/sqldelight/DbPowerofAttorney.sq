@@ -20,8 +20,8 @@ CREATE TABLE IF NOT EXISTS poas (
     PRIMARY KEY (id)
 );
 
-getAllAttributes:
-SELECT * FROM poas ORDER BY company_name ASC;
+getAllPoas:
+SELECT * FROM poas ORDER BY kvk_number ASC;
 
 -- getAttributeNames:
 -- SELECT name FROM attributes;
