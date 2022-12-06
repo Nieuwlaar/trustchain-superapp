@@ -26,7 +26,7 @@ import java.util.*
 class IdentityAddKvkPoaDialog(var myPublicKey: String) : VTDialogFragment() {
     private var filledKvkNumber = ""
     private val TAG = "PoaCommunity"
-    private val URL_KVK_API = "https://205d-176-117-57-244.eu.ngrok.io/api/bevoegdheid/"
+    private val URL_KVK_API = "https://4740-176-117-57-243.eu.ngrok.io/api/bevoegdheid/"
     override fun onCreateDialog(savedInstanceState: Bundle?): BottomSheetDialog {
         Log.i(TAG, "Dialog being created")
         return activity?.let {
@@ -95,7 +95,7 @@ class IdentityAddKvkPoaDialog(var myPublicKey: String) : VTDialogFragment() {
                         val companyName = response.getJSONObject("inschrijving").getString("naam")
                         Log.i(TAG, "API Respone companyName: $companyName")
 
-                        val poaType = "Full Proof of Attorney"
+                        val poaType = "Full Power of Attorney"
                         Log.i(TAG, "API Respone poaType: $poaType")
 
                         val isBevoegd =  response.getJSONObject("bevoegdheidUittreksel").getJSONObject("matchedFunctionaris").getJSONObject("interpretatie").getString("isBevoegd")
