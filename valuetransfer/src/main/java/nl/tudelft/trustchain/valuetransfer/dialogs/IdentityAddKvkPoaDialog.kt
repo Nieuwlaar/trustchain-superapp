@@ -176,7 +176,7 @@ class IdentityAddKvkPoaDialog(var myPublicKey: String) : VTDialogFragment() {
                                 "No matched representative found"
                             )
                             Log.e(TAG,
-                                "No representative found at KVK $filledKvkNumber. Submitted JSON object: $jsonObject"
+                                "No matched representative found at KVK $filledKvkNumber. Submitted JSON object: $jsonObject"
                             )
                         }
                     },

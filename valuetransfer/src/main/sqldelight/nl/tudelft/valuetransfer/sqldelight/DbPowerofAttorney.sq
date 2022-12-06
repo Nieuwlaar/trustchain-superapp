@@ -23,6 +23,12 @@ CREATE TABLE IF NOT EXISTS poas (
 getAllPoas:
 SELECT * FROM poas ORDER BY kvk_number ASC;
 
+getAllYourPoas:
+SELECT * FROM poas WHERE public_key_poa_holder LIKE ? ORDER BY kvk_number ASC;
+
+getAllIssuedPoas:
+SELECT * FROM poas WHERE public_key_poa_issuer LIKE ? ORDER BY kvk_number ASC;
+
 -- getAttributeNames:
 -- SELECT name FROM attributes;
 

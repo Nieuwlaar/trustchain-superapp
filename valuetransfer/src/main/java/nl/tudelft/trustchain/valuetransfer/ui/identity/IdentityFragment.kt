@@ -63,7 +63,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
     private val adapterAttributes = ItemAdapter()
     private val adapterAttestations = ItemAdapter()
     private val adapterYourPoas = ItemAdapter()
-//    private val adapterIssuedPoas = ItemAdapter()
+    private val adapterIssuedPoas = ItemAdapter()
 
     private val identityImage = MutableLiveData<String?>()
     private val TAG = "PoaCommunity"
@@ -82,8 +82,20 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
     }
 
     private val itemsYourPoas: LiveData<List<Item>> by lazy {
-        getPoaStore().getAllPoas().map { poas ->
+        getPoaStore().getAllYourPoas().map { poas ->
             createPoaItems(poas)
+        }.asLiveData()
+    }
+
+    private val itemsYourPoas2: LiveData<List<Item>> by lazy {
+        getPoaStore().getAllYourPoas().map { poas2 ->
+            createPoaItems(poas2)
+        }.asLiveData()
+    }
+
+    private val itemsIssuedPoas: LiveData<List<Item>> by lazy {
+        getPoaStore().getAllIssuedPoas().map { issuedPoas ->
+            createPoaItems(issuedPoas)
         }.asLiveData()
     }
 
@@ -94,7 +106,6 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.i(TAG, "TYPE OF ALL POAS: " +itemsYourPoas.value)
         return inflater.inflate(R.layout.fragment_identity, container, false)
     }
 
@@ -218,20 +229,15 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
             }
         )
 
-//        adapterYourPoas.registerRenderer(
-//            PoaItemRenderer(
-//                1
-//            ) {
-//                OptionsDialog(
-//                    R.menu.identity_attribute_options,
-//                    "Choose Option",
-//                    bigOptionsEnabled = true,
-//                ) { _, item ->
-//                    when (item.itemId) {
-//                    }
-//                }.show(parentFragmentManager, tag)
-//            }
-//        )
+        adapterIssuedPoas.registerRenderer(
+            PoaItemRenderer {
+                val args = Bundle().apply {
+                    putString(ValueTransferMainActivity.ARG_PARENT, ValueTransferMainActivity.walletOverviewFragmentTag)
+                }
+
+                parentActivity.detailFragment(ValueTransferMainActivity.contactChatFragmentTag, args)
+            }
+        )
 
         adapterAttestations.registerRenderer(
             AttestationItemRenderer(
@@ -300,10 +306,17 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
             addItemDecoration(DividerItemDecorator(drawable!!) as RecyclerView.ItemDecoration)
         }
 
-        binding.rvRecyclerView.apply {
+        binding.rvYourPoas.apply {
             adapter = adapterYourPoas
             layoutManager = LinearLayoutManager(context)
         }
+
+        binding.rvIssuedPoas.apply {
+            adapter = adapterIssuedPoas
+            layoutManager = LinearLayoutManager(context)
+        }
+
+
 
 //        binding.rvRecyclerView.apply {
 //            adapter = RecyclerAdapter(titlesList, imagesList)
@@ -340,7 +353,17 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
             viewLifecycleOwner,
             Observer {
                 adapterYourPoas.updateItems(it)
-                Log.i(TAG, "UPDATED POAS: "+itemsYourPoas.value)
+                Log.i(TAG, "ALL ISSUED POAS: " +itemsIssuedPoas.value)
+                Log.i(TAG, "ALL YOUR POAS: " +itemsYourPoas.value)
+//                Log.i(TAG, "TYPE OF ALL POAS: " +itemsYourPoas.value)
+            }
+        )
+
+        itemsIssuedPoas.observe(
+            viewLifecycleOwner,
+            Observer {
+                adapterIssuedPoas.updateItems(it)
+                Log.i(TAG, "ALL ISSUED POAS: " +itemsIssuedPoas.value)
             }
         )
 

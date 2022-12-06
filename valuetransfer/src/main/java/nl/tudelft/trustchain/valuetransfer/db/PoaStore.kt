@@ -5,6 +5,9 @@ import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import kotlinx.coroutines.flow.Flow
+import nl.tudelft.ipv8.IPv8
+import nl.tudelft.ipv8.android.IPv8Android
+import nl.tudelft.ipv8.util.toHex
 import nl.tudelft.trustchain.valuetransfer.entity.PowerOfAttorney
 import nl.tudelft.valuetransfer.sqldelight.Database
 
@@ -71,8 +74,26 @@ class PoaStore(context: Context) {
             .asFlow().mapToList()
     }
 
+    fun getAllYourPoas(): Flow<List<PowerOfAttorney>> {
+        val ipv8 = getIpv8()
+        val myPublicKey = ipv8.myPeer.publicKey.keyToBin().toHex()
+        return database.dbPowerofAttorneyQueries.getAllYourPoas(myPublicKey,poaMapper)
+            .asFlow().mapToList()
+    }
+
+    fun getAllIssuedPoas(): Flow<List<PowerOfAttorney>> {
+        val ipv8 = getIpv8()
+        val myPublicKey = ipv8.myPeer.publicKey.keyToBin().toHex()
+        return database.dbPowerofAttorneyQueries.getAllIssuedPoas(myPublicKey, poaMapper)
+            .asFlow().mapToList()
+    }
+
     fun deleteAllPoas() {
         return database.dbPowerofAttorneyQueries.deleteAllPoas()
+    }
+
+    fun getIpv8(): IPv8 {
+        return IPv8Android.getInstance()
     }
 
     fun createPoasTable() {

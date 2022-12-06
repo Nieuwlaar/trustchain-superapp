@@ -13,8 +13,8 @@ import nl.tudelft.trustchain.peerchat.db.PeerChatStore
 import nl.tudelft.trustchain.valuetransfer.ValueTransferMainActivity
 import nl.tudelft.trustchain.valuetransfer.community.IdentityCommunity
 import nl.tudelft.trustchain.valuetransfer.db.IdentityStore
-import nl.tudelft.trustchain.valuetransfer.ui.settings.AppPreferences
 import nl.tudelft.trustchain.valuetransfer.passport.PassportHandler
+import nl.tudelft.trustchain.valuetransfer.ui.settings.AppPreferences
 
 abstract class VTDialogFragment : DialogFragment() {
 
