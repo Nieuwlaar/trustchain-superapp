@@ -87,12 +87,6 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
         }.asLiveData()
     }
 
-    private val itemsYourPoas2: LiveData<List<Item>> by lazy {
-        getPoaStore().getAllYourPoas().map { poas2 ->
-            createPoaItems(poas2)
-        }.asLiveData()
-    }
-
     private val itemsIssuedPoas: LiveData<List<Item>> by lazy {
         getPoaStore().getAllIssuedPoas().map { issuedPoas ->
             createPoaItems(issuedPoas)
@@ -108,7 +102,6 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
     ): View? {
         return inflater.inflate(R.layout.fragment_identity, container, false)
     }
-
 
 
     override fun initView() {
@@ -318,12 +311,6 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
 
 
 
-//        binding.rvRecyclerView.apply {
-//            adapter = RecyclerAdapter(titlesList, imagesList)
-//            layoutManager = LinearLayoutManager(context)
-//        }
-
-
         itemsIdentity.observe(
             viewLifecycleOwner,
             Observer {
@@ -353,9 +340,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
             viewLifecycleOwner,
             Observer {
                 adapterYourPoas.updateItems(it)
-                Log.i(TAG, "ALL ISSUED POAS: " +itemsIssuedPoas.value)
                 Log.i(TAG, "ALL YOUR POAS: " +itemsYourPoas.value)
-//                Log.i(TAG, "TYPE OF ALL POAS: " +itemsYourPoas.value)
             }
         )
 
@@ -407,7 +392,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
                     }
                 }
             ).show(parentFragmentManager, tag)
-            Log.i(TAG, "Add poa button clicked")
+            Log.i(TAG, "Add PoA button clicked")
             postToList()
 
             val wifiManager: WifiManager = context?.getSystemService(WIFI_SERVICE) as WifiManager
@@ -492,6 +477,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
                 R.id.actionDeleteAllPoas -> {
                     Log.i(TAG, "Delete all PoAs button clicked")
                     community.deleteAllPoas()
+                    toggleVisibility()
                 }
             }
         }.show(parentFragmentManager, tag)
@@ -500,8 +486,8 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
     }
 
     private fun toggleVisibility() {
-        binding.tvNoIssuedPoas.isVisible = adapterAttestations.itemCount == 0
-        binding.tvNoYourPoas.isVisible = true
+        binding.tvNoIssuedPoas.isVisible = adapterIssuedPoas.itemCount == 0
+        binding.tvNoYourPoas.isVisible = adapterYourPoas.itemCount == 0
         binding.tvNoAttributes.isVisible = adapterAttributes.itemCount == 0
     }
 
