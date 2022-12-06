@@ -80,90 +80,103 @@ class IdentityAddKvkPoaDialog(var myPublicKey: String) : VTDialogFragment() {
                 jsonObject.put("voorvoegselGeslachtsnaam", convertPrefixes(surnameFromIdentity))
                 jsonObject.put("geslachtsnaam", convertSurNames(surnameFromIdentity))
                 Log.i(TAG, "JSON object: $jsonObject")
+
+
+
                 val request = JsonObjectRequest(
                     Request.Method.POST, apiUrlWithKvkNumber, jsonObject,
                     { response ->
-//                      TODO: add error messages
-                        Log.i(TAG, "Response type: " + response.javaClass.name)
+                        Log.i(TAG, "Response: $response")
+                        if (response.getJSONObject("bevoegdheidUittreksel").has("matchedFunctionaris")){
+                            Log.i(TAG, "Response type: " + response.javaClass.name)
 
-                        val id = UUID.randomUUID().toString()
-                        Log.i(TAG, "API Respone id: $id")
+                            val id = UUID.randomUUID().toString()
+                            Log.i(TAG, "API Respone id: $id")
 
-                        val receivedKvkNumber = response.getJSONObject("inschrijving").getString("kvkNummer")
-                        Log.i(TAG, "API Respone receivedKvkNumber: $receivedKvkNumber")
+                            val receivedKvkNumber = response.getJSONObject("inschrijving").getString("kvkNummer")
+                            Log.i(TAG, "API Respone receivedKvkNumber: $receivedKvkNumber")
 
-                        val companyName = response.getJSONObject("inschrijving").getString("naam")
-                        Log.i(TAG, "API Respone companyName: $companyName")
+                            val companyName = response.getJSONObject("inschrijving").getString("naam")
+                            Log.i(TAG, "API Respone companyName: $companyName")
 
-                        val poaType = "Full Power of Attorney"
-                        Log.i(TAG, "API Respone poaType: $poaType")
+                            val poaType = "Full Power of Attorney"
+                            Log.i(TAG, "API Respone poaType: $poaType")
 
-                        val isBevoegd =  response.getJSONObject("bevoegdheidUittreksel").getJSONObject("matchedFunctionaris").getJSONObject("interpretatie").getString("isBevoegd")
-                        val isPermitted: String
-                        val isAllowedToIssuePoa: String
+                            val isBevoegd =  response.getJSONObject("bevoegdheidUittreksel").getJSONObject("matchedFunctionaris").getJSONObject("interpretatie").getString("isBevoegd")
+                            val isPermitted: String
+                            val isAllowedToIssuePoa: String
 //                      Using the most strict form of "isBevoegd" (see KVK API documentation)
-                        if (isBevoegd == "Ja"){
-                            isPermitted = "YES"
-                            isAllowedToIssuePoa = "YES"
+                            if (isBevoegd == "Ja"){
+                                isPermitted = "YES"
+                                isAllowedToIssuePoa = "YES"
+                            } else {
+                                isPermitted = "NO"
+                                isAllowedToIssuePoa = "NO"
+                            }
+                            Log.i(TAG, "API Respone isPermitted: $isPermitted")
+                            Log.i(TAG, "API Respone isAllowedToIssuePoa: $isAllowedToIssuePoa")
+
+                            val publicKeyPoaHolder = myPublicKey
+                            Log.i(TAG, "API Respone publicKeyPoaHolder: $publicKeyPoaHolder")
+
+                            val givenNamesPoaHolder = response.getJSONObject("bevoegdheidUittreksel").getJSONObject("matchedFunctionaris").getString("voornamen")
+                            Log.i(TAG, "API Respone givenNamesPoaHolder: $givenNamesPoaHolder")
+
+                            val surnamePoaHolder = response.getJSONObject("bevoegdheidUittreksel").getJSONObject("matchedFunctionaris").getString("geslachtsnaam")
+                            Log.i(TAG, "API Respone surnamePoaHolder: $surnamePoaHolder")
+
+                            val dateOfBirthPoaHolder = response.getJSONObject("bevoegdheidUittreksel").getJSONObject("matchedFunctionaris").getString("geboortedatum")
+                            Log.i(TAG, "API Respone dateOfBirthPoaHolder: $dateOfBirthPoaHolder")
+
+                            val publicKeyPoaIssuer = ""
+                            Log.i(TAG, "API Respone publicKeyPoaIssuer: $publicKeyPoaIssuer")
+
+                            val givenNamesPoaIssuer = "KVK Registry"
+                            Log.i(TAG, "API Respone givenNamesPoaIssuer: $givenNamesPoaIssuer")
+
+                            val surnamePoaIssuer = ""
+                            Log.i(TAG, "API Respone surnamePoaIssuer: $surnamePoaIssuer")
+
+                            val dateOfBirthPoaIssuer = ""
+                            Log.i(TAG, "API Respone dateOfBirthPoaIssuer: $dateOfBirthPoaIssuer")
+
+                            val responseString = response.toString()
+                            Log.i(TAG, "API Respone: $responseString")
+
+                            val receivedKvkPoa = PowerOfAttorney(
+                                id = UUID.randomUUID().toString(),
+                                kvkNumber = receivedKvkNumber.toLong(),
+                                companyName = companyName,
+                                poaType = poaType,
+                                isPermitted = isPermitted,
+                                isAllowedToIssuePoa = isAllowedToIssuePoa,
+                                publicKeyPoaHolder = myPublicKey,
+                                givenNamesPoaHolder = givenNamesPoaHolder,
+                                surnamePoaHolder = surnamePoaHolder,
+                                dateOfBirthPoaHolder = dateOfBirthPoaHolder,
+                                publicKeyPoaIssuer = publicKeyPoaIssuer,
+                                givenNamesPoaIssuer = givenNamesPoaIssuer,
+                                surnamePoaIssuer = givenNamesPoaIssuer,
+                                dateOfBirthPoaIssuer = dateOfBirthPoaIssuer
+                            )
+                            if (isValidKvkPoa(response)){
+                                Log.i(TAG, "isValidKvkPoa is TRUE")
+                                val poaCommunity = IPv8Android.getInstance().getOverlay<PowerofAttorneyCommunity>()!!
+                                poaCommunity.addPoa(receivedKvkPoa)
+                            } else {
+                                Log.i(TAG, "isValidKvkPoa is FALSE")
+                                parentActivity.displayToast(
+                                    requireContext(),
+                                    "Received KVK Power of Attorney is invalid"
+                                )
+                            }
                         } else {
-                            isPermitted = "NO"
-                            isAllowedToIssuePoa = "NO"
-                        }
-                        Log.i(TAG, "API Respone isPermitted: $isPermitted")
-                        Log.i(TAG, "API Respone isAllowedToIssuePoa: $isAllowedToIssuePoa")
-
-                        val publicKeyPoaHolder = myPublicKey
-                        Log.i(TAG, "API Respone publicKeyPoaHolder: $publicKeyPoaHolder")
-
-                        val givenNamesPoaHolder = response.getJSONObject("bevoegdheidUittreksel").getJSONObject("matchedFunctionaris").getString("voornamen")
-                        Log.i(TAG, "API Respone givenNamesPoaHolder: $givenNamesPoaHolder")
-
-                        val surnamePoaHolder = response.getJSONObject("bevoegdheidUittreksel").getJSONObject("matchedFunctionaris").getString("geslachtsnaam")
-                        Log.i(TAG, "API Respone surnamePoaHolder: $surnamePoaHolder")
-
-                        val dateOfBirthPoaHolder = response.getJSONObject("bevoegdheidUittreksel").getJSONObject("matchedFunctionaris").getString("geboortedatum")
-                        Log.i(TAG, "API Respone dateOfBirthPoaHolder: $dateOfBirthPoaHolder")
-
-                        val publicKeyPoaIssuer = ""
-                        Log.i(TAG, "API Respone publicKeyPoaIssuer: $publicKeyPoaIssuer")
-
-                        val givenNamesPoaIssuer = "KVK Registry"
-                        Log.i(TAG, "API Respone givenNamesPoaIssuer: $givenNamesPoaIssuer")
-
-                        val surnamePoaIssuer = ""
-                        Log.i(TAG, "API Respone surnamePoaIssuer: $surnamePoaIssuer")
-
-                        val dateOfBirthPoaIssuer = ""
-                        Log.i(TAG, "API Respone dateOfBirthPoaIssuer: $dateOfBirthPoaIssuer")
-
-                        val responseString = response.toString()
-                        Log.i(TAG, "API Respone: $responseString")
-
-                        val receivedKvkPoa = PowerOfAttorney(
-                            id = UUID.randomUUID().toString(),
-                            kvkNumber = receivedKvkNumber.toLong(),
-                            companyName = companyName,
-                            poaType = poaType,
-                            isPermitted = isPermitted,
-                            isAllowedToIssuePoa = isAllowedToIssuePoa,
-                            publicKeyPoaHolder = myPublicKey,
-                            givenNamesPoaHolder = givenNamesPoaHolder,
-                            surnamePoaHolder = surnamePoaHolder,
-                            dateOfBirthPoaHolder = dateOfBirthPoaHolder,
-                            publicKeyPoaIssuer = publicKeyPoaIssuer,
-                            givenNamesPoaIssuer = givenNamesPoaIssuer,
-                            surnamePoaIssuer = givenNamesPoaIssuer,
-                            dateOfBirthPoaIssuer = dateOfBirthPoaIssuer
-                        )
-                        if (isValidKvkPoa(response)){
-                            Log.i(TAG, "isValidKvkPoa is TRUE")
-                            val poaCommunity = IPv8Android.getInstance().getOverlay<PowerofAttorneyCommunity>()!!
-                            poaCommunity.addPoa(receivedKvkPoa)
-                        } else {
-                            Log.i(TAG, "isValidKvkPoa is FALSE")
                             parentActivity.displayToast(
                                 requireContext(),
-                                "Received KVK Power of Attorney is invalid"
+                                "No matched representative found"
+                            )
+                            Log.e(TAG,
+                                "No representative found at KVK $filledKvkNumber. Submitted JSON object: $jsonObject"
                             )
                         }
                     },
