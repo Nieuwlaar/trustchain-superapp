@@ -26,7 +26,7 @@ import java.util.*
 class IdentityAddKvkPoaDialog(var myPublicKey: String) : VTDialogFragment() {
     private var filledKvkNumber = ""
     private val TAG = "PoaCommunity"
-    private val URL_KVK_API = "https://4740-176-117-57-243.eu.ngrok.io/api/bevoegdheid/"
+    private val URL_KVK_API = "https://963b-176-117-57-244.eu.ngrok.io/api/bevoegdheid/"
     override fun onCreateDialog(savedInstanceState: Bundle?): BottomSheetDialog {
         Log.i(TAG, "Dialog being created")
         return activity?.let {

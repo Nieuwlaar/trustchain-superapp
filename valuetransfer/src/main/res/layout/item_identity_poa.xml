@@ -21,9 +21,10 @@
             android:id="@+id/iv_companyImage"
             android:layout_width="100px"
             android:layout_height="100px"
+            app:cardCornerRadius="30px"
             android:layout_centerVertical="true"
             android:layout_margin="10dp"
-            android:src="@drawable/ic_bug_report_black_24dp"/>
+            android:src="@drawable/ic_bug_report_black_24dp" />
 
         <LinearLayout
             android:id="@+id/ll_poa"

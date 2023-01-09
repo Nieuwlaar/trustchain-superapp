@@ -16,7 +16,14 @@ class PoaItemRenderer(
     override fun bindView(item: PoaItem, view: View) = with(view) {
         tv_poa_company.text = item.poa.companyName
         tv_poa_type.text = item.poa.poaType
-        iv_companyImage.setImageResource(R.drawable.id_card)
+        when (item.poa.companyName) {
+            "Makro Nederland" -> iv_companyImage.setImageResource(R.drawable.makro_icon)
+            "Nieuwlaar Design" -> iv_companyImage.setImageResource(R.drawable.nieuwlaar_design_logo)
+            else -> {
+                iv_companyImage.setImageResource(R.drawable.img_404)
+            }
+        }
+
 
         poa_cardView.setOnClickListener {
             Log.i(TAG, "Clicked item: "+item.poa.id)
