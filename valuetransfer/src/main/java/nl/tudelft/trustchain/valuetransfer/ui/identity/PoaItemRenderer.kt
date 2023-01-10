@@ -8,7 +8,7 @@ import nl.tudelft.trustchain.valuetransfer.R
 import nl.tudelft.trustchain.valuetransfer.entity.PowerOfAttorney
 
 class PoaItemRenderer(
-    private val onOptionsClick: (PowerOfAttorney) -> Unit,
+    private val onPoaItemClick: (PowerOfAttorney) -> Unit,
 ) : ItemLayoutRenderer<PoaItem, View>(
     PoaItem::class.java
 ) {
@@ -28,6 +28,7 @@ class PoaItemRenderer(
         poa_cardView.setOnClickListener {
             Log.i(TAG, "Clicked item: "+item.poa.id)
 //            TODO: Implement the PoA card dialog
+            onPoaItemClick(item.poa)
         }
     }
 

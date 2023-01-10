@@ -88,6 +88,10 @@ class PoaStore(context: Context) {
             .asFlow().mapToList()
     }
 
+    fun deletePoa(poa_id: String) {
+        database.dbPowerofAttorneyQueries.deletePoa(poa_id)
+    }
+
     fun deleteAllPoas() {
         return database.dbPowerofAttorneyQueries.deleteAllPoas()
     }

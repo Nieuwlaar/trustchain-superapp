@@ -213,12 +213,17 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
         )
 
         adapterYourPoas.registerRenderer(
-            PoaItemRenderer {
-                val args = Bundle().apply {
-                    putString(ValueTransferMainActivity.ARG_PARENT, ValueTransferMainActivity.walletOverviewFragmentTag)
-                }
-
-                parentActivity.detailFragment(ValueTransferMainActivity.contactChatFragmentTag, args)
+            PoaItemRenderer {  poa ->
+                PoADetailsDialog(
+                    true,
+                    poa.companyName,
+                    poa.kvkNumber.toString(),
+                    poa.poaType,
+                    poa.givenNamesPoaIssuer+" "+poa.surnamePoaIssuer,
+                    poa.toString(),
+                    poa
+                )
+                    .show(parentFragmentManager, tag)
             }
         )
 

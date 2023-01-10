@@ -74,6 +74,10 @@ class PowerofAttorneyCommunity(private val store: PoaStore) : Community() {
         }
     }
 
+    fun deletePoa(poa: PowerOfAttorney) {
+        store.deletePoa(poa.id)
+    }
+
     fun deleteAllPoas() {
         store.deleteAllPoas()
     }
