@@ -746,8 +746,8 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
         val fakePoa = PowerOfAttorney(
             id = UUID.randomUUID().toString(),
             kvkNumber = 12345678,
-            companyName = "Makro Nederland",
-            poaType = "FAKE Full Power of Attorney",
+            companyName = "Xaigis B.V.",
+            poaType = "FAKE Root Power of Attorney",
             isPermitted = "YES",
             isAllowedToIssuePoa = "YES",
             publicKeyPoaHolder = myPublicKey,
