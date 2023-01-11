@@ -98,6 +98,7 @@
     <string name="dialog_title_identity_onboarding_confirm">Confirm Identity</string>
     <string name="dialog_filter_by">Filter by</string>
     <string name="dialog_choose_option">Choose Option</string>
+    <string name="dialog_choose_poa_type">Choose PoA Type</string>
     <string name="dialog_contact_options">Contact Options</string>
     <string name="dialog_exchange_options">Exchange Options</string>
     <string name="dialog_contacts_chats_view">View Chats</string>
@@ -483,6 +484,9 @@
     <string name="text_exchange_euro">Euro</string>
     <string name="text_request_euro_1">Would you please pay me €</string>
     <string name="text_request_euro_2"> via\n</string>
+    <string name="poa_type_create_quotations">Create quotations</string>
+    <string name="poa_type_sign_up_to_x">Sign up to X</string>
+    <string name="poa_type_purchase_wholesale">Purchase at wholesale</string>
     <string-array name="exchange_types">
         <item>EuroToken</item>
         <item>Euro</item>

@@ -14,7 +14,7 @@
         layout="@layout/handle_dialog" />
 
     <TextView
-        android:id="@+id/tvAddKvkPoaNameTitle"
+        android:id="@+id/tvVerifyPoaTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -44,10 +44,30 @@
         android:hint="Fill in KVK number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvAddKvkPoaNameTitle"/>
+        app:layout_constraintTop_toBottomOf="@+id/tvVerifyPoaTitle"/>
+
+    <EditText
+        android:id="@+id/poaType"
+        android:layout_width="match_parent"
+        android:minHeight="40dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/pill_rounded"
+        android:backgroundTint="@color/light_gray"
+        android:paddingVertical="8dp"
+        android:imeOptions="actionDone"
+        android:paddingStart="8dp"
+        android:paddingRight="8dp"
+        android:layout_marginTop="12dp"
+        android:textSize="14sp"
+        android:textColor="?attr/onDialogColor"
+        android:hint="Choose a PoA type"
+        android:editable="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etKvkNumber"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clAddKvkPoa"
+        android:id="@+id/clVerifyPoa"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -58,12 +78,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etKvkNumber"
+        app:layout_constraintTop_toBottomOf="@+id/poaType"
         android:clickable="false"
         android:focusable="false">
 
         <TextView
-            android:id="@+id/tvAddKvkPoa"
+            android:id="@+id/tvVerifyPoa"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:gravity="center_vertical"
