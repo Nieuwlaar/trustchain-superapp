@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_corners_red"
         android:padding="6dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:radius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -29,10 +29,38 @@
 
         <ImageView
             android:id="@+id/ivDeletePoa"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:backgroundTint="@color/light_gray"
             android:background="@drawable/ic_delete" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rlVisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corners_small_light_gray"
+        android:padding="6dp"
+        android:layout_marginTop="16dp"
+        android:radius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rlDeletePoa"
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageView
+            android:id="@+id/ivShowDetails"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:backgroundTint="@color/dark_gray"
+            android:background="@drawable/ic_eye_show"
+            android:visibility="visible"/>
+        <ImageView
+            android:id="@+id/ivHideDetails"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:backgroundTint="@color/dark_gray"
+            android:background="@drawable/ic_eye_hidden"
+            android:visibility="gone"/>
     </RelativeLayout>
 
     <TextView
@@ -79,6 +107,7 @@
             app:layout_constraintStart_toEndOf="@+id/tvKvkNumberText"
             app:layout_constraintTop_toBottomOf="@+id/tvCompanyName"
             tools:text="KVK number" />
+
     </LinearLayout>
     <LinearLayout
         android:id="@+id/llPoaType"

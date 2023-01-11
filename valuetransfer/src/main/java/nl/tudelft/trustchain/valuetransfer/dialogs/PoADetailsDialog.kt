@@ -2,6 +2,7 @@ package nl.tudelft.trustchain.valuetransfer.dialogs
 
 import android.os.Bundle
 import android.os.Handler
+import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
@@ -39,26 +40,14 @@ class PoADetailsDialog(
             }
             view.findViewById<TextView>(R.id.tvKvkNumber).apply {
                 isVisible = true
-                text = poa.kvkNumber.toString()
+                text = "********"
             }
             view.findViewById<TextView>(R.id.tvPoaType).apply {
                 isVisible = true
-                text = poa.poaType
+                text = "********"
             }
-
-            if (!your_poa) {
-                view.findViewById<TextView>(R.id.tvPoaRelatedName).apply {
-                    text = "Issued to:"
-                }
-                view.findViewById<TextView>(R.id.tvPoaRelated).apply {
-                    isVisible = true
-                    text = poa.givenNamesPoaHolder+" "+poa.surnamePoaHolder
-                }
-            } else {
-                view.findViewById<TextView>(R.id.tvPoaRelated).apply {
-                    isVisible = true
-                    text = poa.givenNamesPoaIssuer+" "+poa.surnamePoaIssuer
-                }
+            view.findViewById<TextView>(R.id.tvPoaRelated).apply {
+                text = "********"
             }
 
 
@@ -71,6 +60,49 @@ class PoADetailsDialog(
                     .show(parentFragmentManager, tag)
             }
 
+            val ivShowDetails: ImageView = view.findViewById(R.id.ivShowDetails)
+            val ivHideDetails: ImageView = view.findViewById(R.id.ivHideDetails)
+
+            ivShowDetails.setOnClickListener {
+                ivShowDetails.visibility = View.GONE
+                ivHideDetails.visibility = View.VISIBLE
+                view.findViewById<TextView>(R.id.tvKvkNumber).apply {
+                    isVisible = true
+                    text = poa.kvkNumber.toString()
+                }
+                view.findViewById<TextView>(R.id.tvPoaType).apply {
+                    isVisible = true
+                    text = poa.poaType
+                }
+                if (!your_poa) {
+                    view.findViewById<TextView>(R.id.tvPoaRelatedName).apply {
+                        text = "Issued to:"
+                    }
+                    view.findViewById<TextView>(R.id.tvPoaRelated).apply {
+                        isVisible = true
+                        text = poa.givenNamesPoaHolder+" "+poa.surnamePoaHolder
+                    }
+                } else {
+                    view.findViewById<TextView>(R.id.tvPoaRelated).apply {
+                        isVisible = true
+                        text = poa.givenNamesPoaIssuer+" "+poa.surnamePoaIssuer
+                    }
+                }
+            }
+
+            ivHideDetails.setOnClickListener {
+                ivShowDetails.visibility = View.VISIBLE
+                ivHideDetails.visibility = View.GONE
+                view.findViewById<TextView>(R.id.tvKvkNumber).apply {
+                    text = "********"
+                }
+                view.findViewById<TextView>(R.id.tvPoaType).apply {
+                    text = "********"
+                }
+                view.findViewById<TextView>(R.id.tvPoaRelated).apply {
+                    text = "********"
+                }
+            }
 
 
             bottomSheetDialog.setContentView(view)
