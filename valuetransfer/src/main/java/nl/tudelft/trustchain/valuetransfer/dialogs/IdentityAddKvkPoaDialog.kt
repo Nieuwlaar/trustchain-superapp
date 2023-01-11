@@ -156,7 +156,7 @@ class IdentityAddKvkPoaDialog(var myPublicKey: String) : VTDialogFragment() {
                                 dateOfBirthPoaHolder = dateOfBirthPoaHolder,
                                 publicKeyPoaIssuer = publicKeyPoaIssuer,
                                 givenNamesPoaIssuer = givenNamesPoaIssuer,
-                                surnamePoaIssuer = givenNamesPoaIssuer,
+                                surnamePoaIssuer = surnamePoaIssuer,
                                 dateOfBirthPoaIssuer = dateOfBirthPoaIssuer
                             )
                             if (isValidKvkPoa(response)){
