@@ -216,11 +216,11 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
             PoaItemRenderer {  poa ->
                 PoADetailsDialog(
                     true,
-                    poa.companyName,
-                    poa.kvkNumber.toString(),
-                    poa.poaType,
-                    poa.givenNamesPoaIssuer+" "+poa.surnamePoaIssuer,
-                    poa.toString(),
+//                    poa.companyName,
+//                    poa.kvkNumber.toString(),
+//                    poa.poaType,
+//                    poa.givenNamesPoaIssuer+" "+poa.surnamePoaIssuer,
+//                    poa.toString(),
                     poa
                 )
                     .show(parentFragmentManager, tag)

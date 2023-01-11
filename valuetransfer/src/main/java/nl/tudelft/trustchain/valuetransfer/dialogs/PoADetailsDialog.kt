@@ -19,11 +19,11 @@ import nl.tudelft.trustchain.valuetransfer.util.setNavigationBarColor
 
 class PoADetailsDialog(
     private val your_poa: Boolean,
-    private val company_name: String?,
-    private val kvk_number: String?,
-    private val poa_type: String?,
-    private val poa_related_name: String?,
-    private val data: String,
+//    private val company_name: String?,
+//    private val kvk_number: String?,
+//    private val poa_type: String?,
+//    private val poa_related_name: String?,
+//    private val data: String,
     private val poa: PowerOfAttorney
 ) : VTDialogFragment() {
 
@@ -41,26 +41,33 @@ class PoADetailsDialog(
             setNavigationBarColor(requireContext(), parentActivity, bottomSheetDialog)
 
             view.findViewById<TextView>(R.id.tvCompanyName).apply {
-                isVisible = company_name != null
-                text = company_name
+                isVisible = true
+                text = poa.companyName
             }
             view.findViewById<TextView>(R.id.tvKvkNumber).apply {
-                isVisible = kvk_number != null
-                text = kvk_number
+                isVisible = true
+                text = poa.kvkNumber.toString()
             }
             view.findViewById<TextView>(R.id.tvPoaType).apply {
-                isVisible = poa_type != null
-                text = poa_type
+                isVisible = true
+                text = poa.poaType
             }
-            view.findViewById<TextView>(R.id.tvPoaRelated).apply {
-                isVisible = poa_related_name != null
-                text = poa_related_name
-            }
-            if (!your_poa){
+
+            if (!your_poa) {
                 view.findViewById<TextView>(R.id.tvPoaRelatedName).apply {
                     text = "Issued to:"
                 }
+                view.findViewById<TextView>(R.id.tvPoaRelated).apply {
+                    isVisible = true
+                    text = poa.givenNamesPoaHolder+" "+poa.surnamePoaHolder
+                }
+            } else {
+                view.findViewById<TextView>(R.id.tvPoaRelated).apply {
+                    isVisible = true
+                    text = poa.givenNamesPoaIssuer+" "+poa.surnamePoaIssuer
+                }
             }
+
 
             view.findViewById<RelativeLayout>(R.id.rlDeletePoa).setOnClickListener{
                 val community = IPv8Android.getInstance().getOverlay<PowerofAttorneyCommunity>()!!
@@ -79,7 +86,7 @@ class PoADetailsDialog(
                     view.findViewById<ImageView>(R.id.ivQRCode).setImageBitmap(
                         createBitmap(
                             requireContext(),
-                            data,
+                            poa.toString(),
                             R.color.black,
                             R.color.light_gray
                         )
