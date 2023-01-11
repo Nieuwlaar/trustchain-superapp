@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.*
+import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
@@ -413,6 +414,12 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
             Log.i(TAG,"My Public key: "+ipv8.myPeer.publicKey.keyToBin().toHex())
 //            community.sendPoa()
         }
+
+
+        view.findViewById<RelativeLayout>(R.id.rlVerifyPoa).setOnClickListener{
+            IdentityVerifyPoaDialog("test").show(parentFragmentManager, tag)
+        }
+
 
         binding.tvShowIdentityAttributes.setOnClickListener {
             if (binding.clIdentityAttributes.isVisible) return@setOnClickListener

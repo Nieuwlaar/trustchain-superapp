@@ -37,16 +37,37 @@
                 android:text="Powers of Attorney" />
 
             <RelativeLayout
-                android:id="@+id/rlScanIdentityQR2"
+                android:id="@+id/rlVerifyPoa"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="50dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintDimensionRatio="H1,1"
                 android:background="@drawable/pill_rounded"
                 android:backgroundTint="?attr/dialogColor"
-                android:padding="8dp"
+                android:padding="2dp"
                 android:layout_alignParentEnd="true">
+
+                <ImageView
+                    android:id="@+id/ivVerifyPoa"
+                    android:layout_width="30dp"
+                    android:layout_height="36dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/verify_qr"
+                    app:tint="?attr/mutedColor" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlScanIdentityQR2"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/pill_rounded"
+                android:backgroundTint="?attr/dialogColor"
+                android:padding="8dp">
 
                 <ImageView
                     android:id="@+id/ivAddAttestation"
@@ -56,8 +77,8 @@
                     android:layout_centerVertical="true"
                     android:src="@drawable/ic_add_black_24dp"
                     app:tint="?attr/mutedColor" />
-
             </RelativeLayout>
+
         </RelativeLayout>
 
         <LinearLayout
