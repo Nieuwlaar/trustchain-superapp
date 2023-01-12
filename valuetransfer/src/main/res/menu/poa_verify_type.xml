@@ -2,18 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/actionCreateQuotations"
-        android:icon="@drawable/ic_attestation"
+        android:icon="@drawable/ic_poa_quotations"
         android:title="@string/poa_type_create_quotations" />
     <item
         android:id="@+id/actionPurchaseWholesale"
-        android:icon="@drawable/ic_attestation"
+        android:icon="@drawable/ic_poa_wholesale"
         android:title="@string/poa_type_purchase_wholesale" />
     <item
         android:id="@+id/actionSignUpToX"
-        android:icon="@drawable/ic_attestation"
+        android:icon="@drawable/ic_poa_sign_x"
         android:title="@string/poa_type_sign_up_to_x" />
     <item
         android:id="@+id/actionCustom"
-        android:icon="@drawable/ic_attestation"
+        android:icon="@drawable/ic_poa_custom"
         android:title="Custom" />
 </menu>
