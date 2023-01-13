@@ -1,6 +1,7 @@
 package nl.tudelft.trustchain.valuetransfer.ui
 
 import android.content.Intent
+import android.util.Log
 import nl.tudelft.ipv8.android.IPv8Android
 import nl.tudelft.ipv8.keyvault.defaultCryptoProvider
 import nl.tudelft.ipv8.util.hexToBytes
@@ -10,7 +11,9 @@ import nl.tudelft.trustchain.common.util.QRCodeUtils
 import nl.tudelft.trustchain.valuetransfer.R
 import nl.tudelft.trustchain.valuetransfer.community.PowerofAttorneyCommunity
 import nl.tudelft.trustchain.valuetransfer.dialogs.*
+import nl.tudelft.trustchain.valuetransfer.entity.PowerOfAttorney
 import org.json.JSONObject
+
 
 class QRScanController : VTFragment() {
 
@@ -173,69 +176,117 @@ class QRScanController : VTFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         QRCodeUtils(requireContext()).parseActivityResult(requestCode, resultCode, data)?.let { result ->
-            try {
-                val obj = JSONObject(result)
+            Log.i("PoaCommunity", "Raw QR scan results:" + result)
+            if (result.startsWith("PowerOfAttorney")){
+                try {
+                    //Removing the class name and paranthesis from string
+                    val jsonString = result.replace("PowerOfAttorney(", "").replace(")", "")
 
-                when {
-                    obj.has(KEY_TYPE) -> {
-                        when (obj.optString(KEY_TYPE)) {
-                            VALUE_TRANSFER -> transferMoney(obj)
-                            VALUE_CREATION -> exchangeMoney(obj, true)
-                            VALUE_DESTRUCTION -> exchangeMoney(obj, false)
-                            VALUE_CONTACT -> addContact(obj)
-                            else -> throw RuntimeException(
-                                resources.getString(
-                                    R.string.text_qr_type_not_recognized,
-                                    obj.get(KEY_TYPE)
-                                )
-                            )
-                        }
-                    }
-                    obj.has(KEY_PRESENTATION) -> {
-                        when (obj.optString(KEY_PRESENTATION)) {
-                            VALUE_ATTESTATION -> verifyAttestation(obj)
-                            else -> throw RuntimeException(
-                                resources.getString(
-                                    R.string.text_qr_type_not_recognized,
-                                    obj.get(KEY_PRESENTATION)
-                                )
-                            )
-                        }
-                    }
-                    obj.has(KEY_PUBLIC_KEY) -> {
-                        try {
-                            val publicKey = obj.optString(KEY_PUBLIC_KEY)
-                            defaultCryptoProvider.keyFromPublicBin(publicKey.hexToBytes())
-                            val publicKeyString = obj.optString(KEY_PUBLIC_KEY)
+                    // Splitting the string by comma to get key value pair
+                    val keyValuePairs: List<String> = jsonString.split(",")
 
-                            OptionsDialog(
-                                R.menu.scan_options,
-                                "Choose Option",
-                            ) { _, item ->
-                                when (item.itemId) {
-                                    R.id.actionAddContactOption -> addContact(obj)
-                                    R.id.actionAddAuthorityOption -> addAuthority(publicKeyString)
-                                    R.id.actionAddAttestationOption -> addAttestation(publicKeyString)
-                                    R.id.actionIssuePoa -> issuePoa(publicKeyString)
-                                }
-                            }.show(parentFragmentManager, tag)
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            parentActivity.displayToast(
-                                requireContext(),
-                                resources.getString(R.string.snackbar_invalid_public_key)
-                            )
-                        }
+
+                    // Creating JSON object to add key value pair
+                    val json = JSONObject()
+                    for (keyValuePair in keyValuePairs) {
+                        val keyValue = keyValuePair.trim { it <= ' ' }.split("=").toTypedArray()
+                        json.put(keyValue[0], keyValue[1])
                     }
-                    else -> throw RuntimeException(resources.getString(R.string.text_qr_not_recognized))
+                    val poa = PowerOfAttorney(
+                        json.getString("id"),
+                        json.getLong("kvkNumber"),
+                        json.getString("companyName"),
+                        json.getString("poaType"),
+                        json.getString("isPermitted"),
+                        json.getString("isAllowedToIssuePoa"),
+                        json.getString("publicKeyPoaHolder"),
+                        json.getString("givenNamesPoaHolder"),
+                        json.getString("surnamePoaHolder"),
+                        json.getString("dateOfBirthPoaHolder"),
+                        json.getString("publicKeyPoaIssuer"),
+                        json.getString("givenNamesPoaIssuer"),
+                        json.getString("surnamePoaIssuer"),
+                        json.getString("dateOfBirthPoaIssuer")
+                    )
+                    Log.i("PoaCommunity", "Scanned QR object Type: " + poa.javaClass.name)
+                    Log.i("PoaCommunity", "QR: Object to string again: " + poa.toString())
+                    parentActivity.displayToast(
+                        requireContext(),
+                        resources.getString(R.string.snackbar_qr_code_poa_format_but_no_use)
+                    )
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    parentActivity.displayToast(
+                        requireContext(),
+                        resources.getString(R.string.snackbar_qr_code_not_poa_format)
+                    )
+                    initiateScan()
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                parentActivity.displayToast(
-                    requireContext(),
-                    resources.getString(R.string.snackbar_qr_code_not_json_format)
-                )
-                initiateScan()
+            } else {
+                try {
+                    val obj = JSONObject(result)
+
+                    when {
+                        obj.has(KEY_TYPE) -> {
+                            when (obj.optString(KEY_TYPE)) {
+                                VALUE_TRANSFER -> transferMoney(obj)
+                                VALUE_CREATION -> exchangeMoney(obj, true)
+                                VALUE_DESTRUCTION -> exchangeMoney(obj, false)
+                                VALUE_CONTACT -> addContact(obj)
+                                else -> throw RuntimeException(
+                                    resources.getString(
+                                        R.string.text_qr_type_not_recognized,
+                                        obj.get(KEY_TYPE)
+                                    )
+                                )
+                            }
+                        }
+                        obj.has(KEY_PRESENTATION) -> {
+                            when (obj.optString(KEY_PRESENTATION)) {
+                                VALUE_ATTESTATION -> verifyAttestation(obj)
+                                else -> throw RuntimeException(
+                                    resources.getString(
+                                        R.string.text_qr_type_not_recognized,
+                                        obj.get(KEY_PRESENTATION)
+                                    )
+                                )
+                            }
+                        }
+                        obj.has(KEY_PUBLIC_KEY) -> {
+                            try {
+                                val publicKey = obj.optString(KEY_PUBLIC_KEY)
+                                defaultCryptoProvider.keyFromPublicBin(publicKey.hexToBytes())
+                                val publicKeyString = obj.optString(KEY_PUBLIC_KEY)
+
+                                OptionsDialog(
+                                    R.menu.scan_options,
+                                    "Choose Option",
+                                ) { _, item ->
+                                    when (item.itemId) {
+                                        R.id.actionAddContactOption -> addContact(obj)
+                                        R.id.actionAddAuthorityOption -> addAuthority(publicKeyString)
+                                        R.id.actionAddAttestationOption -> addAttestation(publicKeyString)
+                                        R.id.actionIssuePoa -> issuePoa(publicKeyString)
+                                    }
+                                }.show(parentFragmentManager, tag)
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                                parentActivity.displayToast(
+                                    requireContext(),
+                                    resources.getString(R.string.snackbar_invalid_public_key)
+                                )
+                            }
+                        }
+                        else -> throw RuntimeException(resources.getString(R.string.text_qr_not_recognized))
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    parentActivity.displayToast(
+                        requireContext(),
+                        resources.getString(R.string.snackbar_qr_code_not_json_format)
+                    )
+                    initiateScan()
+                }
             }
         }
     }
@@ -254,6 +305,7 @@ class QRScanController : VTFragment() {
         const val KEY_PORT = "port"
         const val KEY_PRESENTATION = "presentation"
         const val KEY_PUBLIC_KEY = "public_key"
+        const val POWER_OF_ATTORNEY = "power_of_attorney"
         const val KEY_SIGNATURE = "signature"
         const val KEY_SIGNEE_KEY = "signee_key"
         const val KEY_TYPE = "type"

@@ -678,10 +678,12 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
                 }
             } else {
                 QRCodeUtils(requireContext()).parseActivityResult(requestCode, resultCode, data)
+
                     ?.let { result ->
                         try {
-                            val obj = JSONObject(result)
 
+                            val obj = JSONObject(result)
+//TODO: continue hier betreft PoA
                             if (obj.has(QRScanController.KEY_PUBLIC_KEY)) {
                                 try {
                                     defaultCryptoProvider.keyFromPublicBin(

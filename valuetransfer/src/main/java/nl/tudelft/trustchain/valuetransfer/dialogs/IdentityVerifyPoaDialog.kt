@@ -5,9 +5,9 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
-import android.widget.EditText
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -27,8 +27,10 @@ class IdentityVerifyPoaDialog(var myPublicKey: String) : VTDialogFragment() {
 
             val kvkNumberView = view.findViewById<TextView>(R.id.etKvkNumber)
             val verifyPoaButton = view.findViewById<ConstraintLayout>(R.id.clVerifyPoa)
-            val poaType = view.findViewById<EditText>(R.id.poaType)
+            val poaType = view.findViewById<TextView>(R.id.poaType)
             val verifyPoaButtonText = view.findViewById<TextView>(R.id.tvVerifyPoa)
+            val poaSignXAmount = view.findViewById<TextView>(R.id.poaSignXAmount)
+            val poaCustomFillIn = view.findViewById<TextView>(R.id.poaCustomFillIn)
 
             // Avoid keyboard exposing over content of dialog
             bottomSheetDialog.behavior.apply {
@@ -76,13 +78,34 @@ class IdentityVerifyPoaDialog(var myPublicKey: String) : VTDialogFragment() {
                     },
                     optionSelected = { _, item ->
                         when (item.itemId) {
-                            R.id.actionCreateQuotations -> Log.i(TAG, "1")
-                            R.id.actionPurchaseWholesale -> Log.i(TAG, "2")
-                            R.id.actionSignUpToX -> Log.i(TAG, "3")
-                            R.id.actionCustom -> Log.i(TAG, "4")
+                            R.id.actionCreateQuotations -> {
+                                poaType.text = getString(R.string.poa_type_create_quotations)
+                                Log.i(TAG, poaType.text.toString())
+                            }
+                            R.id.actionPurchaseWholesale -> poaType.text = getString(R.string.poa_type_purchase_wholesale)
+                            R.id.actionSignUpToX -> poaType.text = getString(R.string.poa_type_sign_up_to_x)
+                            R.id.actionCustom -> poaType.text = "Custom"
                         }
                     }
                 ).show(parentFragmentManager, tag)
+            }
+            poaType.doAfterTextChanged{
+                poaSignXAmount.isVisible = false
+                poaCustomFillIn.isVisible = false
+                val params = verifyPoaButton.layoutParams as ConstraintLayout.LayoutParams
+                params.topToBottom = poaType.id
+                when(poaType.text.toString()) {
+                    "Sign up to X" -> {
+                        poaSignXAmount.isVisible = true
+                        params.topToBottom = poaSignXAmount.id
+                        Log.i(TAG,"Sign up to X reached")
+                    }
+                    "Custom" -> {
+                        Log.i(TAG,"PoA Type: "+ poaType.text.toString())
+                        poaCustomFillIn.isVisible = true
+                        params.topToBottom = poaCustomFillIn.id
+                    }
+                }
             }
 
 

@@ -49,8 +49,8 @@
     <EditText
         android:id="@+id/poaType"
         android:layout_width="match_parent"
-        android:minHeight="40dp"
         android:layout_height="wrap_content"
+        android:minHeight="40dp"
         android:background="@drawable/pill_rounded"
         android:backgroundTint="@color/light_gray"
         android:paddingVertical="8dp"
@@ -66,6 +66,44 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etKvkNumber"/>
 
+    <EditText
+        android:id="@+id/poaSignXAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="40dp"
+        android:background="@drawable/pill_rounded"
+        android:backgroundTint="@color/light_gray"
+        android:paddingVertical="8dp"
+        android:imeOptions="actionDone"
+        android:paddingStart="8dp"
+        android:paddingRight="8dp"
+        android:layout_marginTop="12dp"
+        android:textSize="14sp"
+        android:textColor="?attr/onDialogColor"
+        android:digits="0123456789"
+        android:hint="Fill in signing limit in €"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/poaType"/>
+
+    <EditText
+        android:id="@+id/poaCustomFillIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="40dp"
+        android:background="@drawable/pill_rounded"
+        android:backgroundTint="@color/light_gray"
+        android:paddingVertical="8dp"
+        android:imeOptions="actionDone"
+        android:paddingStart="8dp"
+        android:paddingRight="8dp"
+        android:layout_marginTop="12dp"
+        android:textSize="14sp"
+        android:textColor="?attr/onDialogColor"
+        android:hint="Define PoA"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/poaType"/>
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clVerifyPoa"
         android:layout_width="match_parent"
@@ -78,7 +116,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/poaType"
+        app:layout_constraintTop_toBottomOf="@+id/poaSignXAmount"
         android:clickable="false"
         android:focusable="false">
 
