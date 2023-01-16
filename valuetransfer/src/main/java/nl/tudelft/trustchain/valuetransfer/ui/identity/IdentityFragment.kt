@@ -662,6 +662,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
 
     @Suppress("DEPRECATION")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        Log.i("PoaCommunity", "This is the IdentityFragment onActivityResult")
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == PICK_IDENTITY_IMAGE) {
                 if (data != null) {
@@ -807,6 +808,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
         private const val ADD_AUTHORITY_INTENT = 1
         private const val PICK_IDENTITY_IMAGE = 2
         private const val ISSUE_POA_INTENT = 3
+        private const val VERIFY_POA_INTENT = 4
         private const val MENU_ITEM_OPTIONS = 1234
     }
 }

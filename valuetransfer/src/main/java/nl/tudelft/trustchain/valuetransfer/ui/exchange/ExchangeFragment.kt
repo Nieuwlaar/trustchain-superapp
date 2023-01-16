@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
@@ -17,15 +18,17 @@ import nl.tudelft.trustchain.common.eurotoken.Transaction
 import nl.tudelft.trustchain.common.eurotoken.TransactionRepository
 import nl.tudelft.trustchain.common.util.QRCodeUtils
 import nl.tudelft.trustchain.common.util.viewBinding
-import nl.tudelft.trustchain.valuetransfer.util.*
 import nl.tudelft.trustchain.valuetransfer.R
-import nl.tudelft.trustchain.valuetransfer.ui.VTFragment
 import nl.tudelft.trustchain.valuetransfer.databinding.FragmentExchangeVtBinding
 import nl.tudelft.trustchain.valuetransfer.dialogs.ExchangeTransactionDialog
 import nl.tudelft.trustchain.valuetransfer.dialogs.ExchangeTransferMoneyDialog
 import nl.tudelft.trustchain.valuetransfer.dialogs.ExchangeTransferMoneyLinkDialog
 import nl.tudelft.trustchain.valuetransfer.dialogs.OptionsDialog
 import nl.tudelft.trustchain.valuetransfer.ui.QRScanController
+import nl.tudelft.trustchain.valuetransfer.ui.VTFragment
+import nl.tudelft.trustchain.valuetransfer.util.DividerItemDecorator
+import nl.tudelft.trustchain.valuetransfer.util.formatBalance
+import nl.tudelft.trustchain.valuetransfer.util.toExchangeTransactionItem
 import org.json.JSONObject
 
 class ExchangeFragment : VTFragment(R.layout.fragment_exchange_vt) {
@@ -209,6 +212,7 @@ class ExchangeFragment : VTFragment(R.layout.fragment_exchange_vt) {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        Log.i("PoaCommunity", "This is the ExchangeFragment onActivityResult")
         QRCodeUtils(requireContext()).parseActivityResult(requestCode, resultCode, data)?.let { result ->
             try {
                 val obj = JSONObject(result)

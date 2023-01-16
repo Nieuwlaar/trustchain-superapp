@@ -16,11 +16,24 @@ import org.json.JSONObject
 
 
 class QRScanController : VTFragment() {
+    private lateinit var kvkNumberGlob : String
+    private lateinit var poaTypeGlob: String
 
     fun initiateScan() {
         QRCodeUtils(requireContext()).startQRScanner(
             this,
             promptText = resources.getString(R.string.text_scan_any_qr),
+            vertical = true
+        )
+    }
+
+
+    fun initiatePoaVerifyScan(kvkNumberGlob: String, poaTypeGlob: String) {
+        this@QRScanController.kvkNumberGlob = kvkNumberGlob
+        this@QRScanController.poaTypeGlob = poaTypeGlob
+        QRCodeUtils(requireContext()).startQRScanner(
+            this,
+            promptText = resources.getString(R.string.text_scan_qr_verify_poa),
             vertical = true
         )
     }
@@ -175,6 +188,8 @@ class QRScanController : VTFragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        Log.i("PoaCommunity", "This is the QRScanController onActivityResult")
         QRCodeUtils(requireContext()).parseActivityResult(requestCode, resultCode, data)?.let { result ->
             Log.i("PoaCommunity", "Raw QR scan results:" + result)
             if (result.startsWith("PowerOfAttorney")){
@@ -208,14 +223,16 @@ class QRScanController : VTFragment() {
                         json.getString("surnamePoaIssuer"),
                         json.getString("dateOfBirthPoaIssuer")
                     )
+
+                    Log.i("PoaCommunity", "Check if is the same:")
+                    Log.i("PoaCommunity", "Scanned KVK number: "+poa.kvkNumber.toString()+" Input verify KVK number: "+ kvkNumberGlob )
+                    Log.i("PoaCommunity", "Scanned PoA Type: "+poa.poaType+" Input Poa Type: "+poaTypeGlob)
+
                     Log.i("PoaCommunity", "Scanned QR object Type: " + poa.javaClass.name)
                     Log.i("PoaCommunity", "QR: Object to string again: " + poa.toString())
-                    parentActivity.displayToast(
-                        requireContext(),
-                        resources.getString(R.string.snackbar_qr_code_poa_format_but_no_use)
-                    )
                 } catch (e: Exception) {
                     e.printStackTrace()
+                    Log.i("PoaCommunity", e.printStackTrace().toString())
                     parentActivity.displayToast(
                         requireContext(),
                         resources.getString(R.string.snackbar_qr_code_not_poa_format)
@@ -281,6 +298,7 @@ class QRScanController : VTFragment() {
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
+                    Log.i("PoaCommunity", e.printStackTrace().toString())
                     parentActivity.displayToast(
                         requireContext(),
                         resources.getString(R.string.snackbar_qr_code_not_json_format)
@@ -289,7 +307,9 @@ class QRScanController : VTFragment() {
                 }
             }
         }
+
     }
+
 
     companion object {
         const val KEY_AMOUNT = "amount"
@@ -318,5 +338,6 @@ class QRScanController : VTFragment() {
         const val VALUE_CONTACT = "contact"
 
         const val FALLBACK_UNKNOWN = "UNKNOWN"
+
     }
 }

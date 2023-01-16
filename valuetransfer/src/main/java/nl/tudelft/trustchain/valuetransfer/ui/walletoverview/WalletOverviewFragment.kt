@@ -3,6 +3,7 @@ package nl.tudelft.trustchain.valuetransfer.ui.walletoverview
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
@@ -300,6 +301,7 @@ class WalletOverviewFragment : VTFragment(R.layout.fragment_wallet_vt) {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        Log.i("PoaCommunity", "This is the WalletOverviewFragment onActivityResult")
         if (resultCode == Activity.RESULT_OK) {
             QRCodeUtils(requireContext()).parseActivityResult(requestCode, resultCode, data)
                 ?.let { result ->

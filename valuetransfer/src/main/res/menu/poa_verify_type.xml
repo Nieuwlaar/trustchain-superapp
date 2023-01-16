@@ -11,7 +11,7 @@
     <item
         android:id="@+id/actionSignUpToX"
         android:icon="@drawable/ic_poa_sign_x"
-        android:title="@string/poa_type_sign_up_to_x" />
+        android:title="Sign up to X" />
     <item
         android:id="@+id/actionCustom"
         android:icon="@drawable/ic_poa_custom"
