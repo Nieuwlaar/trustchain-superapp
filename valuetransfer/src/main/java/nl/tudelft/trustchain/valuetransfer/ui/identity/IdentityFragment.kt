@@ -379,7 +379,6 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
                 menuMods = { menu ->
                     menu.apply {
                         findItem(R.id.actionAddKvkPoa).isVisible = true
-                        findItem(R.id.actionAddEBSIAttestation).isVisible = getIdentityCommunity().getUnusedAttributeNames().isNotEmpty()
                         findItem(R.id.actionIssuePoa).isVisible = getIdentityCommunity().getUnusedAttributeNames().isNotEmpty()
                         findItem(R.id.actionIssueFakePoa).isVisible = true
                     }
@@ -387,7 +386,6 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
                 optionSelected = { _, item ->
                     when (item.itemId) {
                         R.id.actionAddKvkPoa -> addKvkPoa()
-                        R.id.actionAddEBSIAttestation -> addPoa()
                         R.id.actionIssuePoa -> issuePoa()
                         R.id.actionIssueFakePoa -> issueFakePoa()
                     }

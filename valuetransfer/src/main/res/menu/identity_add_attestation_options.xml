@@ -5,10 +5,6 @@
         android:icon="@drawable/ic_attestation"
         android:title="@string/menu_identity_receive_poa_kvk" />
     <item
-        android:id="@+id/actionAddEBSIAttestation"
-        android:icon="@drawable/ic_attestation"
-        android:title="@string/menu_identity_receive_poa_ebsi" />
-    <item
         android:id="@+id/actionIssuePoa"
         android:icon="@drawable/ic_attestation"
         android:title="@string/menu_identity_issue_poa" />
