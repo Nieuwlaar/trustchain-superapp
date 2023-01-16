@@ -17,7 +17,7 @@ class PoaItemRenderer(
         tv_poa_company.text = item.poa.companyName
         tv_poa_type.text = item.poa.poaType
         when (item.poa.companyName) {
-            "Xaigis B.V." -> iv_companyImage.setImageResource(R.drawable.xaigis)
+            "Xaigis B.V. (FAKE)" -> iv_companyImage.setImageResource(R.drawable.xaigis)
             "Nieuwlaar Design" -> iv_companyImage.setImageResource(R.drawable.nieuwlaar_design_logo)
             else -> {
                 iv_companyImage.setImageResource(R.drawable.img_404)

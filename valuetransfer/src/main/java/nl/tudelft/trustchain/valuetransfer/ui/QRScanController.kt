@@ -227,9 +227,17 @@ class QRScanController : VTFragment() {
                     Log.i("PoaCommunity", "Check if is the same:")
                     Log.i("PoaCommunity", "Scanned KVK number: "+poa.kvkNumber.toString()+" Input verify KVK number: "+ kvkNumberGlob )
                     Log.i("PoaCommunity", "Scanned PoA Type: "+poa.poaType+" Input Poa Type: "+poaTypeGlob)
-
                     Log.i("PoaCommunity", "Scanned QR object Type: " + poa.javaClass.name)
                     Log.i("PoaCommunity", "QR: Object to string again: " + poa.toString())
+                    PoAVerifiedDialog(
+                        kvkNumberGlob,
+                        poaTypeGlob,
+                        poa.kvkNumber.toString(),
+                        poa.poaType
+                    )
+                        .show(parentFragmentManager, tag)
+
+
                 } catch (e: Exception) {
                     e.printStackTrace()
                     Log.i("PoaCommunity", e.printStackTrace().toString())
