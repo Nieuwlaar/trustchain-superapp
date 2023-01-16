@@ -301,6 +301,7 @@
     <string name="text_qr_not_recognized">QR code not recognized</string>
     <string name="text_qr_type_not_recognized">Unrecognized type value %s in QR-code</string>
     <string name="text_scan_any_qr">Scan any QR Code to proceed</string>
+    <string name="text_scan_qr_verify_poa">Scan QR of PoA you want to verify</string>
     <string name="text_activity_not_null_requirement">Activity cannot be null</string>
     <string name="text_scan_qr_contact_import">Scan QR Code to import contact</string>
     <string name="text_no_contact_selected">No contact selected</string>
@@ -487,7 +488,7 @@
     <string name="text_request_euro_1">Would you please pay me €</string>
     <string name="text_request_euro_2"> via\n</string>
     <string name="poa_type_create_quotations">Create Quotations</string>
-    <string name="poa_type_sign_up_to_x">Sign up to X</string>
+    <string name="poa_type_sign_up_to_x">Sign</string>
     <string name="poa_type_purchase_wholesale">Purchase at Wholesale</string>
     <string-array name="exchange_types">
         <item>EuroToken</item>
