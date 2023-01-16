@@ -101,6 +101,7 @@ class IdentityVerifyPoaDialog(var myPublicKey: String) : VTDialogFragment() {
                 Log.i(TAG, "Verify PoA button clicked")
                 val qrScanController = getQRScanController()
                 qrScanController.initiatePoaVerifyScan(kvkNumberGlob, poaTypeGlob)
+                dialog?.dismiss()
             }
 
             poaType.setOnClickListener {
@@ -122,18 +123,22 @@ class IdentityVerifyPoaDialog(var myPublicKey: String) : VTDialogFragment() {
                                 poaType.text = getString(R.string.poa_type_create_quotations)
                                 poaTypeGlob = poaType.text.toString()
                                 Log.i(TAG, poaType.text.toString())
+                                makeVerifyClickable(view, isValidVerification(isValidKvkNumber(kvkNumberView.text.toString()), isValidPoaType(poaTypeGlob)))
                             }
                             R.id.actionPurchaseWholesale -> {
                                 poaType.text = getString(R.string.poa_type_purchase_wholesale)
                                 poaTypeGlob = poaType.text.toString()
+                                makeVerifyClickable(view, isValidVerification(isValidKvkNumber(kvkNumberView.text.toString()), isValidPoaType(poaTypeGlob)))
                             }
                             R.id.actionSignUpToX -> {
                                 poaType.text = getString(R.string.poa_type_sign_up_to_x)
                                 poaTypeGlob = poaType.text.toString()
+                                makeVerifyClickable(view, isValidVerification(isValidKvkNumber(kvkNumberView.text.toString()), isValidPoaType(poaTypeGlob)))
                             }
                             R.id.actionCustom -> {
                                 poaType.text = "Custom"
                                 poaTypeGlob = poaType.text.toString()
+                                makeVerifyClickable(view, isValidVerification(isValidKvkNumber(kvkNumberView.text.toString()), isValidPoaType(poaTypeGlob)))
                             }
                         }
                     }
@@ -156,6 +161,7 @@ class IdentityVerifyPoaDialog(var myPublicKey: String) : VTDialogFragment() {
                         params.topToBottom = poaCustomFillIn.id
                     }
                 }
+                makeVerifyClickable(view, isValidVerification(isValidKvkNumber(kvkNumberView.text.toString()), isValidPoaType(poaTypeGlob)))
             }
 
             poaSignXAmount.doAfterTextChanged{
