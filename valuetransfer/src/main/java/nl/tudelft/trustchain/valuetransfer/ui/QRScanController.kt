@@ -2,14 +2,12 @@ package nl.tudelft.trustchain.valuetransfer.ui
 
 import android.content.Intent
 import android.util.Log
-import nl.tudelft.ipv8.android.IPv8Android
 import nl.tudelft.ipv8.keyvault.defaultCryptoProvider
 import nl.tudelft.ipv8.util.hexToBytes
 import nl.tudelft.ipv8.util.toHex
 import nl.tudelft.trustchain.common.contacts.Contact
 import nl.tudelft.trustchain.common.util.QRCodeUtils
 import nl.tudelft.trustchain.valuetransfer.R
-import nl.tudelft.trustchain.valuetransfer.community.PowerofAttorneyCommunity
 import nl.tudelft.trustchain.valuetransfer.dialogs.*
 import nl.tudelft.trustchain.valuetransfer.entity.PowerOfAttorney
 import org.json.JSONObject
@@ -59,8 +57,11 @@ class QRScanController : VTFragment() {
     }
 
     fun issuePoa(publicKey: String){
-        val community = IPv8Android.getInstance().getOverlay<PowerofAttorneyCommunity>()!!
-        community.sendPoa(publicKey)
+        PoASendDialog(
+            publicKey,
+            getPoaStore().getAllYourPoasWithDelegation()
+        ).show(parentFragmentManager, tag)
+
     }
 
     fun addAttestation(publicKey: String) {

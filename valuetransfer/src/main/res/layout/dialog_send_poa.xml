@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="12dp"
+    android:paddingBottom="12dp"
+    android:background="@drawable/dialog_rounded_top"
+    android:backgroundTint="?attr/dialogColor">
+
+    <include
+        android:id="@+id/dialogHandle"
+        layout="@layout/handle_dialog" />
+
+    <TextView
+        android:id="@+id/tvDeletePoATitle"
+        style="@style/DialogTitle"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/dialogHandle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Send PoA"
+        tools:text="Company Name"/>
+
+
+    <LinearLayout
+        android:id="@+id/llCompanyName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/tvDeletePoATitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+        <TextView
+            android:id="@+id/tvCompanyNameText"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="gravity"
+            android:gravity="left"
+            android:textSize="16dp"
+            android:textColor="?attr/onDialogColor"
+            android:paddingHorizontal="12dp"
+            android:text="Organisation:"
+            tools:text="Number:" />
+        <TextView
+            android:id="@+id/tvCompanyName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="gravity"
+            android:gravity="left"
+            android:textSize="16dp"
+            android:textColor="?attr/onDialogColor"
+            android:paddingHorizontal="12dp"
+
+            app:layout_constraintStart_toEndOf="@+id/tvCompanyNameText"
+            tools:text="Number:" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llKvkNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/llCompanyName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+        <TextView
+            android:id="@+id/tvKvkNumberText"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="gravity"
+            android:gravity="left"
+            android:textSize="16dp"
+            android:textColor="?attr/onDialogColor"
+            android:paddingHorizontal="12dp"
+            android:text="Number:"
+            tools:text="Number:" />
+
+        <TextView
+            android:id="@+id/tvKvkNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:paddingHorizontal="12dp"
+            android:textAlignment="gravity"
+            android:textColor="?attr/onDialogSecondaryColor"
+            android:textSize="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvKvkNumberText"
+            app:layout_constraintTop_toBottomOf="@+id/tvCompanyName"
+            tools:text="KVK number" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llPoaList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/llCompanyName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/clYourPoa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxHeight="100dp"
+            tools:visibility="visible"
+            app:layout_constraintTop_toBottomOf="parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvNoYourPoas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="8dp"
+                    android:text="@string/text_no_your_poas"
+                    android:textColor="?attr/onBackgroundColor"
+                    android:textStyle="italic"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvPoaInfo"
+                    tools:visibility="visible" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvYourPoasWithDelegation"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="4dp"
+                        tools:itemCount="1"
+                        tools:listitem="@layout/item_identity_poa"
+                        tools:visibility="visible" />
+                </RelativeLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/llPoaList">
+
+        <RelativeLayout
+            android:id="@+id/rlButtonSend"
+            android:layout_width="116dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="16dp"
+            android:padding="12dp"
+            android:radius="10dp"
+            android:layout_weight="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvButtonSend"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/rounded_corners_tudelft_blue"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:text="SEND"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlButtonCancel"
+            android:layout_width="116dp"
+            android:layout_marginTop="16dp"
+            android:layout_height="70dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="12dp"
+            android:radius="10dp"
+            android:layout_weight="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvButtonCancel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="CANCEL"
+                android:clickable="true"
+                android:focusable="true"
+                android:textColor="@color/dark_gray"
+                android:background="@drawable/rounded_corners_light_grey"
+                android:gravity="center"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

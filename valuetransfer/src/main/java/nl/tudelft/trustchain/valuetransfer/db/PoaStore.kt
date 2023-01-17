@@ -81,6 +81,14 @@ class PoaStore(context: Context) {
             .asFlow().mapToList()
     }
 
+    fun getAllYourPoasWithDelegation(): List<PowerOfAttorney> {
+        val ipv8 = getIpv8()
+        val myPublicKey = ipv8.myPeer.publicKey.keyToBin().toHex()
+//        TODO: make it truly with delegation only from sql
+        return database.dbPowerofAttorneyQueries.getAllYourPoas(myPublicKey,poaMapper)
+            .executeAsList()
+    }
+
     fun getAllIssuedPoas(): Flow<List<PowerOfAttorney>> {
         val ipv8 = getIpv8()
         val myPublicKey = ipv8.myPeer.publicKey.keyToBin().toHex()

@@ -88,6 +88,8 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
         }.asLiveData()
     }
 
+
+
     private val itemsIssuedPoas: LiveData<List<Item>> by lazy {
         getPoaStore().getAllIssuedPoas().map { issuedPoas ->
             createPoaItems(issuedPoas)
@@ -323,7 +325,6 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
         lifecycleScope.launchWhenStarted {
             while (isActive) {
                 updateAttestations()
-                updatePoas()
                 toggleVisibility()
                 delay(1000)
             }
@@ -627,7 +628,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
         }
     }
 
-    private fun createPoaItems(poas: List<PowerOfAttorney>): List<Item> {
+    fun createPoaItems(poas: List<PowerOfAttorney>): List<Item> {
         return poas.map { poa ->
             PoaItem(poa)
         }
@@ -728,10 +729,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
         } else super.onActivityResult(requestCode, resultCode, data)
     }
 
-//    TODO: implement
-    private fun updatePoas(){
 
-    }
 
     private fun addToList(title: String, image: Int) {
         titlesList.add(title)
