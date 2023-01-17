@@ -27,7 +27,6 @@ class PoaItemRenderer(
 
         poa_cardView.setOnClickListener {
             Log.i(TAG, "Clicked item: "+item.poa.id)
-//            TODO: Implement the PoA card dialog
             onPoaItemClick(item.poa)
         }
     }

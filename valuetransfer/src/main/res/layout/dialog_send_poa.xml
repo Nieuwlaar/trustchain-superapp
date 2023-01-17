@@ -25,7 +25,7 @@
 
 
     <LinearLayout
-        android:id="@+id/llCompanyName"
+        android:id="@+id/llPublicKey"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
@@ -33,71 +33,99 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
         <TextView
-            android:id="@+id/tvCompanyNameText"
-            android:layout_width="120dp"
+            android:id="@+id/tvPublicKeyText"
+            android:layout_width="100dp"
+            android:maxWidth="100dp"
             android:layout_height="wrap_content"
             android:textAlignment="gravity"
             android:gravity="left"
             android:textSize="16dp"
             android:textColor="?attr/onDialogColor"
-            android:paddingHorizontal="12dp"
-            android:text="Organisation:"
+            android:paddingHorizontal="6dp"
+            android:text="Scanned Public Key:"
             tools:text="Number:" />
         <TextView
-            android:id="@+id/tvCompanyName"
+            android:id="@+id/tvPublicKey"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="gravity"
             android:gravity="left"
-            android:textSize="16dp"
+            android:textSize="12dp"
             android:textColor="?attr/onDialogColor"
             android:paddingHorizontal="12dp"
-
+            android:paddingBottom="4dp"
             app:layout_constraintStart_toEndOf="@+id/tvCompanyNameText"
             tools:text="Number:" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/llKvkNumber"
+        android:id="@+id/llConnected"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/llCompanyName"
+        app:layout_constraintTop_toBottomOf="@+id/llPublicKey"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="horizontal">
         <TextView
-            android:id="@+id/tvKvkNumberText"
-            android:layout_width="120dp"
+            android:id="@+id/tvConnectedText"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:textAlignment="gravity"
             android:gravity="left"
             android:textSize="16dp"
             android:textColor="?attr/onDialogColor"
-            android:paddingHorizontal="12dp"
-            android:text="Number:"
-            tools:text="Number:" />
+            android:paddingHorizontal="6dp"
+            android:text="Connected to peer:"/>
 
-        <TextView
-            android:id="@+id/tvKvkNumber"
+<!--        <TextView-->
+<!--            android:id="@+id/tvConnected"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center|left"-->
+<!--            android:paddingHorizontal="12dp"-->
+<!--            android:textAlignment="gravity"-->
+<!--            android:textColor="?attr/onDialogSecondaryColor"-->
+<!--            android:textSize="16dp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/tvKvkNumberText"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/tvCompanyName"-->
+<!--            tools:text="KVK number" />-->
+        <RelativeLayout
+            android:id="@+id/llConnectedIcon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="left"
-            android:paddingHorizontal="12dp"
-            android:textAlignment="gravity"
-            android:textColor="?attr/onDialogSecondaryColor"
-            android:textSize="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/tvKvkNumberText"
-            app:layout_constraintTop_toBottomOf="@+id/tvCompanyName"
-            tools:text="KVK number" />
+            android:orientation="vertical"
+            android:visibility="invisible">
+            <ImageView
+                android:id="@+id/ivConnectedIcon"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_verified"
+                android:tint="@color/green"
+                android:layout_gravity="center">
+            </ImageView>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/llNotConnectedIcon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/ivNotConnectedIcon"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_verified_not"
+                android:tint="@color/red"
+                android:layout_gravity="center">
+            </ImageView>
+        </RelativeLayout>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/llPoaList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/llCompanyName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/llConnected">
         <androidx.core.widget.NestedScrollView
             android:id="@+id/clYourPoa"
             android:layout_width="match_parent"
@@ -111,19 +139,19 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tvNoYourPoas"
+                    android:id="@+id/tvNoDelegatablePoas"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="12dp"
                     android:paddingHorizontal="8dp"
                     android:paddingVertical="8dp"
-                    android:text="@string/text_no_your_poas"
+                    android:text="@string/text_no_your_poas_with_delegation"
                     android:textColor="?attr/onBackgroundColor"
                     android:textStyle="italic"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvPoaInfo"
-                    tools:visibility="visible" />
+                    tools:visibility="gone" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"

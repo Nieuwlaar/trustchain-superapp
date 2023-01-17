@@ -257,6 +257,7 @@
     <string name="text_tooltip_attestations">Attestations declare that a claim about a piece of information is validated by an authority</string>
     <string name="text_no_attestations">There are no attestations</string>
     <string name="text_no_your_poas">You do not have any Powers of Attorney</string>
+    <string name="text_no_your_poas_with_delegation">You do not have any Powers of Attorney with which you are able to delegate other Powers of Attorney</string>
     <string name="text_no_issued_poas">You have not issued any Powers of Attorney</string>
     <string name="text_no_issued_attestations">You have not issued any attestations</string>
     <string name="text_public_key">Public Key</string>

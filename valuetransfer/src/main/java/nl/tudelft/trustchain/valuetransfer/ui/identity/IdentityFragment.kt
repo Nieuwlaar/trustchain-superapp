@@ -393,7 +393,6 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
                 }
             ).show(parentFragmentManager, tag)
             Log.i(TAG, "Add PoA button clicked")
-            postToList()
 
             val wifiManager: WifiManager = context?.getSystemService(WIFI_SERVICE) as WifiManager
             val ip = ipToString(wifiManager.connectionInfo.ipAddress)
@@ -730,18 +729,6 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
     }
 
 
-
-    private fun addToList(title: String, image: Int) {
-        titlesList.add(title)
-        imagesList.add(image)
-    }
-
-    private fun postToList(){
-        for (i in 1..3) {
-            addToList("Title $i", R.drawable.ic_bug_report_black_24dp)
-            Log.i(TAG, "Added $i to list")
-        }
-    }
 
     @SuppressLint("NewApi")
     private fun issueFakePoa() {

@@ -41,7 +41,7 @@ class PowerofAttorneyCommunity(private val store: PoaStore) : Community() {
     /*
     Obtain IP from the peer that is scanned from QR (peer has to be in community)
      */
-    private fun getPeerIp(publicKey : String): IPv4Address {
+    fun getPeerIp(publicKey : String): IPv4Address {
         var address = IPv4Address("0.0.0.0", 0)
         for (peer in getPeers()) {
             Log.i("PoaCommunity", "Peer public keys: "+peer.publicKey.keyToBin().toHex())
