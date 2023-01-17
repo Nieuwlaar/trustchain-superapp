@@ -1,9 +1,10 @@
 package nl.tudelft.trustchain.valuetransfer.dialogs
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -27,6 +28,7 @@ class PoASendDialog(
 ) : VTDialogFragment() {
     private val TAG = "PoaCommunity"
 
+    @SuppressLint("RestrictedApi")
     override fun onCreateDialog(savedInstanceState: Bundle?): BottomSheetDialog {
         val community = IPv8Android.getInstance().getOverlay<PowerofAttorneyCommunity>()!!
 
@@ -38,12 +40,12 @@ class PoASendDialog(
         Log.i(TAG, allYourPoasWithDelegation.toString())
         val tvNoDelegatablePoas = view.findViewById<TextView>(R.id.tvNoDelegatablePoas)
         val tvPublicKey = view.findViewById<TextView>(R.id.tvPublicKey)
-        val llConnectedIcon = view.findViewById<ImageView>(R.id.llConnectedIcon)
-        val llNotConnectedIcon = view.findViewById<ImageView>(R.id.llNotConnectedIcon)
+        val llConnectedIcon = view.findViewById<RelativeLayout>(R.id.llConnectedIcon)
+        val llNotConnectedIcon = view.findViewById<RelativeLayout>(R.id.llNotConnectedIcon)
         tvPublicKey.text = publicKey
         if (community.getPeerIp(publicKey) != IPv4Address("0.0.0.0", 0)){
             llConnectedIcon.visibility = View.VISIBLE
-            llNotConnectedIcon.visibility = View.INVISIBLE
+            llNotConnectedIcon.visibility = View.GONE
         }
 
 
@@ -76,6 +78,41 @@ class PoASendDialog(
         return activity?.let {
             val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BaseBottomSheetDialog)
 //            val view = layoutInflater.inflate(R.layout.dialog_send_poa, null)
+            val poaType = view.findViewById<TextView>(R.id.poaType)
+            poaType.setOnClickListener {
+                Log.i(TAG, "PoaType clicked")
+                OptionsDialog(
+                    R.menu.poa_verify_type,
+                    resources.getString(R.string.dialog_choose_poa_type),
+                    menuMods = { menu ->
+                        menu.apply {
+                            findItem(R.id.actionCreateQuotations).isVisible = true
+                            findItem(R.id.actionPurchaseWholesale).isVisible = true
+                            findItem(R.id.actionSignUpToX).isVisible = true
+                            findItem(R.id.actionCustom).isVisible = true
+                        }
+                    },
+                    optionSelected = { _, item ->
+                        when (item.itemId) {
+                            R.id.actionCreateQuotations -> {
+                                poaType.text = getString(R.string.poa_type_create_quotations)
+                                Log.i(TAG, poaType.text.toString())
+                            }
+                            R.id.actionPurchaseWholesale -> {
+                                poaType.text = getString(R.string.poa_type_purchase_wholesale)
+                            }
+                            R.id.actionSignUpToX -> {
+                                poaType.text = getString(R.string.poa_type_sign_up_to_x)
+                            }
+                            R.id.actionCustom -> {
+                                poaType.text = "Custom"
+                            }
+                        }
+                    }
+                ).show(parentFragmentManager, tag)
+            }
+
+
 
             // Fix keyboard exposing over content of dialog
             bottomSheetDialog.behavior.apply {

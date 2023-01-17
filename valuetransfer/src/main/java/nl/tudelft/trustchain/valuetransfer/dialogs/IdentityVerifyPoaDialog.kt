@@ -73,7 +73,7 @@ class IdentityVerifyPoaDialog(var myPublicKey: String) : VTDialogFragment() {
             }
 
             kvkNumberView.doAfterTextChanged {
-                Log.i(TAG, "5")
+                Log.i(TAG, "KVK number changed")
 
                 makeVerifyClickable(view, isValidVerification(isValidKvkNumber(kvkNumberView.text.toString()), isValidPoaType(poaTypeGlob)))
 //                when {

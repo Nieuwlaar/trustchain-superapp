@@ -52,7 +52,7 @@
             android:gravity="left"
             android:textSize="12dp"
             android:textColor="?attr/onDialogColor"
-            android:paddingHorizontal="12dp"
+            android:paddingHorizontal="6dp"
             android:paddingBottom="4dp"
             app:layout_constraintStart_toEndOf="@+id/tvCompanyNameText"
             tools:text="Number:" />
@@ -62,6 +62,7 @@
         android:id="@+id/llConnected"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         app:layout_constraintTop_toBottomOf="@+id/llPublicKey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,18 +93,18 @@
 <!--            tools:text="KVK number" />-->
         <RelativeLayout
             android:id="@+id/llConnectedIcon"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="invisible">
+            android:visibility="gone">
+
             <ImageView
                 android:id="@+id/ivConnectedIcon"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
                 android:src="@drawable/ic_verified"
-                android:tint="@color/green"
-                android:layout_gravity="center">
-            </ImageView>
+                android:tint="@color/green" />
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/llNotConnectedIcon"
@@ -112,11 +113,11 @@
             android:orientation="vertical">
             <ImageView
                 android:id="@+id/ivNotConnectedIcon"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
                 android:src="@drawable/ic_verified_not"
-                android:tint="@color/red"
-                android:layout_gravity="center">
+                android:tint="@color/red">
             </ImageView>
         </RelativeLayout>
     </LinearLayout>
@@ -125,6 +126,8 @@
         android:id="@+id/llPoaList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:backgroundTint="@color/light_gray"
         app:layout_constraintTop_toBottomOf="@+id/llConnected">
         <androidx.core.widget.NestedScrollView
             android:id="@+id/clYourPoa"
@@ -173,11 +176,72 @@
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>
 
+    <EditText
+        android:id="@+id/poaType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="40dp"
+        android:background="@drawable/pill_rounded"
+        android:backgroundTint="@color/light_gray"
+        android:paddingVertical="8dp"
+        android:imeOptions="actionDone"
+        android:paddingStart="8dp"
+        android:paddingRight="8dp"
+        android:layout_marginTop="12dp"
+        android:textSize="14sp"
+        android:textColor="?attr/onDialogColor"
+        android:hint="Choose a PoA type"
+        android:editable="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/llPoaList"/>
+
+    <EditText
+        android:id="@+id/poaSignXAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="40dp"
+        android:background="@drawable/pill_rounded"
+        android:backgroundTint="@color/light_gray"
+        android:paddingVertical="8dp"
+        android:imeOptions="actionDone"
+        android:paddingStart="8dp"
+        android:paddingRight="8dp"
+        android:layout_marginTop="12dp"
+        android:textSize="14sp"
+        android:textColor="?attr/onDialogColor"
+        android:digits="0123456789"
+        android:hint="Fill in signing limit in €"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/poaType"/>
+
+    <EditText
+        android:id="@+id/poaCustomFillIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="40dp"
+        android:background="@drawable/pill_rounded"
+        android:backgroundTint="@color/light_gray"
+        android:paddingVertical="8dp"
+        android:imeOptions="actionDone"
+        android:paddingStart="8dp"
+        android:paddingRight="8dp"
+        android:layout_marginTop="12dp"
+        android:textSize="14sp"
+        android:textColor="?attr/onDialogColor"
+        android:hint="Define PoA"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/poaType"/>
+
+
+
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/llPoaList">
+        app:layout_constraintTop_toBottomOf="@+id/poaType">
 
         <RelativeLayout
             android:id="@+id/rlButtonSend"
