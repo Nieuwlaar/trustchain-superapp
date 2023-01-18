@@ -752,10 +752,45 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
             surnamePoaIssuer = "JANSEN",
             dateOfBirthPoaIssuer = "20-01-2000"
         )
+        val fakePoa2 = PowerOfAttorney(
+            id = UUID.randomUUID().toString(),
+            kvkNumber = 12345678,
+            companyName = "Xaigis B.V. (FAKE)",
+            poaType = "Manager",
+            isPermitted = "YES",
+            isAllowedToIssuePoa = "YES",
+            publicKeyPoaHolder = myPublicKey,
+            givenNamesPoaHolder = identity.content.givenNames,
+            surnamePoaHolder = identity.content.surname,
+            dateOfBirthPoaHolder = getDateOfBirth(identity),
+            publicKeyPoaIssuer = "A",
+            givenNamesPoaIssuer = "JAN",
+            surnamePoaIssuer = "JANSEN",
+            dateOfBirthPoaIssuer = "20-01-2000"
+        )
+        val fakePoa3 = PowerOfAttorney(
+            id = UUID.randomUUID().toString(),
+            kvkNumber = 12345678,
+            companyName = "Xaigis B.V. (FAKE)",
+            poaType = "Employee",
+            isPermitted = "YES",
+            isAllowedToIssuePoa = "YES",
+            publicKeyPoaHolder = myPublicKey,
+            givenNamesPoaHolder = identity.content.givenNames,
+            surnamePoaHolder = identity.content.surname,
+            dateOfBirthPoaHolder = getDateOfBirth(identity),
+            publicKeyPoaIssuer = "A",
+            givenNamesPoaIssuer = "JAN",
+            surnamePoaIssuer = "JANSEN",
+            dateOfBirthPoaIssuer = "20-01-2000"
+        )
+
         Log.i(TAG, "dateOfBirthPoaHolder in fake POA: "+identity.content.dateOfBirth.toString())
         val poaCommunity = IPv8Android.getInstance().getOverlay<PowerofAttorneyCommunity>()!!
 
         poaCommunity.addFakePoa(fakePoa)
+        poaCommunity.addFakePoa(fakePoa2)
+        poaCommunity.addFakePoa(fakePoa3)
         Log.i(TAG, fakePoa.toString())
     }
 
