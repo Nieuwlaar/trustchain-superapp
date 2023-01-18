@@ -16,4 +16,12 @@
         android:id="@+id/actionCustom"
         android:icon="@drawable/ic_poa_custom"
         android:title="Custom" />
+    <item
+        android:id="@+id/actionMakeManager"
+        android:icon="@drawable/ic_poa_manager"
+        android:title="@string/poa_type_manager" />
+    <item
+        android:id="@+id/actionMakeEmployee"
+        android:icon="@drawable/ic_poa_employee"
+        android:title="@string/poa_type_employee" />
 </menu>

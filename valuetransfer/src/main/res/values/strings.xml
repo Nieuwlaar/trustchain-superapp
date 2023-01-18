@@ -491,6 +491,8 @@
     <string name="poa_type_create_quotations">Create Quotations</string>
     <string name="poa_type_sign_up_to_x">Sign</string>
     <string name="poa_type_purchase_wholesale">Purchase at Wholesale</string>
+    <string name="poa_type_employee">Assign Employee</string>
+    <string name="poa_type_manager">Assign Manager</string>
     <string-array name="exchange_types">
         <item>EuroToken</item>
         <item>Euro</item>

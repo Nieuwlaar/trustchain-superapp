@@ -191,7 +191,7 @@
         android:layout_marginTop="12dp"
         android:textSize="14sp"
         android:textColor="?attr/onDialogColor"
-        android:hint="Choose a PoA type"
+        android:hint="Choose a PoA first"
         android:editable="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
