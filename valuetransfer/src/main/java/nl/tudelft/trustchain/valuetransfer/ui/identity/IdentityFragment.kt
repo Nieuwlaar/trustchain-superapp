@@ -758,7 +758,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
         val fakePoa = PowerOfAttorney(
             id = UUID.randomUUID().toString(),
             kvkNumber = 12345678,
-            companyName = "Xaigis B.V. (FAKE)",
+            companyName = "Xaigis B.V. FAKE",
             poaType = "Root",
             isPermitted = "YES",
             isAllowedToIssuePoa = "YES",
@@ -774,7 +774,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
         val fakePoa2 = PowerOfAttorney(
             id = UUID.randomUUID().toString(),
             kvkNumber = 12345678,
-            companyName = "Xaigis B.V. (FAKE)",
+            companyName = "Xaigis B.V. FAKE",
             poaType = "Manager",
             isPermitted = "YES",
             isAllowedToIssuePoa = "YES",
@@ -790,7 +790,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
         val fakePoa3 = PowerOfAttorney(
             id = UUID.randomUUID().toString(),
             kvkNumber = 12345678,
-            companyName = "Xaigis B.V. (FAKE)",
+            companyName = "Xaigis B.V. FAKE",
             poaType = "Employee",
             isPermitted = "YES",
             isAllowedToIssuePoa = "YES",

@@ -20,7 +20,7 @@
         app:layout_constraintTop_toBottomOf="@+id/dialogHandle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="Add PoA?"
+        android:text="Accept PoA?"
         tools:text="Company Name"/>
 
 

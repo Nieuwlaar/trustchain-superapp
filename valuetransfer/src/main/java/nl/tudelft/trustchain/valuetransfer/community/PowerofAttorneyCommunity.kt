@@ -20,13 +20,14 @@ class PowerofAttorneyCommunity(private val store: PoaStore) : Community() {
     private val TAG = "PoaCommunity"
     private val MESSAGE_ID = 1
     private val ISSUE_POA_MESSAGE_ID = 2
-    private val CONFIRM_POA_MESSAGE_ID = 3
+    private val ACK_POA_MESSAGE_ID = 3
     private val REVOCATION_MESSAGE_ID = 4
 
 
     init {
         messageHandlers[MESSAGE_ID] = ::onMessage
         messageHandlers[ISSUE_POA_MESSAGE_ID] = ::onIssuePoaMessage
+        messageHandlers[ACK_POA_MESSAGE_ID] = ::onPoaAckMessage
     }
 
     private fun onMessage(packet: Packet) {
@@ -41,6 +42,17 @@ class PowerofAttorneyCommunity(private val store: PoaStore) : Community() {
         Log.i(TAG, "PoA type :" + result.first)
         Log.i(TAG, "PoA in string :" +result.second)
         EventBus.getDefault().post(ShowPoAAddReceivedDialogEvent(result.first, convertStringPoa2Poa(result.second)))
+    }
+
+    private fun onPoaAckMessage(packet: Packet) {
+        val (peer, payload) = packet.getAuthPayload(MyMessage.Deserializer)
+        Log.i(TAG, "JOE onPoaAckMessage")
+        Log.i(TAG, peer.mid + ": " + payload.message)
+        val result = splitAckMessageString(payload.message)
+        Log.i(TAG, "PoA Acked :" + result)
+        val addedIssuedPoa = convertStringPoa2Poa(result)
+        Log.i(TAG, "Trying to add issuedpoa: " +addedIssuedPoa.toString())
+        addPoa(addedIssuedPoa)
     }
 
     private val qrScanController = QRScanController()
@@ -78,6 +90,17 @@ class PowerofAttorneyCommunity(private val store: PoaStore) : Community() {
     fun sendPoa(publicKey: String, poa: PowerOfAttorney, poaType: String){
         val packet = serializePacket(ISSUE_POA_MESSAGE_ID, MyMessage("|||$poaType|||"+poa.toString()))
         val address = getPeerIp(publicKey)
+        send(address, packet)
+    }
+
+    fun sendPoaAck(publicKey: String, sentPoa: PowerOfAttorney, finalPoa: PowerOfAttorney){
+        Log.i(TAG, "SentPoa: "+sentPoa)
+        Log.i(TAG, "finalPoa: "+finalPoa)
+//        addPoa(finalPoa)
+        val packet = serializePacket(ACK_POA_MESSAGE_ID, MyMessage("|||"+finalPoa))
+        val address = getPeerIp(publicKey)
+        Log.i(TAG, "Sending Ack to public key: "+publicKey)
+        Log.i(TAG, "Sending Ack to address: "+address.toString())
         send(address, packet)
     }
 
@@ -144,6 +167,7 @@ class PowerofAttorneyCommunity(private val store: PoaStore) : Community() {
 
     fun addPoa(poa: PowerOfAttorney) {
         store.addPoa(poa)
+        Log.i(TAG, "Added PoA: "+poa.toString())
     }
 
     fun addFakePoa(poa: PowerOfAttorney) {
@@ -153,6 +177,11 @@ class PowerofAttorneyCommunity(private val store: PoaStore) : Community() {
     fun splitMessageString(str: String): Pair<String, String> {
         val parts = str.split("|||")
         return Pair(parts[1], parts[2])
+    }
+
+    fun splitAckMessageString(str: String): String {
+        val parts = str.split("|||")
+        return parts[1]
     }
 
     class Factory(

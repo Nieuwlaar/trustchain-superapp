@@ -71,7 +71,7 @@ class PoAAddReceivedDialog(
                 val identity = getIdentityCommunity().getIdentity()!!
                 val surnameFromIdentity = identity.content.surname
                 val givenNamesFromIdentity = identity.content.givenNames
-                val receivedPoa = PowerOfAttorney(
+                val finalPoa = PowerOfAttorney(
                     id = UUID.randomUUID().toString(),
                     kvkNumber = poa.kvkNumber,
                     companyName = poa.companyName,
@@ -82,13 +82,16 @@ class PoAAddReceivedDialog(
                     givenNamesPoaHolder = givenNamesFromIdentity,
                     surnamePoaHolder = surnameFromIdentity,
                     dateOfBirthPoaHolder = IdentityFragment.getDateOfBirth(identity),
-                    publicKeyPoaIssuer = "A",
+                    publicKeyPoaIssuer = poa.publicKeyPoaHolder,
                     givenNamesPoaIssuer = poa.givenNamesPoaHolder,
                     surnamePoaIssuer = poa.surnamePoaHolder,
                     dateOfBirthPoaIssuer = poa.dateOfBirthPoaHolder
                 )
+                Log.i(TAG, "My public key:" +myPublicKey)
+//                TODO: Add UUID to recovation list.
                 val poaCommunity = IPv8Android.getInstance().getOverlay<PowerofAttorneyCommunity>()!!
-                poaCommunity.addPoa(receivedPoa)
+                poaCommunity.addPoa(finalPoa)
+                poaCommunity.sendPoaAck(poa.publicKeyPoaHolder, poa, finalPoa)
                 dialog?.dismiss()
             }
             view.findViewById<TextView>(R.id.tvButtonNo).setOnClickListener{
