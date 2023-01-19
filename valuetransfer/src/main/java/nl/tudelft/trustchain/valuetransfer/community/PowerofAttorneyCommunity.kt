@@ -13,19 +13,25 @@ import nl.tudelft.trustchain.valuetransfer.ui.powerofattorney.MyMessage
 
 class PowerofAttorneyCommunity(private val store: PoaStore) : Community() {
     override val serviceId = "02313685c1912a141279f8248fc8d65899c5df52"
-
+    private val TAG = "PoaCommunity"
     private val MESSAGE_ID = 1
-    private val POA_MESSAGE_ID = 2
+    private val ISSUE_POA_MESSAGE_ID = 2
     private val CONFIRM_POA_MESSAGE_ID = 3
     private val REVOCATION_MESSAGE_ID = 4
 
     init {
         messageHandlers[MESSAGE_ID] = ::onMessage
+        messageHandlers[ISSUE_POA_MESSAGE_ID] = ::onIssuePoaMessage
     }
 
     private fun onMessage(packet: Packet) {
         val (peer, payload) = packet.getAuthPayload(MyMessage.Deserializer)
-        Log.i("PoaCommunity", peer.mid + ": " + payload.message)
+        Log.i(TAG, peer.mid + ": " + payload.message)
+    }
+
+    private fun onIssuePoaMessage(packet: Packet) {
+        val (peer, payload) = packet.getAuthPayload(MyMessage.Deserializer)
+        Log.i(TAG, peer.mid + ": " + payload.message)
     }
 
     private val qrScanController = QRScanController()
@@ -60,9 +66,8 @@ class PowerofAttorneyCommunity(private val store: PoaStore) : Community() {
     Function to initialize a Power of Attorney (PoA)
     Peers in community are scanned and matched to the scanned QR public key to receive the IP and send the PoA message.
     **/
-    fun sendPoa(publicKey: String){
-        val packet = serializePacket(MESSAGE_ID, MyMessage("Hello, it works 2!!"))
-//        val publicKey = getPublicKeyFromQR()
+    fun sendPoa(publicKey: String, poa: PowerOfAttorney, poaType: String){
+        val packet = serializePacket(MESSAGE_ID, MyMessage("|||$poaType|||"+poa.toString()))
         val address = getPeerIp(publicKey)
         send(address, packet)
     }

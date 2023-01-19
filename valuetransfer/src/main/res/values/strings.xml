@@ -421,6 +421,7 @@
     <string name="snackbar_qr_code_poa_format_but_no_use">Scanned QR code is a PoA. Try verifying a specified PoA</string>
     <string name="snackbar_qr_code_not_poa_format">Scanned QR code not in correct PoA format</string>
     <string name="snackbar_qr_code_not_json_format">Scanned QR code not in JSON format</string>
+    <string name="send_poa_connection_error">Not connected to peer, please try again</string>
     <string name="snackbar_attestation_remove_error">Attestation couldn\'t be deleted</string>
     <string name="snackbar_attestation_remove_success">Attestation successfully deleted</string>
     <string name="snackbar_exchange_scan_buy_not_sell">Please scan a buy QR-code instead of sell</string>

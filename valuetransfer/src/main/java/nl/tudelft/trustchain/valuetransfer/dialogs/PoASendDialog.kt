@@ -179,8 +179,22 @@ class PoASendDialog(
             setNavigationBarColor(requireContext(), parentActivity, bottomSheetDialog)
 
             view.findViewById<TextView>(R.id.tvButtonSend).setOnClickListener{
-//               TODO: open new dialog, send MSG
-                dialog?.dismiss()
+                if (community.getPeerIp(publicKey) != IPv4Address("0.0.0.0", 0)){
+                    Log.i(TAG, "To be sent PoA: "+ poa_list_glob.first().toString())
+                    Log.i(TAG, "To be issued PoA type: "+ poaType.text)
+                    val poaTypeString : String = poaType.text.toString()
+                    community.sendPoa(publicKey, poa_list_glob.first(), poaTypeString)
+                    dialog?.dismiss()
+                } else {
+                    Log.e(TAG, "Tried to send PoA, but no correct IP was found")
+                    parentActivity.displayToast(
+                        requireContext(),
+                        resources.getString(R.string.send_poa_connection_error)
+                    )
+                    dialog?.dismiss()
+                }
+
+
             }
 
 
