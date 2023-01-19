@@ -51,6 +51,8 @@ import nl.tudelft.trustchain.valuetransfer.util.DividerItemDecorator
 import nl.tudelft.trustchain.valuetransfer.util.copyToClipboard
 import nl.tudelft.trustchain.valuetransfer.util.getInitials
 import nl.tudelft.trustchain.valuetransfer.util.mapToJSON
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import org.json.JSONObject
 import java.util.*
 
@@ -285,8 +287,25 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
         )
     }
 
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe
+    fun onShowPoAAddReceivedDialogEvent(event: PowerofAttorneyCommunity.ShowPoAAddReceivedDialogEvent) {
+        val ipv8 = getIpv8()
+        PoAAddReceivedDialog(false, event.issuedPoaType, event.poa, ipv8.myPeer.publicKey.keyToBin().toHex()).show(parentFragmentManager, tag)
+    }
+
     @SuppressLint("RestrictedApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+
         super.onViewCreated(view, savedInstanceState)
         initView()
 
@@ -821,6 +840,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
                 }
             }
         }
+
 
         private const val ADD_ATTESTATION_INTENT = 0
         private const val ADD_AUTHORITY_INTENT = 1
