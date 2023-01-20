@@ -7,6 +7,8 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -33,6 +35,13 @@ class PoADetailsDialog(
             }
 
             setNavigationBarColor(requireContext(), parentActivity, bottomSheetDialog)
+
+            if (!your_poa) {
+                view.findViewById<TextView>(R.id.tvPoaRelatedName).apply {
+                    text = "Issued to:"
+                }
+            }
+
 
             view.findViewById<TextView>(R.id.tvCompanyName).apply {
                 isVisible = true
@@ -74,10 +83,8 @@ class PoADetailsDialog(
                     isVisible = true
                     text = poa.poaType
                 }
+
                 if (!your_poa) {
-                    view.findViewById<TextView>(R.id.tvPoaRelatedName).apply {
-                        text = "Issued to:"
-                    }
                     view.findViewById<TextView>(R.id.tvPoaRelated).apply {
                         isVisible = true
                         text = poa.givenNamesPoaHolder+" "+poa.surnamePoaHolder
@@ -88,6 +95,7 @@ class PoADetailsDialog(
                         text = poa.givenNamesPoaIssuer+" "+poa.surnamePoaIssuer
                     }
                 }
+
             }
 
             ivHideDetails.setOnClickListener {
@@ -107,22 +115,25 @@ class PoADetailsDialog(
 
             bottomSheetDialog.setContentView(view)
             bottomSheetDialog.show()
-
-            @Suppress("DEPRECATION")
-            Handler().postDelayed(
-                {
-                    view.findViewById<ProgressBar>(R.id.pbLoadingSpinner).isVisible = false
-                    view.findViewById<ImageView>(R.id.ivQRCode).setImageBitmap(
-                        createBitmap(
-                            requireContext(),
-                            poa.toString(),
-                            R.color.black,
-                            R.color.light_gray
+            if (your_poa) {
+                @Suppress("DEPRECATION")
+                Handler().postDelayed(
+                    {
+                        view.findViewById<ProgressBar>(R.id.pbLoadingSpinner).isVisible = false
+                        view.findViewById<ImageView>(R.id.ivQRCode).setImageBitmap(
+                            createBitmap(
+                                requireContext(),
+                                poa.toString(),
+                                R.color.black,
+                                R.color.light_gray
+                            )
                         )
-                    )
-                },
-                100
-            )
+                    },
+                    100
+                )
+            } else {
+                view.findViewById<ConstraintLayout>(R.id.clQRCode).isGone = true
+            }
 
             bottomSheetDialog
         } ?: throw IllegalStateException(resources.getString(R.string.text_activity_not_null_requirement))

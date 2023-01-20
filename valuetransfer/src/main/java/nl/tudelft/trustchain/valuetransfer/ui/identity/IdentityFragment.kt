@@ -40,7 +40,6 @@ import nl.tudelft.trustchain.common.valuetransfer.extensions.decodeImage
 import nl.tudelft.trustchain.common.valuetransfer.extensions.encodeImage
 import nl.tudelft.trustchain.common.valuetransfer.extensions.exitEnterView
 import nl.tudelft.trustchain.valuetransfer.R
-import nl.tudelft.trustchain.valuetransfer.ValueTransferMainActivity
 import nl.tudelft.trustchain.valuetransfer.community.PowerofAttorneyCommunity
 import nl.tudelft.trustchain.valuetransfer.databinding.FragmentIdentityBinding
 import nl.tudelft.trustchain.valuetransfer.dialogs.*
@@ -229,12 +228,12 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
         )
 
         adapterIssuedPoas.registerRenderer(
-            PoaItemRenderer {
-                val args = Bundle().apply {
-                    putString(ValueTransferMainActivity.ARG_PARENT, ValueTransferMainActivity.walletOverviewFragmentTag)
-                }
-
-                parentActivity.detailFragment(ValueTransferMainActivity.contactChatFragmentTag, args)
+            PoaItemRenderer {  poa ->
+                PoADetailsDialog(
+                    false,
+                    poa
+                )
+                    .show(parentFragmentManager, tag)
             }
         )
 
