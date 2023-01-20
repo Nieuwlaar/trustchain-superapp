@@ -16,6 +16,7 @@ import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.*
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -300,6 +301,22 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
     fun onShowPoAAddReceivedDialogEvent(event: PowerofAttorneyCommunity.ShowPoAAddReceivedDialogEvent) {
         val ipv8 = getIpv8()
         PoAAddReceivedDialog(false, event.issuedPoaType, event.poa, ipv8.myPeer.publicKey.keyToBin().toHex()).show(parentFragmentManager, tag)
+    }
+
+    @Subscribe
+    fun onPoAAcceptedEvent(event: PowerofAttorneyCommunity.PoAAcceptedEvent) {
+        closeAllDialogs()
+        PoAAcceptedDeniedDialog(true).show(parentFragmentManager, tag)
+        Log.i(TAG, "PoA accepted!")
+        print(event.toString())
+    }
+
+    @Subscribe
+    fun onPoADeniedEvent(event: PowerofAttorneyCommunity.PoADeniedEvent) {
+        closeAllDialogs()
+        PoAAcceptedDeniedDialog(false).show(parentFragmentManager, tag)
+        Log.i(TAG, "PoA denied!")
+        print(event.toString())
     }
 
     @SuppressLint("RestrictedApi")
@@ -748,6 +765,16 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
     }
 
 
+    fun closeAllDialogs() {
+        Log.i(TAG, "Closing all dialogs!")
+        val fragmentManager = parentFragmentManager
+        val fragments = fragmentManager.fragments
+        for (fragment in fragments) {
+            if (fragment is DialogFragment) {
+                fragment.dismissAllowingStateLoss()
+            }
+        }
+    }
 
     @SuppressLint("NewApi")
     private fun issueFakePoa() {

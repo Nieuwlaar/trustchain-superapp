@@ -16,6 +16,9 @@ import org.json.JSONObject
 class PowerofAttorneyCommunity(private val store: PoaStore) : Community() {
     class ShowPoAAddReceivedDialogEvent(val issuedPoaType: String, val poa: PowerOfAttorney) : EventBus()
 
+    class PoAAcceptedEvent() : EventBus()
+    class PoADeniedEvent() : EventBus()
+
     override val serviceId = "02313685c1912a141279f8248fc8d65899c5df52"
     private val TAG = "PoaCommunity"
     private val MESSAGE_ID = 1
@@ -50,9 +53,16 @@ class PowerofAttorneyCommunity(private val store: PoaStore) : Community() {
         Log.i(TAG, peer.mid + ": " + payload.message)
         val result = splitAckMessageString(payload.message)
         Log.i(TAG, "PoA Acked :" + result)
-        val addedIssuedPoa = convertStringPoa2Poa(result)
-        Log.i(TAG, "Trying to add issuedpoa: " +addedIssuedPoa.toString())
-        addPoa(addedIssuedPoa)
+        if (result != "denied"){
+            val addedIssuedPoa = convertStringPoa2Poa(result)
+            Log.i(TAG, "Trying to add issuedpoa: " +addedIssuedPoa.toString())
+            addPoa(addedIssuedPoa)
+            Log.i(TAG, "Sending event for accepted PoA")
+            EventBus.getDefault().post(PoAAcceptedEvent())
+        } else {
+            EventBus.getDefault().post(PoADeniedEvent())
+        }
+
     }
 
     private val qrScanController = QRScanController()
@@ -93,15 +103,22 @@ class PowerofAttorneyCommunity(private val store: PoaStore) : Community() {
         send(address, packet)
     }
 
-    fun sendPoaAck(publicKey: String, sentPoa: PowerOfAttorney, finalPoa: PowerOfAttorney){
+    fun sendPoaAck(accepted: Boolean, publicKey: String, sentPoa: PowerOfAttorney, finalPoa: PowerOfAttorney){
         Log.i(TAG, "SentPoa: "+sentPoa)
         Log.i(TAG, "finalPoa: "+finalPoa)
-//        addPoa(finalPoa)
-        val packet = serializePacket(ACK_POA_MESSAGE_ID, MyMessage("|||"+finalPoa))
-        val address = getPeerIp(publicKey)
-        Log.i(TAG, "Sending Ack to public key: "+publicKey)
-        Log.i(TAG, "Sending Ack to address: "+address.toString())
-        send(address, packet)
+        if (accepted) {
+            val packet = serializePacket(ACK_POA_MESSAGE_ID, MyMessage("|||"+finalPoa))
+            val address = getPeerIp(publicKey)
+            Log.i(TAG, "Sending Ack to public key: "+publicKey)
+            Log.i(TAG, "Sending Ack to address: "+address.toString())
+            send(address, packet)
+        } else {
+            Log.i(TAG, "PoA denied!")
+            val packet = serializePacket(ACK_POA_MESSAGE_ID, MyMessage("|||denied"))
+            val address = getPeerIp(publicKey)
+            send(address, packet)
+        }
+
     }
 
     fun broadcastGreeting() {

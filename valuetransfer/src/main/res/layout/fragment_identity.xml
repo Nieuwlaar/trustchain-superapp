@@ -34,7 +34,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="12dp"
-                android:text="Powers of Attorney" />
+                android:text="Powers of Attorney"
+                app:layout_constraintWidth_percent=".8"
+                app:layout_constraintEnd_toStartOf="@+id/rlVerifyPoa" />
 
             <RelativeLayout
                 android:id="@+id/rlVerifyPoa"
@@ -47,7 +49,6 @@
                 android:backgroundTint="?attr/dialogColor"
                 android:padding="2dp"
                 android:layout_alignParentEnd="true">
-
                 <ImageView
                     android:id="@+id/ivVerifyPoa"
                     android:layout_width="30dp"

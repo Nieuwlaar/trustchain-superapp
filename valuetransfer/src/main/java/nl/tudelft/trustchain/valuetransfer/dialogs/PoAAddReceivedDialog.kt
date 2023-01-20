@@ -49,7 +49,7 @@ class PoAAddReceivedDialog(
             }
             view.findViewById<TextView>(R.id.tvPoaType).apply {
                 isVisible = true
-                text = poa.poaType
+                text = issuedPoaType
             }
 
             if (!yourPoa) {
@@ -91,10 +91,12 @@ class PoAAddReceivedDialog(
 //                TODO: Add UUID to recovation list.
                 val poaCommunity = IPv8Android.getInstance().getOverlay<PowerofAttorneyCommunity>()!!
                 poaCommunity.addPoa(finalPoa)
-                poaCommunity.sendPoaAck(poa.publicKeyPoaHolder, poa, finalPoa)
+                poaCommunity.sendPoaAck(true, poa.publicKeyPoaHolder, poa, finalPoa)
                 dialog?.dismiss()
             }
             view.findViewById<TextView>(R.id.tvButtonNo).setOnClickListener{
+                val poaCommunity = IPv8Android.getInstance().getOverlay<PowerofAttorneyCommunity>()!!
+                poaCommunity.sendPoaAck(false, poa.publicKeyPoaHolder, poa, poa)
                 dialog?.dismiss()
             }
 

@@ -184,7 +184,9 @@ class PoASendDialog(
                     Log.i(TAG, "To be issued PoA type: "+ poaType.text)
                     val poaTypeString : String = poaType.text.toString()
                     community.sendPoa(publicKey, poa_list_glob.first(), poaTypeString)
+                    PoAWaitingAck("PoA Sent", "Waiting for response:", "somedata").show(parentFragmentManager, tag)
                     dialog?.dismiss()
+
                 } else {
                     Log.e(TAG, "Tried to send PoA, but no correct IP was found")
                     parentActivity.displayToast(
