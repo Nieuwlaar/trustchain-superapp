@@ -2,12 +2,15 @@ package nl.tudelft.trustchain.valuetransfer.dialogs
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -47,6 +50,8 @@ class PoASendDialog(
         val llNotConnectedIcon = view.findViewById<RelativeLayout>(R.id.llNotConnectedIcon)
         val llPoaList = view.findViewById<LinearLayout>(R.id.llPoaList)
         val poaType = view.findViewById<TextView>(R.id.poaType)
+        val tvButtonSend = view.findViewById<TextView>(R.id.tvButtonSend)
+
 
         tvPublicKey.text = publicKey
         if (community.getPeerIp(publicKey) != IPv4Address("0.0.0.0", 0)){
@@ -95,6 +100,7 @@ class PoASendDialog(
 
             poaType.setOnClickListener {
                 Log.i(TAG, "PoaType clicked")
+
                 if (poaIsChosen) {
                     val choosen_poa = poa_list_glob.first()
                     if (choosen_poa.poaType == "Root")
@@ -165,6 +171,22 @@ class PoASendDialog(
                             }
                         ).show(parentFragmentManager, tag)
                     }
+
+                    @Suppress("DEPRECATION")
+                    Handler().postDelayed(
+                        {
+                            val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.rounded_corners_tudelft_blue)
+                            tvButtonSend.background = drawable
+                            tvButtonSend.isClickable = true
+                            tvButtonSend.isFocusable = true
+                            tvButtonSend.setTypeface(Typeface.DEFAULT_BOLD)
+                            tvButtonSend.setTextColor(Color.parseColor("#FFFFFF"))
+                        },
+                        500
+                    )
+
+
+
                 }
             }
 
@@ -179,24 +201,27 @@ class PoASendDialog(
             setNavigationBarColor(requireContext(), parentActivity, bottomSheetDialog)
 
             view.findViewById<TextView>(R.id.tvButtonSend).setOnClickListener{
-                if (community.getPeerIp(publicKey) != IPv4Address("0.0.0.0", 0)){
-                    Log.i(TAG, "To be sent PoA: "+ poa_list_glob.first().toString())
-                    Log.i(TAG, "To be issued PoA type: "+ poaType.text)
-                    val poaTypeString : String = poaType.text.toString()
-                    community.sendPoa(publicKey, poa_list_glob.first(), poaTypeString)
-                    PoAWaitingAck("PoA Sent", "Waiting for response:", "somedata").show(parentFragmentManager, tag)
-                    dialog?.dismiss()
+                if (poaType.text.toString() != "") {
+                    if (community.getPeerIp(publicKey) != IPv4Address("0.0.0.0", 0)) {
+                        Log.i(TAG, "To be sent PoA: " + poa_list_glob.first().toString())
+                        Log.i(TAG, "To be issued PoA type: " + poaType.text)
+                        val poaTypeString: String = poaType.text.toString()
+                        community.sendPoa(publicKey, poa_list_glob.first(), poaTypeString)
+                        PoAWaitingAck("PoA Sent", "Waiting for response:", "somedata").show(
+                            parentFragmentManager,
+                            tag
+                        )
+                        dialog?.dismiss()
 
-                } else {
-                    Log.e(TAG, "Tried to send PoA, but no correct IP was found")
-                    parentActivity.displayToast(
-                        requireContext(),
-                        resources.getString(R.string.send_poa_connection_error)
-                    )
-                    dialog?.dismiss()
+                    } else {
+                        Log.e(TAG, "Tried to send PoA, but no correct IP was found")
+                        parentActivity.displayToast(
+                            requireContext(),
+                            resources.getString(R.string.send_poa_connection_error)
+                        )
+                        dialog?.dismiss()
+                    }
                 }
-
-
             }
 
 

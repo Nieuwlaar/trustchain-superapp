@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.fragment.app.DialogFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import nl.tudelft.ipv8.android.IPv8Android
@@ -92,11 +93,29 @@ class PoAAddReceivedDialog(
                 val poaCommunity = IPv8Android.getInstance().getOverlay<PowerofAttorneyCommunity>()!!
                 poaCommunity.addPoa(finalPoa)
                 poaCommunity.sendPoaAck(true, poa.publicKeyPoaHolder, poa, finalPoa)
+//                closing dialogs
+                val fragmentManager = requireActivity().supportFragmentManager
+                val dialogs = fragmentManager.fragments
+                    .filterIsInstance<DialogFragment>()
+                    .filter { it != this }
+
+                for (dialog in dialogs) {
+                    dialog.dismiss()
+                }
                 dialog?.dismiss()
             }
             view.findViewById<TextView>(R.id.tvButtonNo).setOnClickListener{
                 val poaCommunity = IPv8Android.getInstance().getOverlay<PowerofAttorneyCommunity>()!!
                 poaCommunity.sendPoaAck(false, poa.publicKeyPoaHolder, poa, poa)
+//                closing dialogs
+                val fragmentManager = requireActivity().supportFragmentManager
+                val dialogs = fragmentManager.fragments
+                    .filterIsInstance<DialogFragment>()
+                    .filter { it != this }
+
+                for (dialog in dialogs) {
+                    dialog.dismiss()
+                }
                 dialog?.dismiss()
             }
 

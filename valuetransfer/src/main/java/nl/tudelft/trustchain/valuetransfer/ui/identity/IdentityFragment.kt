@@ -847,6 +847,8 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
             val fullDateOfBirthSeperated = identity.content.dateOfBirth.toString().split("\\s".toRegex()).toTypedArray()
             return fullDateOfBirthSeperated[2] + "-" + convertMonthToNumber(fullDateOfBirthSeperated[1].uppercase()) + "-" + fullDateOfBirthSeperated[5]
         }
+
+
         private fun convertMonthToNumber(month: String): String {
             when (month) {
                 "JANUARY" -> return "01"

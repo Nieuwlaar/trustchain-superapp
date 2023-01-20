@@ -259,13 +259,13 @@
                 android:id="@+id/tvButtonSend"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/rounded_corners_tudelft_blue"
-                android:clickable="true"
-                android:focusable="true"
+                android:background="@drawable/rounded_corners_light_grey"
+                android:clickable="false"
+                android:focusable="false"
                 android:gravity="center"
                 android:text="SEND"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
+                android:textColor="@color/dark_gray"
+                />
         </RelativeLayout>
 
         <RelativeLayout
