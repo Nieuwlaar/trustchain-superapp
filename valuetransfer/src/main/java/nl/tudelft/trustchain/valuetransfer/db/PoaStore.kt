@@ -114,6 +114,21 @@ class PoaStore(context: Context) {
         return database.dbPowerofAttorneyQueries.createPoasTable()
     }
 
+    fun createRevokedPoasTable() {
+        return database.dbRevokedPoasQueries.createRevokedPoasTable()
+    }
+
+    fun addRevokedPoa(revokedPoaID: String) {
+        database.dbRevokedPoasQueries.addRevokedPoa(revokedPoaID)
+    }
+
+    fun getAllRevokedPoas(): List<String> {
+        val RevokedPoAlist = database.dbRevokedPoasQueries.getAllRevokedPoas().executeAsList()
+            .toMutableList()
+        return RevokedPoAlist
+    }
+
+
     fun deletePoasTable() {
         return database.dbPowerofAttorneyQueries.deletePoasTable()
     }

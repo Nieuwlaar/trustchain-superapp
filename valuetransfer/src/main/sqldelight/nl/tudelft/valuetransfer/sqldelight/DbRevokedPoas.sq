@@ -1,0 +1,24 @@
+createRevokedPoasTable:
+CREATE TABLE IF NOT EXISTS revokedpoas (
+    id TEXT NOT NULL,
+    PRIMARY KEY (id)
+);
+
+getAllRevokedPoas:
+SELECT * FROM revokedpoas;
+
+-- getAttributeNames:
+-- SELECT name FROM attributes;
+
+addRevokedPoa:
+INSERT INTO revokedpoas(id) VALUES(?);
+
+-- updateAttribute:
+-- UPDATE attributes SET value = ?, modified = ? WHERE id = ?;
+
+deleteRevokedPoa:
+DELETE FROM revokedpoas WHERE id = ?;
+
+deleteAllRevokedPoas:
+DELETE FROM revokedpoas;
+

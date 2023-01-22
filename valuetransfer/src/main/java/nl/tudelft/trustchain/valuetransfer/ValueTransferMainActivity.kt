@@ -192,6 +192,7 @@ class ValueTransferMainActivity : BaseActivity() {
 //        powerofAttorneyCommunity.deletePoasTable()
 
         powerofAttorneyCommunity.createPoasTable()
+        powerofAttorneyCommunity.createRevokedPoasTable()
 
         /**
          * Initialize notification and passport handler

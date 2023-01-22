@@ -140,6 +140,10 @@ class PowerofAttorneyCommunity(private val store: PoaStore) : Community() {
         store.createPoasTable()
     }
 
+    fun createRevokedPoasTable() {
+        store.createRevokedPoasTable()
+    }
+
     fun deletePoasTable() {
         store.deletePoasTable()
     }
@@ -185,6 +189,11 @@ class PowerofAttorneyCommunity(private val store: PoaStore) : Community() {
     fun addPoa(poa: PowerOfAttorney) {
         store.addPoa(poa)
         Log.i(TAG, "Added PoA: "+poa.toString())
+    }
+
+    fun addRevokedPoa(poaID: String) {
+        store.addRevokedPoa(poaID)
+        Log.i(TAG, "Revoked PoA, ID: "+poaID)
     }
 
     fun addFakePoa(poa: PowerOfAttorney) {
