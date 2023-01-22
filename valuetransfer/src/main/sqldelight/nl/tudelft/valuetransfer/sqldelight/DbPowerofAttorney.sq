@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS poas;
 createPoasTable:
 CREATE TABLE IF NOT EXISTS poas (
     id TEXT NOT NULL,
+    id_issued_with TEXT NOT NULL,
     kvk_number INTEGER NOT NULL,
     company_name TEXT NOT NULL,
     poa_type TEXT NOT NULL,
@@ -36,7 +37,7 @@ SELECT * FROM poas WHERE public_key_poa_issuer LIKE ? ORDER BY kvk_number ASC;
 -- SELECT name FROM attributes;
 
 addPoa:
-INSERT INTO poas(id, kvk_number, company_name, poa_type, is_permitted, is_allowed_to_issue_poa, public_key_poa_holder, given_names_holder, surname_poa_holder, date_of_birth_poa_holder, public_key_poa_issuer, given_names_issuer, surname_poa_issuer, date_of_birth_poa_issuer) VALUES(?, ?, ?, ? , ?, ?, ?, ?, ?, ? , ?, ?, ?, ?);
+INSERT INTO poas(id, id_issued_with, kvk_number, company_name, poa_type, is_permitted, is_allowed_to_issue_poa, public_key_poa_holder, given_names_holder, surname_poa_holder, date_of_birth_poa_holder, public_key_poa_issuer, given_names_issuer, surname_poa_issuer, date_of_birth_poa_issuer) VALUES(?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ? , ?, ?, ?, ?);
 
 -- updateAttribute:
 -- UPDATE attributes SET value = ?, modified = ? WHERE id = ?;

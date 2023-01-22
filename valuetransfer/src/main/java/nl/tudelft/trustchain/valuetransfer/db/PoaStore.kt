@@ -18,6 +18,7 @@ class PoaStore(context: Context) {
 
     private val poaMapper = {
             id: String,
+            id_issued_with: String,
             kvkNumber: Long,
             companyName: String,
             poaType: String,
@@ -34,6 +35,7 @@ class PoaStore(context: Context) {
         ->
         PowerOfAttorney(
             id,
+            id_issued_with,
             kvkNumber,
             companyName,
             poaType,
@@ -53,6 +55,7 @@ class PoaStore(context: Context) {
     fun addPoa(poa: PowerOfAttorney) {
         database.dbPowerofAttorneyQueries.addPoa(
             poa.id,
+            poa.id_issued_with,
             poa.kvkNumber,
             poa.companyName,
             poa.poaType,

@@ -145,6 +145,7 @@ class IdentityAddKvkPoaDialog(var myPublicKey: String) : VTDialogFragment() {
 
                             val receivedKvkPoa = PowerOfAttorney(
                                 id = UUID.randomUUID().toString(),
+                                id_issued_with = UUID.randomUUID().toString(),
                                 kvkNumber = receivedKvkNumber.toLong(),
                                 companyName = companyName,
                                 poaType = poaType,

@@ -169,6 +169,7 @@ class PowerofAttorneyCommunity(private val store: PoaStore) : Community() {
         }
         val poa = PowerOfAttorney(
             json.getString("id"),
+            json.getString("id_issued_with"),
             json.getLong("kvkNumber"),
             json.getString("companyName"),
             json.getString("poaType"),

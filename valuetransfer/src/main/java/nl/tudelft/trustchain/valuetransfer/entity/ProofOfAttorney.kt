@@ -7,6 +7,11 @@ data class PowerOfAttorney(
     val id: String,
 
     /**
+     * ID of the Power of Attorney that issued this Power of Attorney
+     */
+    val id_issued_with: String,
+
+    /**
      * KVK number of the Power of Attorney.
      */
     val kvkNumber: Long,

@@ -783,6 +783,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
         Log.i(TAG, "FAKE POA ISSUED INITIALIZED")
         val fakePoa = PowerOfAttorney(
             id = UUID.randomUUID().toString(),
+            id_issued_with = UUID.randomUUID().toString(),
             kvkNumber = 12345678,
             companyName = "Xaigis B.V. FAKE",
             poaType = "Root",
@@ -799,6 +800,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
         )
         val fakePoa2 = PowerOfAttorney(
             id = UUID.randomUUID().toString(),
+            id_issued_with = UUID.randomUUID().toString(),
             kvkNumber = 12345678,
             companyName = "Xaigis B.V. FAKE",
             poaType = "Manager",
@@ -815,6 +817,7 @@ class IdentityFragment : VTFragment(R.layout.fragment_identity) {
         )
         val fakePoa3 = PowerOfAttorney(
             id = UUID.randomUUID().toString(),
+            id_issued_with = UUID.randomUUID().toString(),
             kvkNumber = 12345678,
             companyName = "Xaigis B.V. FAKE",
             poaType = "Employee",

@@ -74,6 +74,7 @@ class PoAAddReceivedDialog(
                 val givenNamesFromIdentity = identity.content.givenNames
                 val finalPoa = PowerOfAttorney(
                     id = UUID.randomUUID().toString(),
+                    id_issued_with = poa.id,
                     kvkNumber = poa.kvkNumber,
                     companyName = poa.companyName,
                     poaType = issuedPoaType,
