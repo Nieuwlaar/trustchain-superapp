@@ -26,7 +26,7 @@ import java.util.*
 class IdentityAddKvkPoaDialog(var myPublicKey: String) : VTDialogFragment() {
     private var filledKvkNumber = ""
     private val TAG = "PoaCommunity"
-    private val URL_KVK_API = "https://eede-176-117-57-243.eu.ngrok.io/api/bevoegdheid/"
+    private val URL_KVK_API = "https://a3e6-176-117-57-243.eu.ngrok.io/api/bevoegdheid/"
     override fun onCreateDialog(savedInstanceState: Bundle?): BottomSheetDialog {
         Log.i(TAG, "Dialog being created")
         return activity?.let {
@@ -90,8 +90,8 @@ class IdentityAddKvkPoaDialog(var myPublicKey: String) : VTDialogFragment() {
                         if (response.getJSONObject("bevoegdheidUittreksel").has("matchedFunctionaris")){
                             Log.i(TAG, "Response type: " + response.javaClass.name)
 
-                            val id = UUID.randomUUID().toString()
-                            Log.i(TAG, "API Respone id: $id")
+//                            val id = UUID.randomUUID().toString()
+//                            Log.i(TAG, "API Respone id: $id")
 
                             val receivedKvkNumber = response.getJSONObject("inschrijving").getString("kvkNummer")
                             Log.i(TAG, "API Respone receivedKvkNumber: $receivedKvkNumber")
@@ -99,7 +99,7 @@ class IdentityAddKvkPoaDialog(var myPublicKey: String) : VTDialogFragment() {
                             val companyName = response.getJSONObject("inschrijving").getString("naam")
                             Log.i(TAG, "API Respone companyName: $companyName")
 
-                            val poaType = "Full Power of Attorney"
+                            val poaType = "Root"
                             Log.i(TAG, "API Respone poaType: $poaType")
 
                             val isBevoegd =  response.getJSONObject("bevoegdheidUittreksel").getJSONObject("matchedFunctionaris").getJSONObject("interpretatie").getString("isBevoegd")
@@ -192,6 +192,7 @@ class IdentityAddKvkPoaDialog(var myPublicKey: String) : VTDialogFragment() {
                 Log.i(TAG, request.toString())
                 // Add the volley post request to the request queue
                 queue.add(request)
+                dialog?.dismiss()
             }
 
 

@@ -16,22 +16,21 @@ class PoaStore(context: Context) {
     private val driver = AndroidSqliteDriver(Database.Schema, context, "identities-vt.db")
     private val database = Database(driver)
 
-    private val poaMapper = {
-            id: String,
-            id_issued_with: String,
-            kvkNumber: Long,
-            companyName: String,
-            poaType: String,
-            isPermitted: String,
-            isAllowedToIssuePoa: String,
-            publicKeyPoaHolder: String,
-            givenNamesPoaHolder: String,
-            surnamePoaHolder: String,
-            dateOfBirthPoaHolder: String,
-            publicKeyPoaIssuer: String,
-            givenNamesPoaIssuer: String,
-            surnamePoaIssuer: String,
-            dateOfBirthPoaIssuer: String
+    private val poaMapper = { id: String,
+                              id_issued_with: String,
+                              kvkNumber: Long,
+                              companyName: String,
+                              poaType: String,
+                              isPermitted: String,
+                              isAllowedToIssuePoa: String,
+                              publicKeyPoaHolder: String,
+                              givenNamesPoaHolder: String,
+                              surnamePoaHolder: String,
+                              dateOfBirthPoaHolder: String,
+                              publicKeyPoaIssuer: String,
+                              givenNamesPoaIssuer: String,
+                              surnamePoaIssuer: String,
+                              dateOfBirthPoaIssuer: String
         ->
         PowerOfAttorney(
             id,
@@ -72,10 +71,35 @@ class PoaStore(context: Context) {
         )
     }
 
-    fun getAllPoas(): Flow<List<PowerOfAttorney>> {
-        return database.dbPowerofAttorneyQueries.getAllPoas(poaMapper)
-            .asFlow().mapToList()
+    //    TODO: use for verification:
+//    fun isPoaRevoked(PoAID: String): Boolean {
+//        val RevokedPoaslist = getAllRevokedPoas()
+//        for (poa_id in RevokedPoaslist) {
+//            if (poa_id == PoAID){
+//                return true
+//            }
+//        }
+//        return false
+//    }
+//    fun getAllIssuedWithPoaIDs(): List<String>{
+//    return database.dbPowerofAttorneyQueries.getAllPoas().executeAsList()
+//        .toList()
+//    }
+
+    fun getAllYourPoasList(): List<PowerOfAttorney>{
+        val ipv8 = getIpv8()
+        val myPublicKey = ipv8.myPeer.publicKey.keyToBin().toHex()
+        return database.dbPowerofAttorneyQueries.getAllYourPoas(myPublicKey,poaMapper).executeAsList()
+            .toList()
     }
+
+    fun getAllIssuedPoasList(): List<PowerOfAttorney>{
+        val ipv8 = getIpv8()
+        val myPublicKey = ipv8.myPeer.publicKey.keyToBin().toHex()
+        return database.dbPowerofAttorneyQueries.getAllIssuedPoas(myPublicKey,poaMapper).executeAsList()
+            .toList()
+    }
+
 
     fun getAllYourPoas(): Flow<List<PowerOfAttorney>> {
         val ipv8 = getIpv8()
@@ -103,6 +127,10 @@ class PoaStore(context: Context) {
 
     fun deletePoa(poa_id: String) {
         database.dbPowerofAttorneyQueries.deletePoa(poa_id)
+    }
+
+    fun deleteIssuedWithPoa(poa_id: String) {
+        database.dbPowerofAttorneyQueries.deleteIssuedWithPoa(poa_id)
     }
 
     fun deleteAllPoas() {

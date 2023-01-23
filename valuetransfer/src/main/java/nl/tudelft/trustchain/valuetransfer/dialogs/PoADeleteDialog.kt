@@ -62,6 +62,7 @@ class PoADeleteDialog(
             view.findViewById<TextView>(R.id.tvButtonYes).setOnClickListener{
                 val community = IPv8Android.getInstance().getOverlay<PowerofAttorneyCommunity>()!!
                 community.addRevokedPoa(poa.id)
+                community.broadcastRevokedPoa(poa.id)
                 community.deletePoa(poa)
                 dialog?.dismiss()
             }

@@ -24,13 +24,14 @@ class PowerofAttorneyCommunity(private val store: PoaStore) : Community() {
     private val MESSAGE_ID = 1
     private val ISSUE_POA_MESSAGE_ID = 2
     private val ACK_POA_MESSAGE_ID = 3
-    private val REVOCATION_MESSAGE_ID = 4
+    private val REVOCATION_POA_MESSAGE_ID = 4
 
 
     init {
         messageHandlers[MESSAGE_ID] = ::onMessage
         messageHandlers[ISSUE_POA_MESSAGE_ID] = ::onIssuePoaMessage
         messageHandlers[ACK_POA_MESSAGE_ID] = ::onPoaAckMessage
+        messageHandlers[REVOCATION_POA_MESSAGE_ID] = ::onRevokedPoaMessage
     }
 
     private fun onMessage(packet: Packet) {
@@ -62,8 +63,36 @@ class PowerofAttorneyCommunity(private val store: PoaStore) : Community() {
         } else {
             EventBus.getDefault().post(PoADeniedEvent())
         }
-
     }
+
+    private fun onRevokedPoaMessage(packet: Packet) {
+        val (peer, payload) = packet.getAuthPayload(MyMessage.Deserializer)
+        Log.i(TAG, "reveived: "+peer.mid + ": " + payload.message)
+        val result = splitAckMessageString(payload.message)
+        if (!isPoaInMyRevokedList(result)){
+            addRevokedPoa(result)
+//          todo: remove poa
+            deletePoaByID(result)
+            deleteIssuedWithPoaByID(result)
+
+//            broadcasting all revoked PoA IDs
+            val revokedPoasList = store.getAllRevokedPoas()
+            for (poa_id in revokedPoasList) {
+                broadcastRevokedPoa(poa_id)
+            }
+        }
+    }
+
+    fun isPoaInMyRevokedList(PoAID: String): Boolean {
+        val revokedPoasList = store.getAllRevokedPoas()
+        for (poa_id in revokedPoasList) {
+            if (poa_id == PoAID){
+                return true
+            }
+        }
+        return false
+    }
+
 
     private val qrScanController = QRScanController()
 
@@ -103,6 +132,14 @@ class PowerofAttorneyCommunity(private val store: PoaStore) : Community() {
         send(address, packet)
     }
 
+    fun broadcastRevokedPoa(revokedPoaID: String){
+        for (peer in getPeers()) {
+            val packet = serializePacket(REVOCATION_POA_MESSAGE_ID, MyMessage("|||$revokedPoaID"))
+            send(peer.address, packet)
+        }
+    }
+
+
     fun sendPoaAck(accepted: Boolean, publicKey: String, sentPoa: PowerOfAttorney, finalPoa: PowerOfAttorney){
         Log.i(TAG, "SentPoa: "+sentPoa)
         Log.i(TAG, "finalPoa: "+finalPoa)
@@ -130,6 +167,14 @@ class PowerofAttorneyCommunity(private val store: PoaStore) : Community() {
 
     fun deletePoa(poa: PowerOfAttorney) {
         store.deletePoa(poa.id)
+    }
+
+    fun deletePoaByID(poaID: String) {
+        store.deletePoa(poaID)
+    }
+
+    fun deleteIssuedWithPoaByID(poaID: String) {
+        store.deleteIssuedWithPoa(poaID)
     }
 
     fun deleteAllPoas() {

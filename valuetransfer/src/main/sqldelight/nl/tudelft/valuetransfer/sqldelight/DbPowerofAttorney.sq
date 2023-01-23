@@ -45,6 +45,9 @@ INSERT INTO poas(id, id_issued_with, kvk_number, company_name, poa_type, is_perm
 deletePoa:
 DELETE FROM poas WHERE id = ?;
 
+deleteIssuedWithPoa:
+DELETE FROM poas WHERE id_issued_with = ?;
+
 deleteAllPoas:
 DELETE FROM poas;
 
